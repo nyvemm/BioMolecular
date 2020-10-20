@@ -20,7 +20,7 @@
 
 **Lista de tarefas a fazer do projeto:**
 
-[](https://www.notion.so/9c397e051da449b7a65343fb489b52a6) 
+[https://www.notion.so/9c397e051da449b7a65343fb489b52a6](https://www.notion.so/9c397e051da449b7a65343fb489b52a6) 
 
 ---
 
