@@ -1,5 +1,5 @@
 CREATE TABLE IF NOT EXISTS usuario(
-	login VARCHAR(50)
+	login VARCHAR(50),
 	senha VARCHAR(50) NOT NULL,
 	nome VARCHAR(100) NOT NULL,
 	email VARCHAR(50) NOT NULL,
@@ -11,7 +11,7 @@ CREATE TABLE IF NOT EXISTS usuario(
 );
 
 CREATE TABLE IF NOT EXISTS paciente(
-  	idPaciente INT NOT NULL,
+  	idPaciente SERIAL,
   	idPacienteSolicitante INT NOT NULL,
   	nome VARCHAR(75) NOT NULL,
 	dt_nasc DATE NOT NULL,
@@ -24,7 +24,7 @@ CREATE TABLE IF NOT EXISTS paciente(
 );
 
 CREATE TABLE IF NOT EXISTS exame(
-	idExame INT NOT NULL,
+	idExame SERIAL,
 	nome VARCHAR(75) NOT NULL,
 	sigla VARCHAR(15) NULL,
 	tipo_analise VARCHAR(45) NOT NULL,
@@ -38,11 +38,11 @@ CREATE TABLE IF NOT EXISTS exame(
 );
 
 CREATE TABLE IF NOT EXISTS solicitante(
-	idSolicitante INT NOT NULL,
+	idSolicitante SERIAL,
 	nome VARCHAR(45) NOT NULL,
 	estado VARCHAR(2) NULL,
 	cidade VARCHAR(100) NULL,
-	endereço VARCHAR(100) NULL,
+	endereco VARCHAR(100) NULL,
 	e_mail VARCHAR(45) NULL,
 	contato_referencia VARCHAR(45) NULL,
 
@@ -50,7 +50,7 @@ CREATE TABLE IF NOT EXISTS solicitante(
 );
 
 CREATE TABLE IF NOT EXISTS amostra(
-	idAmostra INT NOT NULL,
+	idAmostra SERIAL,
 	idPaciente INT NOT NULL,
 	idSolicitante INT NOT NULL,
 	material VARCHAR(45) NOT NULL,
@@ -89,7 +89,7 @@ CREATE TABLE IF NOT EXISTS amostra_contem_exames_aux(
 );
 
 CREATE TABLE IF NOT EXISTS laudo(
- 	idLaudo INT NOT NULL,
+ 	idLaudo SERIAL,
 	qtd_analise_eletroforeticas VARCHAR(45) NULL,
 	qtd_analise_citologicas VARCHAR(45) NULL,
 	qtd_analise_cromotografica VARCHAR(45) NULL,
@@ -103,7 +103,7 @@ CREATE TABLE IF NOT EXISTS laudo(
 );
 
 CREATE TABLE IF NOT EXISTS pedido(
-	idPedido INT NOT NULL,
+	idPedido SERIAL,
 	idAmostra INT NOT NULL,
 	idLaudo INT NOT NULL,
 	idPaciente INT NOT NULL,
@@ -138,7 +138,7 @@ CREATE TABLE IF NOT EXISTS pedido_tem_exame(
 );
 
 CREATE TABLE IF NOT EXISTS resultados_exame(
-	idResultado INT NOT NULL,
+	idResultado SERIAL,
 	resultado_possivel VARCHAR(75) NOT NULL,
 	idade_maior_6m CHAR(1) NULL,
 	
