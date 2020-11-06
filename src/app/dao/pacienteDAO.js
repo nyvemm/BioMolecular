@@ -19,7 +19,7 @@ class pacienteDAO {
     //Lista paciente por seu id (chave primária)
     async getPaciente(id){
         try {
-            return await this.database('paciente').where('idPaciente', id).select()
+            return await this.database('paciente').where('idpaciente', id).select()
         } catch (error) {
             throw this.obj_error
         }
@@ -29,8 +29,7 @@ class pacienteDAO {
     async addPaciente(data){
         try {
             await this.database('paciente').insert({
-                id : data.idPaciente,
-                idSolicitante : data.idPacienteSolicitante,
+                idpacientesolicitante : data.idPacienteSolicitante,
                 nome : data.nome,
                 dt_nasc : data.dt_nasc,
                 etnia : data.etnia,
@@ -48,9 +47,8 @@ class pacienteDAO {
     async updPaciente(data){
         const id = data.idPaciente
         try {
-            await this.database('paciente').where('idPaciente', id).update({
-                id : data.idPaciente,
-                idSolicitante : data.idPacienteSolicitante,
+            await this.database('paciente').where('idpaciente', id).update({
+                idpacientesolicitante : data.idPacienteSolicitante,
                 nome : data.nome,
                 dt_nasc : data.dt_nasc,
                 etnia : data.etnia,
@@ -67,7 +65,7 @@ class pacienteDAO {
     //Remove um paciente do BD
     async delPaciente(id){
         try {
-            await this.database('paciente').where('idPaciente', id).del()
+            await this.database('paciente').where('idpaciente', id).del()
             throw this.obj_sucess
         } catch(error) {
             throw this.obj_error

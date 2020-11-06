@@ -18,7 +18,7 @@ CREATE TABLE IF NOT EXISTS paciente(
 	etnia VARCHAR(45) NULL,
 	sexo CHAR NOT NULL,
 	naturalidade_cidade VARCHAR(45) NULL,
-	naturailidade_estado VARCHAR(2) NULL,
+	naturalidade_estado VARCHAR(2) NULL,
 	
 	CONSTRAINT pk_paciente PRIMARY KEY (idPaciente)
 );

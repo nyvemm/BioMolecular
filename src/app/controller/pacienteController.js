@@ -17,7 +17,7 @@ class pacienteController {
 
     get() {
         return async function(req, resp) {
-            const id = req.body.id
+            const id = req.params.id
             await DAOPaciente.getPaciente(id)
                 .then(data => resp.json(data))
                 .catch(error => resp.json(error))
@@ -29,7 +29,8 @@ class pacienteController {
             const data = req.body
             await DAOPaciente.addPaciente(data)
                 .then(data => resp.json(data))
-                .catch(data => resp.json(error))
+                .catch(error => resp.json(error))
+            console.log(error)
         }
     }
 
@@ -38,13 +39,13 @@ class pacienteController {
             const data = req.body
             await DAOPaciente.updPaciente(data)
                 .then(data => resp.json(data))
-                .catch(error => resp.json(data))
+                .catch(error => resp.json(error))
         }
     }
 
     delete() {
         return async function(req, resp) {
-            const id = req.body.id
+            const id = req.body.idPaciente
             await DAOPaciente.delPaciente(id)
                 .then(data => resp.json(data))
                 .catch(error => resp.json(error))
