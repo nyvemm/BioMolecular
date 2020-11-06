@@ -18,7 +18,7 @@ class solicitanteController {
     get() {
         return async function(req, res) {
             const id = req.body.id
-            await DAOSolicitante.getSolicitante(login)
+            await DAOSolicitante.getSolicitante(id)
                 .then(data => res.json(data))
                 .catch(error => res.json(error))
         }
@@ -45,7 +45,7 @@ class solicitanteController {
     delete() {
         return async function(req, res) {
             const id = req.body.id
-            await DAOSolicitante.removeSolicitante(login)
+            await DAOSolicitante.removeSolicitante(id)
                 .then(data => res.json(data))
                 .catch(error => res.json(error))
         }

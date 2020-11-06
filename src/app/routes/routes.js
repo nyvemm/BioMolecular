@@ -2,6 +2,7 @@ database = require('../../config/database/connection')
 dummy = require('../../config/database/dummy')
 
 const routesUsuario = require('./database/usuario')
+const routesPaciente = require('./database/paciente')
 const routeSolicitante = require('./database/solicitante')
 
 // Criação do banco de dados
@@ -13,5 +14,6 @@ dummy()
 
 module.exports = (app) => {
     routesUsuario(app)
+    routesPaciente(app)
     routeSolicitante(app)
 }
