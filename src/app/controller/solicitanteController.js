@@ -17,7 +17,7 @@ class solicitanteController {
 
     get() {
         return async function(req, res) {
-            const id = req.body.id
+            const id = req.params.id
             await DAOSolicitante.getSolicitante(id)
                 .then(data => res.json(data))
                 .catch(error => res.json(error))

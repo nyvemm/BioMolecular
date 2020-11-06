@@ -29,7 +29,13 @@ class usuarioDAO {
     //Adiciona um novo usuário ao banco de dados.
     async addUsuario(data) {
         try {
-            await this.database('usuario').insert({ login: data.login, senha: data.senha, nome: data.nome, email: data.email, foto: data.foto })
+            await this.database('usuario').insert({
+                login: data.login,
+                senha: data.senha,
+                nome: data.nome,
+                email: data.email,
+                foto: data.foto
+            })
             return this.obj_success
         } catch (error) {
             throw this.obj_error
@@ -40,7 +46,12 @@ class usuarioDAO {
     async updateUsuario(data) {
         const login = data.login
         try {
-            await this.database('usuario').where('login', login).update({ senha: data.senha, nome: data.nome, email: data.email, foto: data.foto })
+            await this.database('usuario').where('login', login).update({
+                senha: data.senha,
+                nome: data.nome,
+                email: data.email,
+                foto: data.foto
+            })
             return this.obj_success
         } catch (error) {
             throw this.obj_error

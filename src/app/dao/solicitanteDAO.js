@@ -20,7 +20,7 @@ class solicitanteDAO {
     // Lista o solicitante pela sua chave primária.
     async getSolicitante(id) {
         try {
-            return await this.database('solicitante').where('idSolicitante', id).select()
+            return await this.database('solicitante').where('idsolicitante', id).select()
         } catch (error) {
             throw this.obj_error
         }
@@ -67,7 +67,7 @@ class solicitanteDAO {
     //Remove um solicitante do banco de dados.
     async removeSolicitante(id) {
         try {
-            await this.database('solicitante').where('idSolicitante', id).del()
+            await this.database('solicitante').where('idsolicitante', id).del()
             return this.obj_success
         } catch (error) {
             throw this.obj_error

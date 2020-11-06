@@ -17,7 +17,7 @@ class usuarioController {
 
     get() {
         return async function(req, res) {
-            const login = req.body.login
+            const login = req.params.login
             await DAOUsuario.getUsuario(login)
                 .then(data => res.json(data))
                 .catch(error => res.json(error))
