@@ -66,7 +66,7 @@ class pacienteDAO {
     async delPaciente(id){
         try {
             await this.database('paciente').where('idpaciente', id).del()
-            throw this.obj_sucess
+            return this.obj_sucess
         } catch(error) {
             throw this.obj_error
         }
