@@ -1,9 +1,9 @@
 class pacienteController {
 
     routes() {
-        return{
-            base : '/pacientes/',
-            getId : '/pacientes/:id'
+        return {
+            base: '/pacientes/',
+            getId: '/pacientes/:id'
         }
     }
 
@@ -30,7 +30,6 @@ class pacienteController {
             await DAOPaciente.addPaciente(data)
                 .then(data => resp.json(data))
                 .catch(error => resp.json(error))
-            console.log(error)
         }
     }
 
