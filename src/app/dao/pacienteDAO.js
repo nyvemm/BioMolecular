@@ -1,7 +1,7 @@
 class pacienteDAO {
 
     obj_error = { status: 'error' }
-    obj_sucess = { status: 'sucess' }
+    obj_sucess = { status: 'success' }
 
     constructor(database) {
         this.database = database
@@ -34,7 +34,8 @@ class pacienteDAO {
                 dt_nasc: data.dt_nasc,
                 etnia: data.etnia,
                 sexo: data.sexo,
-                naturalidade_cidade: data.naturalidade_cidade
+                naturalidade_cidade: data.naturalidade_cidade,
+                naturalidade_estado: data.naturalidade_estado
             })
             return this.obj_sucess
         } catch (error) {

@@ -1,3 +1,5 @@
+const { validationResult } = require('express-validator')
+
 class usuarioController {
 
     routes() {
@@ -26,28 +28,49 @@ class usuarioController {
 
     insert() {
         return async function(req, res) {
-            const data = req.body
-            await DAOUsuario.addUsuario(data)
-                .then(data => res.json(data))
-                .catch(error => res.json(error))
+            //Recebe os erros de validação da requisição.
+            const validation = validationResult(req)
+
+            if (validation.array().length != 0) {
+                res.json({ status: 'error', message: validation['errors'] })
+            } else {
+                const data = req.body
+                await DAOUsuario.addUsuario(data)
+                    .then(data => res.json(data))
+                    .catch(error => res.json(error))
+            }
         }
     }
 
     update() {
         return async function(req, res) {
-            const data = req.body
-            await DAOUsuario.updateUsuario(data)
-                .then(data => res.json(data))
-                .catch(error => res.json(error))
+            //Recebe os erros de validação da requisição.
+            const validation = validationResult(req)
+
+            if (validation.array().length != 0) {
+                res.json({ status: 'error', message: validation['errors'] })
+            } else {
+                const data = req.body
+                await DAOUsuario.updateUsuario(data)
+                    .then(data => res.json(data))
+                    .catch(error => res.json(error))
+            }
         }
     }
 
     delete() {
         return async function(req, res) {
-            const login = req.body.login
-            await DAOUsuario.removeUsuario(login)
-                .then(data => res.json(data))
-                .catch(error => res.json(error))
+            //Recebe os erros de validação da requisição.
+            const validation = validationResult(req)
+
+            if (validation.array().length != 0) {
+                res.json({ status: 'error', message: validation['errors'] })
+            } else {
+                const login = req.body.login
+                await DAOUsuario.removeUsuario(login)
+                    .then(data => res.json(data))
+                    .catch(error => res.json(error))
+            }
         }
     }
 

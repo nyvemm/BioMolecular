@@ -31,10 +31,20 @@ class amostraDAO {
 
     //Adiciona um novo amostra ao banco de dados.
     async addAmostra(data) {
+
+        //Verifica se o paciente e solicitante existem no banco de dados.   
+        const hasPaciente = await this.database.select().from('paciente').where('idpaciente', data.idPaciente)
+        const hasSolicitante = await this.database.select().from('solicitante').where('idsolicitante', data.idSolicitante)
+
+        if (!hasPaciente.length)
+            throw ({ status: 'error', message: 'O paciente informado não existe.' })
+        if (!hasSolicitante.length)
+            throw ({ status: 'error', message: 'O solicitante informado não existe.' })
+
         try {
             await this.database('amostra').insert({
-                idpaciente: data.idpaciente,
-                idsolicitante: data.idsolicitante,
+                idpaciente: data.idPaciente,
+                idsolicitante: data.idSolicitante,
                 material: data.material,
                 dt_coleta: data.dt_coleta,
                 dt_recebimento: data.dt_recebimento,
@@ -51,7 +61,6 @@ class amostraDAO {
             })
             return this.obj_sucess
         } catch (error) {
-            console.log(error)
             throw this.obj_error
         }
     }
@@ -59,10 +68,20 @@ class amostraDAO {
     //Atualiza uma amostra no banco de dados.
     async updateAmostra(data) {
         const id = data.idAmostra
+
+        //Verifica se o paciente e solicitante existem no banco de dados.   
+        const hasPaciente = await this.database.select().from('paciente').where('idpaciente', data.idPaciente)
+        const hasSolicitante = await this.database.select().from('solicitante').where('idsolicitante', data.idSolicitante)
+
+        if (!hasPaciente.length)
+            throw ({ status: 'error', message: 'O paciente informado não existe.' })
+        if (!hasSolicitante.length)
+            throw ({ status: 'error', message: 'O solicitante informado não existe.' })
+
         try {
             await this.database('amostra').where('idamostra', id).update({
-                idpaciente: data.idpaciente,
-                idsolicitante: data.idsolicitante,
+                idpaciente: data.idPaciente,
+                idsolicitante: data.idSolicitante,
                 material: data.material,
                 dt_coleta: data.dt_coleta,
                 dt_recebimento: data.dt_recebimento,
