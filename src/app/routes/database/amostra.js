@@ -5,7 +5,6 @@ DAOAmostra = new amostraDAO(database)
 controllerAmostra = new amostraController()
 routesAmostra = controllerAmostra.routes()
 
-console.log(routesAmostra)
 module.exports = (app) => {
     app.route(routesAmostra.base)
         .get(controllerAmostra.all())

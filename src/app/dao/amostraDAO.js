@@ -24,7 +24,6 @@ class amostraDAO {
         try {
             return await this.database('amostra').where('idamostra', id).select()
         } catch (error) {
-            console.log(error)
             throw this.obj_error
         }
     }
@@ -98,7 +97,6 @@ class amostraDAO {
             })
             return this.obj_sucess
         } catch (error) {
-            console.log(error)
             return this.obj_error
         }
     }
@@ -109,7 +107,6 @@ class amostraDAO {
             await this.database('amostra').where('idamostra', id).del()
             return this.obj_sucess
         } catch (error) {
-            console.log(error)
             throw this.obj_error
         }
     }

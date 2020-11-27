@@ -7,6 +7,8 @@ const routesSolicitante = require('./database/solicitante')
 const routesExame = require('./database/exame')
 const routesLaudo = require('./database/laudo')
 const routesAmostra = require('./database/amostra')
+const routesPedido = require('./database/pedido')
+const routesResultExame = require('./database/resultExame')
 
 // Criação do banco de dados
 dummy()
@@ -22,4 +24,6 @@ module.exports = (app) => {
     routesExame(app)
     routesLaudo(app)
     routesAmostra(app)
+    routesPedido(app)
+    routesResultExame(app)
 }
