@@ -1,3 +1,5 @@
+const { validationResult } = require('express-validator')
+
 class exameController {
 
     routes() {
@@ -26,28 +28,49 @@ class exameController {
 
     insert() {
         return async function(req, resp) {
-            const data = req.body
-            await DAOExame.addExame(data)
-                .then(data => resp.json(data))
-                .catch(error => resp.json(error))
+            //Recebe os erros de validação da requisição.
+            const validation = validationResult(req)
+
+            if (validation.array().length != 0) {
+                res.json({ status: 'error', message: validation['errors'] })
+            } else {
+                const data = req.body
+                await DAOExame.addExame(data)
+                    .then(data => resp.json(data))
+                    .catch(error => resp.json(error))
+            }
         }
     }
 
     update() {
         return async function(req, resp) {
-            const data = req.body
-            await DAOExame.updExame(data)
-                .then(data => resp.json(data))
-                .catch(error => resp.json(error))
+            //Recebe os erros de validação da requisição.
+            const validation = validationResult(req)
+
+            if (validation.array().length != 0) {
+                res.json({ status: 'error', message: validation['errors'] })
+            } else {
+                const data = req.body
+                await DAOExame.updExame(data)
+                    .then(data => resp.json(data))
+                    .catch(error => resp.json(error))
+            }
         }
     }
 
     delete() {
         return async function(req, resp) {
-            const id = req.body.idExame
-            await DAOExame.delExame(id)
-                .then(data => resp.json(data))
-                .catch(error => resp.json(error))
+            //Recebe os erros de validação da requisição.
+            const validation = validationResult(req)
+
+            if (validation.array().length != 0) {
+                res.json({ status: 'error', message: validation['errors'] })
+            } else {
+                const id = req.body.idExame
+                await DAOExame.delExame(id)
+                    .then(data => resp.json(data))
+                    .catch(error => resp.json(error))
+            }
         }
     }
 

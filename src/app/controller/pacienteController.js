@@ -1,3 +1,5 @@
+const { validationResult } = require('express-validator')
+
 class pacienteController {
 
     routes() {
@@ -26,28 +28,49 @@ class pacienteController {
 
     insert() {
         return async function(req, resp) {
-            const data = req.body
-            await DAOPaciente.addPaciente(data)
-                .then(data => resp.json(data))
-                .catch(error => resp.json(error))
+            //Recebe os erros de validação da requisição.
+            const validation = validationResult(req)
+
+            if (validation.array().length != 0) {
+                res.json({ status: 'error', message: validation['errors'] })
+            } else {
+                const data = req.body
+                await DAOPaciente.addPaciente(data)
+                    .then(data => resp.json(data))
+                    .catch(error => resp.json(error))
+            }
         }
     }
 
     update() {
         return async function(req, resp) {
-            const data = req.body
-            await DAOPaciente.updPaciente(data)
-                .then(data => resp.json(data))
-                .catch(error => resp.json(error))
+            //Recebe os erros de validação da requisição.
+            const validation = validationResult(req)
+
+            if (validation.array().length != 0) {
+                res.json({ status: 'error', message: validation['errors'] })
+            } else {
+                const data = req.body
+                await DAOPaciente.updPaciente(data)
+                    .then(data => resp.json(data))
+                    .catch(error => resp.json(error))
+            }
         }
     }
 
     delete() {
         return async function(req, resp) {
-            const id = req.body.idPaciente
-            await DAOPaciente.delPaciente(id)
-                .then(data => resp.json(data))
-                .catch(error => resp.json(error))
+            //Recebe os erros de validação da requisição.
+            const validation = validationResult(req)
+
+            if (validation.array().length != 0) {
+                res.json({ status: 'error', message: validation['errors'] })
+            } else {
+                const id = req.body.idPaciente
+                await DAOPaciente.delPaciente(id)
+                    .then(data => resp.json(data))
+                    .catch(error => resp.json(error))
+            }
         }
     }
 

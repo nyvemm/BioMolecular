@@ -25,7 +25,7 @@ class pacienteDAO {
         }
     }
 
-    //Adiciona um novo usuário ao BD
+    //Adiciona um novo paciente ao BD
     async addPaciente(data) {
         try {
             await this.database('paciente').insert({

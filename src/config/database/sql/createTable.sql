@@ -140,7 +140,7 @@ CREATE TABLE IF NOT EXISTS pedido_tem_exame(
 CREATE TABLE IF NOT EXISTS resultados_exame(
 	idResultado SERIAL,
 	resultado_possivel VARCHAR(75) NOT NULL,
-	idade_maior_6m CHAR(1) NULL,
+	idade_maior_6m CHAR(1) NOT NULL,
 	
 	CONSTRAINT pk_resultado PRIMARY KEY (idResultado)
 );
