@@ -1,0 +1,59 @@
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="/img/icon.png">
+    <title>LGBM UFMS/CPTL</title>
+
+    <link rel="stylesheet" href="bootstrap/css/bootstrap.css">
+    <link rel="stylesheet" href="css/login/login.css">
+</head>
+
+<body>
+    <h1 class="logo">Laborátorio de Genética e <br> <span class="main-logo">Biologia Molecular</span> <br> UFMS/CPTL
+    </h1>
+    <div class="card">
+        <div class="card-body">
+            {{>_exception}}
+            <form action="./login" method="post">
+                <label class="sr-only" for="passaporte">Passaporte UFMS</label>
+                <div class="input-group mb-3 mr-sm-2">
+                    <div class="input-group-prepend">
+                        <div class="input-group-text">
+                            <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-person-circle"
+                                fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                <path
+                                    d="M13.468 12.37C12.758 11.226 11.195 10 8 10s-4.757 1.225-5.468 2.37A6.987 6.987 0 0 0 8 15a6.987 6.987 0 0 0 5.468-2.63z" />
+                                <path fill-rule="evenodd" d="M8 9a3 3 0 1 0 0-6 3 3 0 0 0 0 6z" />
+                                <path fill-rule="evenodd"
+                                    d="M8 1a7 7 0 1 0 0 14A7 7 0 0 0 8 1zM0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8z" />
+                            </svg>
+                        </div>
+                    </div>
+                    <input type="text" class="form-control" id="login" name="login" placeholder="Passaporte UFMS">
+                </div>
+
+                <label class="sr-only" for="senha">Senha</label>
+                <div class="input-group mb-2 mr-sm-2">
+                    <div class="input-group-prepend">
+                        <div class="input-group-text">
+                            <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-lock-fill"
+                                fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M2.5 9a2 2 0 0 1 2-2h7a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-7a2 2 0 0 1-2-2V9z" />
+                                <path fill-rule="evenodd"
+                                    d="M4.5 4a3.5 3.5 0 1 1 7 0v3h-1V4a2.5 2.5 0 0 0-5 0v3h-1V4z" />
+                            </svg>
+                        </div>
+                    </div>
+                    <input type="password" class="form-control" id="senha" name="senha" placeholder="Senha">
+                </div>
+                <button id="btn-submit" class="btn btn-primary mt-2" type="submit">Acessar</button>
+            </form>
+        </div>
+    </div>
+
+</body>
+
+<script src="/js/libs/jquery-3.5.1.min.js"></script>
+<script src="bootstrap/js/bootstrap.min.js"></script>
+
+</html>

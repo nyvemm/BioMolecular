@@ -4,14 +4,15 @@ class solicitanteController {
 
     routes() {
         return {
-            base: '/solicitantes/',
-            getLogin: '/solicitantes/:id'
+            base: '/solicitante/',
+            getLogin: '/solicitante/:id'
         }
     }
 
     all() {
         return async function(req, res) {
-            await DAOSolicitante.getSolicitantes()
+            const data = req.query
+            await DAOSolicitante.getSolicitantes(data)
                 .then(data => res.json(data))
                 .catch(error => res.json(error))
         }
@@ -61,17 +62,10 @@ class solicitanteController {
 
     delete() {
         return async function(req, res) {
-            //Recebe os erros de validação da requisição.
-            const validation = validationResult(req)
+            const id = req.query.id
+            await DAOSolicitante.removeSolicitante(id)
+                .then(data => res.json(data))
 
-            if (validation.array().length != 0) {
-                res.json({ status: 'error', message: validation['errors'] })
-            } else {
-                const id = req.body.id
-                await DAOSolicitante.removeSolicitante(id)
-                    .then(data => res.json(data))
-                    .catch(error => res.json(error))
-            }
         }
     }
 

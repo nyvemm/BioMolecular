@@ -1,0 +1,39 @@
+.btn-link {
+    color: #4899B4;
+}
+
+.main-content {
+    display: flex;
+    justify-content: space-between;
+}
+
+.listarpor {
+    display: grid;
+    grid-template-rows: auto;
+    grid-template-columns: 25% 75%;
+    width: 30%;
+}
+
+.label-listarpor {
+    display: flex;
+    align-items: center;
+    vertical-align: middle;
+}
+
+.pagination {
+    display: flex;
+    justify-content: center;
+}
+
+.page-item.active .page-link {
+    background-color: #48B499;
+    border-color: #48B499;
+}
+
+.page-link {
+    color: #48B499;
+}
+
+.page-link:focus {
+    box-shadow: none;
+}

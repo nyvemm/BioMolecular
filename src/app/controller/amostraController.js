@@ -4,14 +4,15 @@ class amostraController {
 
     routes() {
         return {
-            base: '/amostras/',
-            getId: '/amostras/:idAmostra'
+            base: '/amostra/',
+            getId: '/amostra/:idAmostra'
         }
     }
 
     all() {
         return async function(req, res) {
-            await DAOAmostra.getAmostras()
+            const data = req.query
+            await DAOAmostra.getAmostras(data)
                 .then(data => res.json(data))
                 .catch(error => res.json(error))
         }
@@ -28,7 +29,8 @@ class amostraController {
 
     insert() {
         return async function(req, res) {
-            //Recebe os erros de validação da requisição.
+            console.log(req.body)
+                //Recebe os erros de validação da requisição.
             const validation = validationResult(req)
 
             if (validation.array().length != 0) {
@@ -66,7 +68,7 @@ class amostraController {
             if (validation.array().length != 0) {
                 res.json({ status: 'error', message: validation['errors'] })
             } else {
-                const id = req.body.idAmostra
+                const id = req.body.idamostra
                 await DAOAmostra.removeAmostra(id)
                     .then(data => res.json(data))
                     .catch(error => res.json(error))

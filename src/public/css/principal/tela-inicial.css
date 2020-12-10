@@ -1,0 +1,106 @@
+.highlights {
+    display: flex;
+    justify-content: space-between;
+}
+
+.unit {
+    background-color: #48B499;
+    width: 30%;
+    padding: 15px;
+    border-radius: 6px;
+    color: white;
+    text-align: center;
+}
+
+.unit p {
+    margin-bottom: 5px;
+}
+
+.btn-primary {
+    background-color: #48B499;
+    border-color: #48B499;
+}
+
+.btn-primary:hover {
+    background-color: #5d9b8c;
+    border-color: #5d9b8c;
+}
+
+.btn-primary:focus {
+    background-color: #5d9b8c;
+    border-color: #5d9b8c;
+    box-shadow: none;
+}
+
+.btn-primary:not(:disabled):not(.disabled):active {
+    background-color: #5d9b8c;
+    border-color: #5d9b8c;
+}
+
+.quickbtn {
+    width: 30%;
+}
+
+
+/* --------------------- */
+
+.row-button {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+}
+
+.badge {
+    width: 100%;
+    margin: 0 15px;
+}
+
+.badge-Inserção {
+    background-color: #0985C8;
+    color: white;
+}
+
+.badge-Alteração {
+    background-color: #4DBDA7;
+    color: white;
+}
+
+.badge-Remoção {
+    background-color: #CD4449;
+    color: white;
+}
+
+.badge-usuario {
+    background-color: #55AB05;
+    color: white;
+}
+
+.badge-paciente {
+    background-color: #211694;
+    color: white;
+}
+
+.badge-exame {
+    background-color: #94162D;
+    color: white;
+}
+
+.badge-amostra {
+    background-color: #AD7305;
+    color: white;
+}
+
+.badge-edit {
+    background-color: #678F1F;
+    color: white;
+}
+
+.subtext {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.registro {
+    text-transform: capitalize;
+}

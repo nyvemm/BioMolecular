@@ -1,9 +1,10 @@
 const amostraController = require("../controller/amostraController")
+const utilsDate = require('../../utils/date')
 
 class amostraDAO {
 
     obj_error = { status: 'error' }
-    obj_sucess = { status: 'success' }
+    obj_success = { status: 'success' }
 
     // O construtor recebe a conexão com o banco de dados.
     constructor(database) {
@@ -11,10 +12,23 @@ class amostraDAO {
     }
 
     //Lista todas as amostras.
-    async getAmostras() {
+    async getAmostras(data) {
         try {
-            return await this.database('amostra').select()
+            let offset = data.offset ? data.offset : 0
+            let sort = data.sort ? data.sort : 'paciente.idpaciente'
+            let amostras = await this.database('amostra').select(database.raw(`*, paciente.nome as paciente_nome, solicitante.nome as solicitante_nome`))
+                .innerJoin('paciente', 'amostra.idpaciente', 'paciente.idpaciente')
+                .innerJoin('solicitante', 'amostra.idsolicitante', 'solicitante.idsolicitante')
+                .offset(offset).orderBy(sort)
+            amostras.forEach((amostra) => {
+                amostra.f_dt_recebimento = utilsDate.viewDateFormat(amostra.dt_recebimento)
+                amostra.medicamentos = JSON.parse(amostra.medicamentos)
+            })
+            return amostras
+
+
         } catch (error) {
+            console.log(error)
             throw this.obj_error
         }
     }
@@ -22,7 +36,15 @@ class amostraDAO {
     // Lista a amostra pela sua chave primária.
     async getAmostra(id) {
         try {
-            return await this.database('amostra').where('idamostra', id).select()
+            let amostra = await this.database('amostra').where('idamostra', id).select(database.raw(`*, paciente.nome as paciente_nome, solicitante.nome as solicitante_nome`))
+                .innerJoin('paciente', 'amostra.idpaciente', 'paciente.idpaciente')
+                .innerJoin('solicitante', 'amostra.idsolicitante', 'solicitante.idsolicitante')
+            const diffTime = Math.abs(new Date() - amostra[0].dt_nasc);
+            const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+            amostra[0].f_dt_recebimento = utilsDate.viewDateFormat(amostra[0].dt_recebimento)
+            amostra[0].idade = Math.floor(diffDays / 365)
+            amostra[0].medicamentos = JSON.parse(amostra[0].medicamentos)
+            return amostra
         } catch (error) {
             throw this.obj_error
         }
@@ -32,8 +54,8 @@ class amostraDAO {
     async addAmostra(data) {
 
         //Verifica se o paciente e solicitante existem no banco de dados.   
-        const hasPaciente = await this.database.select().from('paciente').where('idpaciente', data.idPaciente)
-        const hasSolicitante = await this.database.select().from('solicitante').where('idsolicitante', data.idSolicitante)
+        const hasPaciente = await this.database.select().from('paciente').where('idpaciente', data.idpaciente)
+        const hasSolicitante = await this.database.select().from('solicitante').where('idsolicitante', data.idsolicitante)
 
         if (!hasPaciente.length)
             throw ({ status: 'error', message: 'O paciente informado não existe.' })
@@ -42,61 +64,60 @@ class amostraDAO {
 
         try {
             await this.database('amostra').insert({
-                idpaciente: data.idPaciente,
-                idsolicitante: data.idSolicitante,
+                idpaciente: data.idpaciente,
+                idsolicitante: data.idsolicitante,
+                gestante: data.gestante ? data.gestante : false,
+                semanas_gestacao: data.semanas_gestacao ? data.semanas_gestacao : 0,
+                transfusao: data.transfusao ? data.transfusao : false,
+                dt_ult_transfusao: data.dt_ult_transfusao ? data.dt_ult_transfusao : null,
+                uso_hidroxiureia: data.uso_hidroxiureia ? data.uso_hidroxiureia : false,
+                uso_medicamentos: data.uso_medicamentos ? data.uso_medicamentos : false,
+                suspeita_diagnostico: data.suspeita_diagnostico ? data.suspeita_diagnostico : null,
                 material: data.material,
-                dt_coleta: data.dt_coleta,
-                dt_recebimento: data.dt_recebimento,
-                dt_solicitacao: data.dt_solicitacao,
-                recem_nascido: data.recem_nascido,
-                semanas_gestacao: data.semanas_gestacao,
-                transfusao: data.transfusao,
-                dt_ult_transfusao: data.dt_ult_transfusao,
-                codigo_barra_solicitante: data.codigo_barra_solicitante,
-                uso_hidroxiureia: data.uso_hidroxiureia,
-                uso_medicamentos: data.uso_medicamentos,
-                medicamentos: data.medicamentos,
-                solicitacao_exame: data.solicitacao_exame
+                dt_coleta: data.dt_coleta ? data.dt_coleta : null,
+                dt_recebimento: data.dt_recebimento ? data.dt_recebimento : null,
+                dt_solicitacao: data.dt_solicitacao ? data.dt_solicitacao : null,
+                codigo_barra: data.codigo_barra ? data.codigo_barra : null,
+                status_pedido: data.status_pedido ? data.status_pedido : 'Não avaliado',
+                cadastrado_por: data.cadastrado_por,
+                medicamentos: data.medicamentos ? `[data.medicamentos]` : '[]',
             })
-            return this.obj_sucess
+
+            //Cria resultados para exame.
+            let insert_id = await this.database('amostra').max('idamostra')
+            const promises = data.exames.split(',').map(exame => {
+                return new Promise((resolve, reject) => {
+                    this.database('amostra_contem_exames_aux').insert({
+                        idamostra: insert_id[0].max,
+                        idexame: parseInt(exame)
+                    }).then((data) => {
+                        resolve(this.obj_success)
+                    }).catch((error) => {
+                        reject(this.obj_error)
+                    })
+                })
+            })
+
+            await Promise.all(promises)
+            return this.obj_success
+
         } catch (error) {
+            console.log(error)
             throw this.obj_error
         }
     }
 
     //Atualiza uma amostra no banco de dados.
     async updateAmostra(data) {
-        const id = data.idAmostra
-
-        //Verifica se o paciente e solicitante existem no banco de dados.   
-        const hasPaciente = await this.database.select().from('paciente').where('idpaciente', data.idPaciente)
-        const hasSolicitante = await this.database.select().from('solicitante').where('idsolicitante', data.idSolicitante)
-
-        if (!hasPaciente.length)
-            throw ({ status: 'error', message: 'O paciente informado não existe.' })
-        if (!hasSolicitante.length)
-            throw ({ status: 'error', message: 'O solicitante informado não existe.' })
+        const id = data.idamostra
 
         try {
             await this.database('amostra').where('idamostra', id).update({
-                idpaciente: data.idPaciente,
-                idsolicitante: data.idSolicitante,
-                material: data.material,
-                dt_coleta: data.dt_coleta,
-                dt_recebimento: data.dt_recebimento,
-                dt_solicitacao: data.dt_solicitacao,
-                recem_nascido: data.recem_nascido,
-                semanas_gestacao: data.semanas_gestacao,
-                transfusao: data.transfusao,
-                dt_ult_transfusao: data.dt_ult_transfusao,
-                codigo_barra_solicitante: data.codigo_barra_solicitante,
-                uso_hidroxiureia: data.uso_hidroxiureia,
-                uso_medicamentos: data.uso_medicamentos,
-                medicamentos: data.medicamentos,
-                solicitacao_exame: data.solicitacao_exame
+
             })
-            return this.obj_sucess
+            return this.obj_success
         } catch (error) {
+            console.log(error)
             return this.obj_error
         }
     }
@@ -105,7 +126,7 @@ class amostraDAO {
     async removeAmostra(id) {
         try {
             await this.database('amostra').where('idamostra', id).del()
-            return this.obj_sucess
+            return this.obj_success
         } catch (error) {
             throw this.obj_error
         }

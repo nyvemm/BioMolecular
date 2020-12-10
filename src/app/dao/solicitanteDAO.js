@@ -9,9 +9,11 @@ class solicitanteDAO {
     }
 
     //Lista dados de todos os solicitantes.
-    async getSolicitantes() {
+    async getSolicitantes(data) {
         try {
-            return await this.database('solicitante').select()
+            let offset = data.offset ? data.offset : 0
+            let sort = data.sort ? data.sort : 'idsolicitante'
+            return await this.database('solicitante').select().offset(offset).orderBy(sort)
         } catch (error) {
             throw this.obj_error
         }
@@ -29,25 +31,25 @@ class solicitanteDAO {
     //Adiciona um novo solicitante ao banco de dados.
     async addSolicitante(data) {
         try {
-            console.log(data)
             await this.database('solicitante').insert({
                 nome: data.nome,
                 estado: data.estado,
                 cidade: data.cidade,
                 endereco: data.endereco,
-                e_mail: data.email,
-                contato_referencia: data.contato
+                e_mail: data.e_mail,
+                contato_referencia: data.contato_referencia,
+                observacao: data.observacao,
+                cadastrado_por: data.cadastrado_por
             })
             return this.obj_success
         } catch (error) {
-            console.log(error)
             throw this.obj_error
         }
     }
 
     // Atualiza um usuário no banco de dados.
     async updateSolicitante(data) {
-        const id = data.idSolicitante
+        const id = data.idsolicitante
         try {
             await this.database('solicitante').where('idsolicitante', id).update({
                 nome: data.nome,
@@ -55,11 +57,12 @@ class solicitanteDAO {
                 cidade: data.cidade,
                 endereco: data.endereco,
                 e_mail: data.e_mail,
-                contato_referencia: data.contato_referencia
+                observacao: data.observacao,
+                contato_referencia: data.contato_referencia,
+                cadastrado_por: data.cadastrado_por
             })
             return this.obj_success
         } catch (error) {
-            console.log(error)
             throw this.obj_error
         }
     }

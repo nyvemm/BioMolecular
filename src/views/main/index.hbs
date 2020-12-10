@@ -1,0 +1,56 @@
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/bootstrap/css/bootstrap.css">
+    <link rel="stylesheet" href="/css/utils/global.css">
+    <link rel="stylesheet" href="/css/principal/tela-inicial.css">
+    <link rel="icon" href="/img/icon.png">
+    <title>LGBM UFMS/CPTL</title>
+</head>
+
+<body>
+    {{>_menu}}
+    <main>
+        {{>_pesquisa}}
+        <h3 class="subsection" class="mt-4">Visão Geral</h3>
+        <div class="highlights mt-4 mb-4">
+            <div class="unit">
+                <p class="unit-text">Solicitantes</p>
+                <h1 class="unit-value">{{contador.solicitantes}}</h1>
+            </div>
+            <div class="unit">
+                <p class="unit-text">Exames</p>
+                <h1 class="unit-value">{{contador.exames}}</h1>
+            </div>
+            <div class="unit">
+                <p class="unit-text">Pacientes</p>
+                <h1 class="unit-value">{{contador.pacientes}}</h1>
+            </div>
+        </div>
+
+        <h3 class="subsection" class="mt-4">Acesso Rápido</h3>
+
+        <div class="highlights mt-4 mb-4">
+            <a href="/cadastrar-paciente" class="btn btn-primary quickbtn">Cadastrar pacientes</a>
+            <a href="/cadastrar-amostra" class="btn btn-primary quickbtn">Cadastrar amostras</a>
+            <a href="/cadastrar-exame" class="btn btn-primary quickbtn">Cadastrar exames</a>
+        </div>
+
+        <h3 class="subsection" class="mt-4">Alterações Recentes</h3>
+
+        {{#each registros}}
+        <div class="row row-button bg-light rounded registro">
+            <span class="badge badge-pill badge-{{this.op}} col-md-1 p-2">{{this.op}}</span>
+            <span class="badge badge-pill badge-{{this.tabela}} col-md-1 p-2">{{this.tabela}}</span>
+            <h4 class="subsection sub-text col-md-7">{{this.conteudo}}</h4>
+            <h6>{{this.alterado_em}}</h6>
+        </div>
+        {{/each}}
+    </main>
+
+</body>
+
+<script src="/js/libs/jquery-3.5.1.min.js"></script>
+<script src="/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="/bootstrap/js/bootstrap.min.js"></script>
+<script src="/js/principal/pagina-inicial.js"></script>

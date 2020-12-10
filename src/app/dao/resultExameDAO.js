@@ -1,9 +1,9 @@
 const resultExameController = require('../controller/resultExameController')
 
 class resultExameDAO {
-    
-    obj_error = { status : 'error' }
-    obj_sucess = { status : 'sucess' }
+
+    obj_error = { status: 'error' }
+    obj_success = { status: 'sucess' }
 
     constructor(database) {
         this.database = database
@@ -32,11 +32,11 @@ class resultExameDAO {
     async addResultExame(data) {
         try {
             await this.database('resultados_exame').insert({
-                resultado_possivel : data.resultado_possivel,
-                idade_maior_6m : data.idade_maior_6m
+                resultado_possivel: data.resultado_possivel,
+                idade_maior_6m: data.idade_maior_6m
             })
-            return this.obj_sucess
-        } catch(error) {
+            return this.obj_success
+        } catch (error) {
             throw this.obj_error
         }
     }
@@ -47,11 +47,11 @@ class resultExameDAO {
 
         try {
             await this.database('resultados_exame').where('idresultado', id).update({
-                resultado_possivel : data.resultado_possivel,
-                idade_maior_6m : data.idade_maior_6m
+                resultado_possivel: data.resultado_possivel,
+                idade_maior_6m: data.idade_maior_6m
             })
-            return this.obj_sucess
-        } catch(error) {
+            return this.obj_success
+        } catch (error) {
             throw this.obj_error
         }
     }
@@ -60,7 +60,7 @@ class resultExameDAO {
     async removeResultExame(id) {
         try {
             await this.database('resultados_exame').where('idresultado', id).del()
-            return this.obj_sucess
+            return this.obj_success
         } catch (error) {
             throw this.obj_error
         }

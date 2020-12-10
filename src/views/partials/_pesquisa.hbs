@@ -1,0 +1,29 @@
+<div class="row pesquisa mt-3">
+    <form method="GET" action="./" class="row buscar-area col-md-8">
+        <input class="buscar" name="query" id="query" type="text"
+            placeholder="Pesquisa por exames, amostras, pacientes...">
+        <button type="submit" class="btn-buscar">
+            <svg  viewBox="0 0 16 16" class="bi bi-search svg-icon" fill="currentColor"
+                xmlns="http://www.w3.org/2000/svg">
+                <path fill-rule="evenodd"
+                    d="M10.442 10.442a1 1 0 0 1 1.415 0l3.85 3.85a1 1 0 0 1-1.414 1.415l-3.85-3.85a1 1 0 0 1 0-1.415z" />
+                <path fill-rule="evenodd"
+                    d="M6.5 12a5.5 5.5 0 1 0 0-11 5.5 5.5 0 0 0 0 11zM13 6.5a6.5 6.5 0 1 1-13 0 6.5 6.5 0 0 1 13 0z" />
+            </svg>
+        </button>
+    </form>
+    <div class="btn-group nome-usuario col-md-4">
+        <button type="button" class="btn btn-link dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
+            aria-expanded="false">
+            {{user.nome}}
+        </button>
+        <div class="dropdown-menu">
+            <a class="dropdown-item" href="/dashboard">Página Inicial</a>
+            <a class="dropdown-item" href="#">Meu perfil</a>
+            <a class="dropdown-item" href="#">Configurações</a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" href="/logout">Sair</a>
+        </div>
+    </div>
+</div>
+<hr>

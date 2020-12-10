@@ -1,0 +1,110 @@
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/bootstrap/css/bootstrap.css">
+    <link rel="stylesheet" href="/css/utils/global.css">
+    <link rel="stylesheet" href="/css/amostras/amostras.css">
+    <link rel="icon" href="/img/icon.png">
+    <title>LGBM - Resultados</title>
+</head>
+
+<body>
+    {{>_menu}}
+    <main>
+        {{>_pesquisa}}
+        <div class="warnings" id="warnings">
+
+        </div>
+        <div class="card">
+            <h5 class="card-header">Amostra</h5>
+            <div class="card-body">
+                <form action="/" method="POST">
+                    <p class="m-0">ID da Amostra: {{data.idamostra}}</p>
+                    <p class="m-0">Foram avaliados <b>{{data.exames_realizados}}</b> exames de
+                        <b>{{data.total_exames}}</b> exames.
+                    </p>
+                    <p class="m-0">Situação: <span class="text-status">{{data.status_pedido}}</span></p>
+
+                    <hr>
+
+                    <input type="hidden" class="form-control" id="idamostra" name="idamostra" value={{data.idamostra}}>
+                    <div class="form-group">
+                        <label for="interpretacao_resultados">Interpretação dos Resultados</label>
+                        <textarea class="form-control" id="interpretacao_resultados" rows="3"></textarea>
+                    </div>
+
+                    <div class="row m-0 mt-4">
+                        <div class="col pl-0">
+                            <button type="submit" class="btn active btn-block" id="submeter">Atualizar Amostra</button>
+                        </div>
+
+                        <div class="col pr-0">
+                            <a class="btn btn-primary w-100" href="/amostras/{{data.idamostra}}">Visualizar Amostra</a>
+                        </div>
+                    </div>
+                </form>
+                <br>
+                {{#each data.exames}}
+                <div class="card mb-4">
+                    <h5 class="card-header">{{this.tipo}}</h5>
+                    <div class="card-body">
+                        {{#each this.valor}}
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title">{{this.nome}}</h5>
+                                {{#if this.status}}
+                                <p class="mb-1"><b>Status</b>: <span class="text-success">Este exame já foi
+                                        avaliado</span></p>
+                                <p class="mb-1"><b>Data de Liberação</b>: <span
+                                        class="text-secondary">{{this.liberado_em}}</span></p>
+
+                                {{else}}
+                                <p class="mb-1"><b>Status</b>: <span class="text-danger">Este exame ainda não foi
+                                        avaliado</span></p>
+                                {{/if}}
+
+                                <div class="row m-0">
+                                    <p class="m-0 col-md-4 p-0">Valor de Referência: {{this.valor_ref}}</p>
+                                    <p class="m-0 col-md-4 p-0">Tipo de Referência: {{this.tipo_valor_ref}}</p>
+                                    <p class="m-0 col-md-4 p-0">Tipo de Resultado: {{this.tipo_resultado}}</p>
+                                </div>
+                                <hr>
+                                {{#unless this.status}}
+                                <form method="POST" id='formulario-{{this.idamostraexame}}'>
+                                    <input type="hidden" name="idamostraexame" value="{{this.idamostraexame}}">
+                                    <div class="form-group">
+                                        <label for="valor_resultado">Resultado do Exame</label>
+                                        <input type="text" class="form-control" id="valor_resultado"
+                                            name="valor_resultado">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="observacao_resultado">Observações (caso necessário)</label>
+                                        <textarea class="form-control" id="observacao_resultado"
+                                            name="observacao_resultado" rows="3"></textarea>
+                                    </div>
+
+                                    <button type="button" class="btn active w-100"
+                                        onclick='postResultados({{this.idamostraexame}})'> Adicionar Resultado</button>
+                                    <button type="button" class="btn btn-info w-100 mt-2"
+                                        onclick='submeterResultado({{this.idamostraexame}})'> Submeter
+                                        Resultado</button>
+                                </form>
+                                <hr>
+                                {{/unless}}
+                                <div id="amostraexame-{{this.idamostraexame}}" class='resultado-exame-block'></div>
+                            </div>
+                        </div>
+                        {{/each}}
+                    </div>
+                </div>
+                {{/each}}
+            </div>
+        </div>
+        </div>
+
+
+        <script src="/js/libs/jquery-3.5.1.min.js"></script>
+        <script src="/bootstrap/js/bootstrap.bundle.min.js"></script>
+        <script src="/bootstrap/js/bootstrap.min.js"></script>
+        <script src="/js/utils/global.js"></script>
+        <script src="/js/amostras/cadastrar-resultados.js"></script>

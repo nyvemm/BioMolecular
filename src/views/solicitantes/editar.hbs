@@ -1,0 +1,136 @@
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/bootstrap/css/bootstrap.css">
+    <link rel="stylesheet" href="/css/utils/global.css">
+    <link rel="icon" href="/img/icon.png">
+    <title>LGBM - Solicitantes</title>
+</head>
+
+<body>
+    {{>_menu}}
+    <main>
+        {{>_pesquisa}}
+        {{#if data}}
+
+        <div class="warnings" id="warnings"></div>
+        <form method="POST" id="formulario">
+            <div class="row">
+                <div class="form-group col-md-6">
+                    <label for="idsolicitante">ID</label>
+                    <input type="text" class="form-control" id="idsolicitante" name="idsolicitante"
+                        value='{{data.idsolicitante}}' readonly>
+                </div>
+
+                <div class="form-group col-md-6">
+                    <label for="nome">Nome</label>
+                    <input type="text" class="form-control" id="nome" name="nome" placeholder="Nome"
+                        value='{{data.nome}}'>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="form-group col-md-6">
+                    <label for="endereco">Endereço</label>
+                    <input type="text" class="form-control" id="endereco" name="endereco" value='{{data.endereco}}'>
+                </div>
+
+                <div class="form-group col-md-6">
+                    <label for="e_mail">E-mail</label>
+                    <input type="mail" class="form-control" id="e_mail" name="e_mail" value='{{data.e_mail}}'>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="contato_referencia">Contato de Refêrencia</label>
+                <input type="text" class="form-control" id="contato_referencia" name="contato_referencia"
+                    value='{{data.contato_referencia}}'>
+            </div>
+
+
+            <div class="row">
+                <div class="form-group col-md-6">
+                    <label for="estado">Estado</label>
+                    <select class="form-control" id="estado" name="estado">
+                        {{#select data.estado}}
+                        <option value="AC">Acre</option>
+                        <option value="AL">Alagoas</option>
+                        <option value="AP">Amapá</option>
+                        <option value="AM">Amazonas</option>
+                        <option value="BA">Bahia</option>
+                        <option value="CE">Ceará</option>
+                        <option value="DF">Distrito Federal</option>
+                        <option value="ES">Espírito Santo</option>
+                        <option value="GO">Goiás</option>
+                        <option value="MA">Maranhão</option>
+                        <option value="MT">Mato Grosso</option>
+                        <option value="MS" selected>Mato Grosso do Sul</option>
+                        <option value="MG">Minas Gerais</option>
+                        <option value="PA">Pará</option>
+                        <option value="PB">Paraíba</option>
+                        <option value="PR">Paraná</option>
+                        <option value="PE">Pernambuco</option>
+                        <option value="PI">Piauí</option>
+                        <option value="RJ">Rio de Janeiro</option>
+                        <option value="RN">Rio Grande do Norte</option>
+                        <option value="RS">Rio Grande do Sul</option>
+                        <option value="RO">Rondônia</option>
+                        <option value="RR">Roraima</option>
+                        <option value="SC">Santa Catarina</option>
+                        <option value="SP">São Paulo</option>
+                        <option value="SE">Sergipe</option>
+                        <option value="TO">Tocantins</option>
+                        {{/select}}
+                    </select>
+                </div>
+
+                <div class="form-group col-md-6">
+                    <label for="cidade">Cidade</label>
+                    <input type="text" class="form-control" id="cidade" name="cidade" placeholder="Cidade"
+                        value='{{data.cidade}}'>
+                </div>
+            </div>
+            <h3 class="subsection" class="mt-4">Informações</h3>
+
+            <div class="form-group mt-3">
+                <label for="observacao">Observações (caso necessário)</label>
+                <textarea class="form-control" id="observacao" rows="3">{{data.observacao}}</textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="cadastrado_em">Cadastrado em</label>
+                <input type="date" class="form-control" id="cadastrado_em" name="cadastrado_em"
+                    value='{{data.cadastrado_em}}' readonly>
+            </div>
+
+            <div class="form-group">
+                <label for="cadastrado_por">Cadastrado por</label>
+                <input type="text" class="form-control" id="cadastrado_por" name="cadastrado_por"
+                    value='{{data.cadastrado_por}}' readonly>
+            </div>
+
+
+
+            <div class="row m-0 mt-4">
+                <div class="col pl-0">
+                    <button type="submit" class="btn active btn-block" id="submeter">Editar Solicitante</button>
+                </div>
+
+                <div class="col pr-0">
+                    <button type="button" class="btn btn-danger btn-block" id="excluir">Excluir Solicitante</button>
+                </div>
+            </div>
+
+            <button type="reset" class="btn btn-secondary mt-3 w-100">Limpar</button>
+        </form>
+        {{else}}
+        <h3>Não há um solicitante com este ID.</h3>
+        {{/if}}
+    </main>
+</body>
+
+<script src="/js/libs/jquery-3.5.1.min.js"></script>
+<script src="/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="/bootstrap/js/bootstrap.min.js"></script>
+<script src="/js/utils/global.js"></script>
+<script src="/js/solicitantes/editar-solicitante.js"></script>

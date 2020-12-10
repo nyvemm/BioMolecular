@@ -4,8 +4,8 @@ class usuarioController {
 
     routes() {
         return {
-            base: '/usuarios/',
-            getLogin: '/usuarios/:login'
+            base: '/usuario/',
+            getLogin: '/usuario/:login'
         }
     }
 

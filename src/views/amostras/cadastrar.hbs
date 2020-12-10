@@ -1,0 +1,285 @@
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/bootstrap/css/bootstrap.css">
+    <link rel="stylesheet" href="/css/utils/global.css">
+    <link rel="stylesheet" href="/css/amostras/amostras.css">
+    <link rel="icon" href="/img/icon.png">
+    <title>LGBM - Cadastrar Amostra</title>
+</head>
+
+<body>
+    {{>_menu}}
+    <main>
+        {{>_pesquisa}}
+        <div class="warnings" id="warnings">
+
+        </div>
+        <form method="POST" id="formulario">
+            <!-- Paciente !-->
+            <div class="card">
+                <h5 class="card-header">Paciente</h5>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="form-group col-md-3">
+                            <label for="idpaciente">ID do Paciente</label>
+                            <input type="text" class="form-control" id="idpaciente" name="idpaciente" placeholder="ID"
+                                readonly required>
+                        </div>
+
+                        <div class="form-group col-md-6">
+                            <label for="nomepaciente">Nome do Paciente</label>
+                            <input type="text" class="form-control" id="nomepaciente" name="nomepaciente"
+                                placeholder="Nome do Paciente" readonly>
+                        </div>
+
+                        <div class="form-group col-md-3">
+                            <label for="idade">Idade</label>
+                            <input type="text" class="form-control" id="idade" name="idade" placeholder="Idade"
+                                readonly>
+                        </div>
+                    </div>
+
+                    <div class="row m-0 mb-2">
+                        <div class="col pl-0">
+                            <button type="button" class="btn active btn-block" id="buscar-paciente" data-toggle="modal"
+                                data-target="#modalPaciente">Buscar Paciente</button>
+                        </div>
+
+                        <div class=" col pr-0">
+                            <a href="/cadastrar-paciente" target="_blank" class="btn btn-danger btn-block">Cadastrar
+                                Paciente</a>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="row">
+                        <div class="form-group col-md-6">
+                            <label for="gestante">Gestante</label>
+                            <select class="form-control" id="gestante" name="gestante">
+                                <option value=false>Não</option>
+                                <option value=true>Sim</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group col-md-6">
+                            <label for="semanas_gestacao">Semanas de Gestação (opcional) </label>
+                            <input type="text" class="form-control" id="semanas_gestacao" name="semanas_gestacao"
+                                placeholder="Semanas de Gestação" disabled>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="form-group col-md-6">
+                            <label for="transfusao">Transfusão de Sangue</label>
+                            <select class="form-control" id="transfusao" name="transfusao">
+                                <option value=false>Não</option>
+                                <option value=true>Sim</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group col-md-6">
+                            <label for="dt_ult_transfusao">Data da última transfusão (opcional)</label>
+                            <input type="date" class="form-control" id="dt_ult_transfusao" name="dt_ult_transfusao"
+                                placeholder="Data da Última Transfusão" disabled>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="form-group col-md-6">
+                            <label for="uso_hidroxiureia">Uso de Hidroxiuréia</label>
+                            <select class="form-control" id="uso_hidroxiureia" name="uso_hidroxiureia">
+                                <option value=false>Não</option>
+                                <option value=true>Sim</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group col-md-6">
+                            <label for="uso_medicamentos">Uso de Medicamentos</label>
+                            <select class="form-control" id="uso_medicamentos" name="uso_medicamentos">
+                                <option value=false>Não</option>
+                                <option value=true>Sim</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="card mb-2" id="medicamentos">
+                        <h5 class="card-header">Medicamentos</h5>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-10">
+                                    <input class="form-control" name="queryMedicamento" id="queryMedicamento"
+                                        type="text" placeholder="Adicione medicamentos...">
+                                </div>
+                                <div class="col-md-2 d-flex justify-content-center">
+                                    <button type="button" class="btn active w-100"
+                                        id="adicionar-medicamento">Adicionar</button>
+                                </div>
+                            </div>
+                            <ul id="lista-medicamentos" class="list-group">
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="suspeita_diagnostico">Suspeita de Diagnóstico (opcional)</label>
+                        <input type="text" class="form-control" id="suspeita_diagnostico" name="suspeita_diagnostico"
+                            placeholder="Suspeita de Diagnóstico">
+                    </div>
+                </div>
+            </div>
+            </div>
+
+
+            <!-- Solicitante !-->
+            <div class="card mt-4">
+                <h5 class="card-header">Solicitante</h5>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="form-group col-md-3">
+                            <label for="idsolicitante">ID do Solicitante</label>
+                            <input type="text" class="form-control" id="idsolicitante" name="idsolicitante"
+                                placeholder="ID" readonly required>
+                        </div>
+
+                        <div class="form-group col-md-5">
+                            <label for="nomesolicitante">Nome do Solicitante</label>
+                            <input type="text" class="form-control" id="nomesolicitante" name="nomesolicitante"
+                                placeholder="Nome do Solicitante" readonly>
+                        </div>
+
+                        <div class="form-group col-md-4">
+                            <label for="cidadeestado">Cidade</label>
+                            <input type="text" class="form-control" id="cidadeestado" name="cidadeestado"
+                                placeholder="Cidade" readonly>
+                        </div>
+                    </div>
+
+                    <div class="row m-0">
+                        <div class="col pl-0">
+                            <button type="button" class="btn active btn-block" id="buscar-solicitante"
+                                data-toggle="modal" data-target="#modalSolicitante">Buscar Solicitante</button>
+                        </div>
+
+                        <div class=" col pr-0">
+                            <a href="/cadastrar-solicitante" target="_blank" class="btn btn-danger btn-block">Cadastrar
+                                Solicitante</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Amostra !-->
+            <div class="card mt-4">
+                <h5 class="card-header">Amostra</h5>
+                <div class="card-body">
+                    
+                    <div class="form-group">
+                        <label for="material">Material da Amostra</label>
+                        <select class="form-control" id="material" name="material">
+                            <option>Sangue Total</option>
+                            <option>DNA</option>
+                            <option>Papel Filtro</option>
+                            <option>Outro</option>
+                        </select>
+                    </div>
+
+                    <div class="row">
+                        <div class="form-group col-md-4">
+                            <label for="dt_solicitacao">Data de Solicitação (opcional)</label>
+                            <input type="date" class="form-control" id="dt_solicitacao" name="dt_solicitacao">
+                        </div>
+
+                        <div class="form-group col-md-4">
+                            <label for="dt_coleta">Data de Coleta (opcional)</label>
+                            <input type="date" class="form-control" id="dt_coleta" name="dt_coleta">
+                        </div>
+
+                        <div class="form-group col-md-4">
+                            <label for="dt_recebimento">Data de Recebimento</label>
+                            <input type="date" class="form-control" id="dt_recebimento" name="dt_recebimento">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="codigo_barra">Código de Barras (opcional)</label>
+                        <input type="text" class="form-control" id="codigo_barra" name="codigo_barra"
+                            placeholder="Código de Barras">
+                    </div>
+
+                    <hr>
+                    <h3 class="subsection" class="mt-4">Exames</h3>
+
+                    <div id="lista-exames" class="mt-4">
+                    </div>
+
+                    <hr>
+                    <h3 class="subsection" class="mt-4">Informações</h3>
+
+                    <div class="form-group">
+                        <label for="observacao">Observações (caso necessário)</label>
+                        <textarea class="form-control" id="observacao" rows="3"></textarea>
+                    </div>
+                </div>
+            </div>
+            <input type="hidden" name="cadastrado_por" value="{{user.nome}}">
+
+            <button type="submit" class="btn active mt-4 w-100" id="submeter">Cadastrar Amostra</button>
+            <button type="reset" class="btn btn-secondary mt-3 w-100">Limpar</button>
+        </form>
+    </main>
+</body>
+
+<!-- Modal Paciente !-->
+<div class="modal fade" id="modalPaciente" tabindex="-1" role="dialog" aria-labelledby="modalPacienteLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalPacienteLabel">Pacientes </h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form method="GET" class="row buscar-area p-2">
+                    <input class="buscar" name="queryPaciente" id="queryPaciente" type="text"
+                        placeholder="Pesquise por pacientes">
+                </form>
+                <ul class="list-group mt-4 lista-pacientes" id="modal-paciente-content" class="mt-4">
+                </ul>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modalSolicitante" tabindex="-1" role="dialog" aria-labelledby="modalSolicitanteLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalSolicitanteLabel">Solicitantes</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form method="GET" class="row buscar-area p-2">
+                    <input class="buscar" name="querySolicitante" id="querySolicitante" type="text"
+                        placeholder="Pesquise por solicitantes">
+                </form>
+                <ul class="list-group mt-4 lista-solicitantes" id="modal-solicitante-content">
+                </ul>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="/js/libs/jquery-3.5.1.min.js"></script>
+<script src="/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="/bootstrap/js/bootstrap.min.js"></script>
+<script src="/js/utils/global.js"></script>
+<script src="/js/amostras/cadastrar-amostra.js"></script>

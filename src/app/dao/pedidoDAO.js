@@ -3,7 +3,7 @@ const pedidoController = require('../controller/pedidoController')
 class pedidoDAO {
 
     obj_error = { status: 'error' }
-    obj_sucess = { status: 'sucess' }
+    obj_success = { status: 'success' }
 
     constructor(database) {
         this.database = database
@@ -22,7 +22,7 @@ class pedidoDAO {
     async getPedido(id) {
         try {
             return await this.database('pedido').where('idPedido', id).select()
-        } catch(error) {
+        } catch (error) {
             throw this.obj_error
         }
     }
@@ -35,25 +35,25 @@ class pedidoDAO {
         const hasAmostra = await this.database.select().from('amostra').where('idamostra', data.idAmostra)
         const hasLaudo = await this.database.select().from('laudo').where('idlaudo', data.idLaudo)
 
-        if(!hasPaciente.length)
+        if (!hasPaciente.length)
             throw ({ status: 'error', message: 'O paciente informado não existe.' })
-        if(!hasAmostra.length)
+        if (!hasAmostra.length)
             throw ({ status: 'error', message: 'A amostra informada não existe.' })
-        if(!hasLaudo)
+        if (!hasLaudo)
             throw ({ status: 'error', message: 'O laudo informado não existe.' })
-        
+
         try {
             await this.database('pedido').insert({
-                idamostra : data.idAmostra,
-                idlaudo : data.idLaudo,
-                idpaciente : data.idPaciente,
-                valor_resultado_exame : data.valor_resultado,
-                resultado_texto : data.resultado_texto,
-                dt_liberacao : data.dt_liberacao,
-                info : data.info,
-                status_pedido : data.status_pedido
+                idamostra: data.idAmostra,
+                idlaudo: data.idLaudo,
+                idpaciente: data.idPaciente,
+                valor_resultado_exame: data.valor_resultado,
+                resultado_texto: data.resultado_texto,
+                dt_liberacao: data.dt_liberacao,
+                info: data.info,
+                status_pedido: data.status_pedido
             })
-            return this.obj_sucess
+            return this.obj_success
         } catch (error) {
             return this.obj_error
         }
@@ -68,25 +68,25 @@ class pedidoDAO {
         const hasAmostra = await this.database.select().from('amostra').where('idamostra', data.idAmostra)
         const hasLaudo = await this.database.select().from('laudo').where('idlaudo', data.idLaudo)
 
-        if(!hasPaciente.length)
+        if (!hasPaciente.length)
             throw ({ status: 'error', message: 'O paciente informado não existe.' })
-        if(!hasAmostra.length)
+        if (!hasAmostra.length)
             throw ({ status: 'error', message: 'A amostra informada não existe.' })
-        if(!hasLaudo)
+        if (!hasLaudo)
             throw ({ status: 'error', message: 'O laudo informado não existe.' })
-        
+
         try {
             await this.database('pedido').where('idpedido', id).update({
-                idamostra : data.idAmostra,
-                idlaudo : data.idLaudo,
-                idpaciente : data.idPaciente,
-                valor_resultado_exame : data.valor_resultado,
-                resultado_texto : data.resultado_texto,
-                dt_liberacao : data.dt_liberacao,
-                info : data.info,
-                status_pedido : data.status_pedido
+                idamostra: data.idAmostra,
+                idlaudo: data.idLaudo,
+                idpaciente: data.idPaciente,
+                valor_resultado_exame: data.valor_resultado,
+                resultado_texto: data.resultado_texto,
+                dt_liberacao: data.dt_liberacao,
+                info: data.info,
+                status_pedido: data.status_pedido
             })
-            return this.obj_sucess
+            return this.obj_success
         } catch (error) {
             return this.obj_error
         }
@@ -96,7 +96,7 @@ class pedidoDAO {
     async removePedido(id) {
         try {
             await this.database('pedido').where('idpedido', id).del()
-            throw this.obj_sucess
+            throw this.obj_success
         } catch (error) {
             throw this.obj_error
         }

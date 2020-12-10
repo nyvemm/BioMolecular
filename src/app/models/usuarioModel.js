@@ -1,4 +1,4 @@
-const { check } = require('express-validator/check')
+const { check } = require('express-validator')
 
 class usuarioModel {
     static validations() {
@@ -10,7 +10,7 @@ class usuarioModel {
             check('senha').trim().not().isEmpty().withMessage('A senha precisa ser informada.').bail()
             .isLength({ min: 3, max: 50 }).withMessage('A senha precisa ter entre 3 e 50 caracteres.'),
 
-            check('email').trim().not().isEmpty().withMessage('A e-mail precisa ser informado.').bail()
+            check('email').trim().not().isEmpty().withMessage('O e-mail precisa ser informado.').bail()
             .isEmail().withMessage('Formato de e-mail inválido.')
         ]
     }

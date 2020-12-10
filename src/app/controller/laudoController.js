@@ -3,9 +3,9 @@ const { validationResult } = require('express-validator')
 class laudoController {
 
     routes() {
-        return{
-            base : '/laudos/',
-            getId : '/laudos/:id'
+        return {
+            base: '/laudo/',
+            getId: '/laudo/:id'
         }
     }
 

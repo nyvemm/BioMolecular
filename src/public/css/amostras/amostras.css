@@ -1,0 +1,63 @@
+.btn-link {
+    color: #4899B4;
+}
+
+.main-content {
+    display: flex;
+    justify-content: space-between;
+}
+
+.listarpor {
+    display: grid;
+    grid-template-rows: auto;
+    grid-template-columns: 25% 75%;
+    width: 30%;
+}
+
+.label-listarpor {
+    display: flex;
+    align-items: center;
+    vertical-align: middle;
+}
+
+.pagination {
+    display: flex;
+    justify-content: center;
+}
+
+.page-item.active .page-link {
+    background-color: #48B499;
+    border-color: #48B499;
+}
+
+.page-link {
+    color: #48B499;
+}
+
+.page-link:focus {
+    box-shadow: none;
+}
+
+.lista-pacientes {
+    max-height: 500px;
+    overflow: hidden;
+    overflow-y: scroll;
+    scroll-behavior: smooth;
+}
+
+.list-group-item {
+    cursor: pointer;
+}
+
+.list-group-item:hover {
+    background-color: rgba(0, 0, 0, 0.05);
+}
+
+#medicamentos {
+    display: none;
+}
+
+#lista-exames {
+    display: grid;
+    grid-template-columns: 33% 33% 33%;
+}

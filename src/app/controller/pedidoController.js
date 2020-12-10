@@ -4,8 +4,8 @@ class pedidoController {
 
     routes() {
         return {
-            base: '/pedidos/',
-            getId: '/pedidos/:idPedido'
+            base: '/pedido/',
+            getId: '/pedido/:idPedido'
         }
     }
 

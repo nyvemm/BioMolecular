@@ -11,7 +11,7 @@ module.exports = (app) => {
         .get(controllerExame.all())
         .post(exameModel.validations(), controllerExame.insert())
         .put(exameModel.updateValidations(), controllerExame.update())
-        .delete(exameModel.removeValidations(), controllerExame.delete())
+        .delete(controllerExame.delete())
 
     app.get(routesExame.getId, controllerExame.get())
 }

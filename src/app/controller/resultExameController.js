@@ -4,8 +4,8 @@ class resultExameController {
 
     routes() {
         return {
-            base: '/resultExames/',
-            getId: '/resultExames/:idResultExame'
+            base: '/resultExame/',
+            getId: '/resultExame/:idResultExame'
         }
     }
 
@@ -34,7 +34,7 @@ class resultExameController {
             if (validation.array().length != 0) {
                 res.json({ status: 'error', message: validation['errors'] })
             } else {
-            const data = req.body
+                const data = req.body
                 await DAOResultExame.addResultExame(data)
                     .then(data => resp.json(data))
                     .catch(error => resp.json(error))

@@ -1,0 +1,149 @@
+.subsection {
+    color: #5F6368;
+    display: flex;
+    align-items: center;
+}
+
+.menu {
+    background-color: white;
+    display: flex;
+    flex-direction: column;
+    margin: 30px;
+}
+
+.svg-icon {
+    width: 16px;
+    height: 16px;
+}
+
+.logo img {
+    width: 85%;
+    padding: 5px;
+    margin: 0 auto;
+    margin-bottom: 50px;
+}
+
+.menu a {
+    color: #002060;
+}
+
+.element {
+    width: 100%;
+    padding: 5px;
+}
+
+.element:hover {
+    background-color: #F8F9FA;
+}
+
+.element a {
+    margin: 0 auto;
+    text-decoration: none;
+}
+
+.element svg {
+    color: #48B499;
+}
+
+.active {
+    background-color: #48B499;
+    color: white;
+}
+
+.active:hover {
+    background-color: #3b907b;
+    color: white
+}
+
+.active a {
+    color: white;
+}
+
+.active svg {
+    color: white;
+}
+
+
+/* ------------------ */
+
+.buscar {
+    border-radius: 25px;
+    border: none;
+    background-color: white;
+    outline: none;
+}
+
+.pesquisa {
+    width: 100%;
+    margin: 0;
+}
+
+.buscar-area {
+    width: 100%;
+    border-radius: 25px;
+    border: 1px solid #D8DBDF;
+    display: grid;
+    grid-template-columns: 90% 10%;
+    grid-template-rows: auto;
+    margin: 0;
+}
+
+.buscar:focus {
+    outline: none;
+}
+
+.btn-buscar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: transparent;
+    border-color: transparent;
+    outline: none;
+}
+
+.nome-usuario button {
+    color: #5F6368;
+    text-decoration: none;
+}
+
+.nome-usuario button:hover {
+    color: #5F6368;
+    text-decoration: none;
+}
+
+.nome-usuario button:focus {
+    box-shadow: none;
+    text-decoration: none;
+}
+
+
+/* -------------- */
+
+main {
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    margin-right: 3vw;
+}
+
+body {
+    display: grid;
+    grid-template-columns: 25% 75%;
+    grid-template-rows: auto;
+}
+
+.clickable-row {
+    cursor: pointer;
+}
+
+.clickable-row:hover {
+    background-color: rgba(0, 0, 0, .05)
+}
+
+
+/* ------------------ */
+
+.form-control:focus {
+    border-color: #9ceed9;
+    box-shadow: 0 0 0 0.2rem rgba(72, 180, 153, 0.25)
+}

@@ -1,0 +1,100 @@
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/bootstrap/css/bootstrap.css">
+    <link rel="stylesheet" href="/css/utils/global.css">
+    <link rel="icon" href="/img/icon.png">
+    <title>LGBM - Cadastrar Solicitante</title>
+</head>
+
+<body>
+    {{>_menu}}
+    <main>
+        {{>_pesquisa}}
+        <div class="warnings" id="warnings">
+
+        </div>
+        <form method="POST" id="formulario">
+            <div class="form-group">
+                <label for="nome">Nome</label>
+                <input type="text" class="form-control" id="nome" name="nome" placeholder="Nome">
+            </div>
+
+            <div class="row">
+                <div class="form-group col-md-6">
+                    <label for="endereco">Endereço</label>
+                    <input type="text" class="form-control" id="endereco" name="endereco" placeholder="Endereço">
+                </div>
+
+                <div class="form-group col-md-6">
+                    <label for="e_mail">E-mail</label>
+                    <input type="mail" class="form-control" id="e_mail" name="e_mail" placeholder="E-mail">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="contato_referencia">Contato de Refêrencia</label>
+                <input type="text" class="form-control" id="contato_referencia" name="contato_referencia"
+                    placeholder="Contato de Refêrencia">
+            </div>
+
+            <div class=" row">
+                <div class="form-group col-md-6">
+                    <label for="estado">Estado</label>
+                    <select class="form-control" id="estado" name="estado">
+                        <option value="AC">Acre</option>
+                        <option value="AL">Alagoas</option>
+                        <option value="AP">Amapá</option>
+                        <option value="AM">Amazonas</option>
+                        <option value="BA">Bahia</option>
+                        <option value="CE">Ceará</option>
+                        <option value="DF">Distrito Federal</option>
+                        <option value="ES">Espírito Santo</option>
+                        <option value="GO">Goiás</option>
+                        <option value="MA">Maranhão</option>
+                        <option value="MT">Mato Grosso</option>
+                        <option value="MS" selected>Mato Grosso do Sul</option>
+                        <option value="MG">Minas Gerais</option>
+                        <option value="PA">Pará</option>
+                        <option value="PB">Paraíba</option>
+                        <option value="PR">Paraná</option>
+                        <option value="PE">Pernambuco</option>
+                        <option value="PI">Piauí</option>
+                        <option value="RJ">Rio de Janeiro</option>
+                        <option value="RN">Rio Grande do Norte</option>
+                        <option value="RS">Rio Grande do Sul</option>
+                        <option value="RO">Rondônia</option>
+                        <option value="RR">Roraima</option>
+                        <option value="SC">Santa Catarina</option>
+                        <option value="SP">São Paulo</option>
+                        <option value="SE">Sergipe</option>
+                        <option value="TO">Tocantins</option>
+                    </select>
+                </div>
+
+                <div class="form-group col-md-6">
+                    <label for="cidade">Cidade</label>
+                    <input type="text" class="form-control" id="cidade" name="cidade"
+                        placeholder="Cidade">
+                </div>
+            </div>
+            <h3 class="subsection" class="mt-4">Informações</h3>
+
+            <div class="form-group">
+                <label for="observacao">Observações (caso necessário)</label>
+                <textarea class="form-control" id="observacao" rows="3"></textarea>
+            </div>
+
+            <input type="hidden" name="cadastrado_por" value="{{user.nome}}">
+
+            <button type="submit" class="btn active mt-4 w-100" id="submeter">Cadastrar Solicitante</button>
+            <button type="reset" class="btn btn-secondary mt-3 w-100">Limpar</button>
+        </form>
+    </main>
+</body>
+
+<script src="/js/libs/jquery-3.5.1.min.js"></script>
+<script src="/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="/bootstrap/js/bootstrap.min.js"></script>
+<script src="/js/utils/global.js"></script>
+<script src="/js/solicitantes/cadastrar-solicitante.js"></script>

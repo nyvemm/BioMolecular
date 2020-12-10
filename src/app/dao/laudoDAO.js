@@ -1,7 +1,7 @@
 class laudoDAO {
 
     obj_error = { status: 'error' }
-    obj_sucess = { status: 'success' }
+    obj_success = { status: 'success' }
 
     constructor(database) {
         this.database = database
@@ -38,7 +38,7 @@ class laudoDAO {
                 observacao: data.observacao,
                 dt_liberacao: data.dt_liberacao
             })
-            return this.obj_sucess
+            return this.obj_success
         } catch (error) {
             throw this.obj_error
         }
@@ -58,7 +58,7 @@ class laudoDAO {
                 observacao: data.observacao,
                 dt_liberacao: data.dt_liberacao
             })
-            return this.obj_sucess
+            return this.obj_success
         } catch (error) {
             throw this.obj_error
         }
@@ -68,7 +68,7 @@ class laudoDAO {
     async delLaudo(id) {
         try {
             await this.database('laudo').where('idlaudo', id).del()
-            return this.obj_sucess
+            return this.obj_success
         } catch (error) {
             throw this.obj_error
         }
