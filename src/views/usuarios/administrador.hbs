@@ -1,0 +1,56 @@
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/bootstrap/css/bootstrap.css">
+    <link rel="stylesheet" href="/css/utils/global.css">
+
+    <link rel="icon" href="/img/icon.png">
+    <title>LGBM - Administrador</title>
+</head>
+
+<body>
+    {{>_menu}}
+    <main>
+        {{>_pesquisa}}
+
+        <div class="border row mb-4 p-2 m-0">
+            <a href="/administrador/cadastrar-usuario" class="col-md-4">[Cadastrar Usuário]</a>
+        </div>
+
+        <div id="accordion">
+            <div class="card">
+                <div class="card-header" id="headingOne" data-toggle="collapse" data-target="#collapseOne"
+                    aria-expanded="true" aria-controls="collapseOne">
+                    <h5 class="mb-0">
+                        Usuários
+                    </h5>
+                </div>
+                <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordion">
+                    <div class="card-body">
+
+                        <div class="row m-0">
+                            {{#each data}}
+                            <div class="card col-md-3">
+                                <img class="card-img-top mt-4" src="{{this.foto}}" alt="Card image cap">
+                                <div class="card-body">
+                                    <h5 class="card-title">{{this.nome}}</h5>
+                                    <p class="m-0"><b>Login:</b> {{this.login}}</p>
+                                    <p class="m-0"><b>Senha:</b> {{#if this.administrador}} ****** {{else}} {{this.senha}} {{/if}}</p>
+                                    <p class="m-0"><b>E-mail:</b> {{this.email}}</p>
+                                    {{#if this.administrador}} <p class="m-0 text-info">[Administrador]</p> 
+                                    {{else}} <p class="m-0">[Usuário]</p>{{/if}}
+                                </div>
+                            </div>
+                            {{/each}}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+</body>
+
+<script src="/js/libs/jquery-3.5.1.min.js"></script>
+<script src="/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="/bootstrap/js/bootstrap.min.js"></script>
+<script src="/js/utils/global.js"></script>

@@ -35,17 +35,27 @@
             <a href="/cadastrar-amostra" class="btn btn-primary quickbtn">Cadastrar amostras</a>
             <a href="/cadastrar-exame" class="btn btn-primary quickbtn">Cadastrar exames</a>
         </div>
-
-        <h3 class="subsection" class="mt-4">Alterações Recentes</h3>
-
-        {{#each registros}}
-        <div class="bg-light rounded registro">
-            <span class="badge badge-pill badge-{{this.op}} m-0 d-flex align-items-center justify-content-center">{{this.op}}</span>
-            <span class="badge badge-pill badge-{{this.tabela}} m-0 d-flex align-items-center justify-content-center">{{this.tabela}}</span>
-            <h4 class="subsection sub-text m-0">{{this.conteudo}}</h4>
-            <h6 class="m-0 d-flex align-items-center justify-content-end">{{this.alterado_em}}</h6>
+        <div class="card-header border" id="headingOne" type="button" data-toggle="collapse" data-target="#collapseAlteracoes"
+            aria-expanded="false" aria-controls="collapseAlteracoes">
+            <h5 class="mb-0">
+                Alterações Recentes
+            </h5>
         </div>
-        {{/each}}
+        <div class="collapse" id="collapseAlteracoes">
+            <div class="card card-body m-0 p-0">
+                {{#each registros}}
+                <div class="bg-light rounded registro">
+                    <span
+                        class="badge badge-pill badge-{{this.op}} m-0 d-flex align-items-center justify-content-center">{{this.op}}</span>
+                    <span
+                        class="badge badge-pill badge-{{this.tabela}} m-0 d-flex align-items-center justify-content-center">{{this.tabela}}</span>
+                    <h4 class="subsection sub-text m-0">{{this.conteudo}}</h4>
+                    <h6 class="m-0 d-flex align-items-center justify-content-end">{{this.alterado_em}}</h6>
+                </div>
+                {{/each}}
+            </div>
+        </div>
+
     </main>
 
 </body>

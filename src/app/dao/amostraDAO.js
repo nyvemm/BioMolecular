@@ -21,7 +21,7 @@ class amostraDAO {
                 .offset(offset).orderBy(sort)
             amostras.forEach((amostra) => {
                 amostra.f_dt_recebimento = utilsDate.viewDateFormat(amostra.dt_recebimento)
-                amostra.medicamentos = amostra.medicamentos.split(',')
+                amostra.medicamentos = amostra.medcaimentos ? amostra.medicamentos.split(',') : []
             })
             return amostras
         } catch (error) {
@@ -40,7 +40,7 @@ class amostraDAO {
             const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
             amostra[0].f_dt_recebimento = utilsDate.viewDateFormat(amostra[0].dt_recebimento)
             amostra[0].idade = Math.floor(diffDays / 365)
-            amostra[0].medicamentos = amostra[0].medicamentos.split(',')
+            amostra[0].medicamentos = amostra[0].medicamentos ? amostra[0].medicamentos.split(',') : []
             return amostra
         } catch (error) {
             throw this.obj_error

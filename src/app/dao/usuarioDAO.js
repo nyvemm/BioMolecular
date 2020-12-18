@@ -4,7 +4,7 @@ class usuarioDAO {
     constructor(database) {
         this.database = database
         this.obj_error = { status: 'error' }
-        this.obj_sucess = { status: 'success'}
+        this.obj_success = { status: 'success'}
     }
 
     //Lista dados de todos os clientes.
@@ -49,16 +49,16 @@ class usuarioDAO {
 
     // Atualiza um usuário no banco de dados.
     async updateUsuario(data) {
-        const login = data.login
         try {
-            await this.database('usuario').where('login', login).update({
-                senha: data.senha,
+            await this.database('usuario').where('login', data.login).update({
                 nome: data.nome,
+                senha: data.senha,
                 email: data.email,
                 foto: data.foto
             })
             return this.obj_success
         } catch (error) {
+            console.log(error)
             throw this.obj_error
         }
     }

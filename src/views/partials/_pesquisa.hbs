@@ -20,7 +20,7 @@
         <div class="dropdown-menu">
             <a class="dropdown-item" href="/dashboard">Página Inicial</a>
             <a class="dropdown-item" href="/meu-perfil">Meu perfil</a>
-            <a class="dropdown-item" href="#">Configurações</a>
+            {{#if user.administrador}} <a class="dropdown-item" href="/administrador">Painel do Administrador</a> {{/if}}
             <div class="dropdown-divider"></div>
             <a class="dropdown-item" href="/logout">Sair</a>
         </div>

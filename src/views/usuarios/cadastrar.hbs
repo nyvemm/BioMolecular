@@ -1,0 +1,59 @@
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/bootstrap/css/bootstrap.css">
+    <link rel="stylesheet" href="/css/utils/global.css">
+
+    <link rel="icon" href="/img/icon.png">
+    <title>LGBM - Administrador</title>
+</head>
+
+<body>
+    {{>_menu}}
+    <main>
+        {{>_pesquisa}}
+
+        <div id="warnings"></div>
+
+        <h3 class="subsection" class="mt-4">Cadastrar Usuários</h3>
+        <form id="formulario-usuario" method="POST">
+            <hr>
+            <div class="row">
+                <div class="form-group col">
+                    <label for="login">Login</label>
+                    <input type="text" class="form-control" id="login" name="login"
+                        placeholder="Digite o login do usuário...">
+                </div>
+
+                <div class="form-group col">
+                    <label for="senha">Senha</label>
+                    <input type="password" class="form-control" id="senha" name="senha"
+                        placeholder="Digite a senha do usuário...">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="nome">Nome</label>
+                <input type="text" class="form-control" id="nome" name="nome" placeholder="Digite o nome do usuário...">
+            </div>
+
+            <div class="form-group">
+                <label for="email">E-mail</label>
+                <input type="text" class="form-control" id="email" name="email"
+                    placeholder="Digite o e-mail do usuário.">
+            </div>
+
+            <div class="row m-0">
+                <button type="submit" id="cadastrar-usuario" class="btn active col mr-4">Cadastrar Usuário</button>
+                <button type="reset" class="btn btn-secondary col ml-4">Limpar</button>
+            </div>
+            <a href="/administrador" class="btn btn-secondary mt-4 w-100">Voltar</a>
+        </form>
+    </main>
+</body>
+
+<script src="/js/libs/jquery-3.5.1.min.js"></script>
+<script src="/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="/bootstrap/js/bootstrap.min.js"></script>
+<script src="/js/utils/global.js"></script>
+<script src="/js/usuarios/cadastrar-usuario.js"></script>

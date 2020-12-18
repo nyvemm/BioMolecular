@@ -7,6 +7,7 @@ const routesSolicitantes = require('./system/solicitantes')
 const routesExames = require('./system/exames')
 const routesAmostras = require('./system/amostras')
 const routesUsuarios = require('./system/usuarios')
+const routesRelatorios = require('./system/relatorios')
 
 module.exports = (app) => {
     /* Rotas do front-end */
@@ -17,4 +18,5 @@ module.exports = (app) => {
     routesExames(app)
     routesAmostras(app)
     routesUsuarios(app)
+    routesRelatorios(app)
 }

@@ -29,11 +29,23 @@
                 </p>
                 <hr>
                 {{#each exame}}
-                <p class="m-0"><b>{{this.nome}}</b>: {{#if this.status}} <span>Submetido</span>
+                <p class="m-0"><b>{{this.nome}}</b>: {{#if this.status}} <span class="text-success">Submetido</span>
                     {{else}} <span class="text-danger">Não Submetido</span> {{/if}}</p>
                 {{/each}}
+
+                {{#if data.finalizado}}
                 <hr>
-                <a href="/cadastrar-resultado/{{data.idamostra}}" class="btn active mt-2">Avaliar exames</a>
+                <p class="m-0"><b>Resultado</b>: {{data.resultado}}</p>
+                <hr>
+                <p class="m-0"><b>Interpretação dos resultados</b>:
+                {{#if data.interpretacao_resultados}} {{data.interpretacao_resultados}}
+                {{else}} Não há interpretações para este resultado.{{/if}}</p>
+                {{/if}}
+
+                <hr>
+                <a href="/cadastrar-resultado/{{data.idamostra}}" class="btn active mt-2">
+                    {{#if data.finalizado}} Visualizar resultados{{else}}Avaliar exames{{/if}}
+                </a>
             </div>
         </div>
 
@@ -47,7 +59,8 @@
                 <p class='m-0'><b>Gestante</b>: {{#if data.gestante}} Sim {{else}} Não {{/if}}</p>
                 {{#if data.gestante}} <p class='m-0'><b>Semanas de Gestação</b>: {{data.semanas_gestacao}}</p> {{/if}}
                 <p class='m-0'><b>Transfusão de Sangue</b>: {{#if data.transfusao}} Sim {{else}} Não {{/if}}</p>
-                {{#if data.transfusao}} <p class='m-0'><b>Data da Última Transfusão</b>: {{data.dt_ult_transfusao}}</p> {{/if}}
+                {{#if data.transfusao}} <p class='m-0'><b>Data da Última Transfusão</b>: {{data.dt_ult_transfusao}}</p>
+                {{/if}}
                 <p class='m-0'><b>Uso de Hidroxiuréia</b>: {{#if data.uso_hidroxiureia}} Sim {{else}} Não {{/if}}</p>
                 <p class='m-0'><b>Uso de Medicamentos</b>: {{#if data.uso_medicamentos}} Sim {{else}} Não {{/if}}</p>
 

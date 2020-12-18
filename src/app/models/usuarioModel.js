@@ -7,6 +7,9 @@ class usuarioModel {
             check('login').trim().not().isEmpty().withMessage('O Login precisa ser informado.').bail()
             .isLength({ min: 3, max: 50 }).withMessage('O Login precisa ter entre 3 e 50 caracteres.'),
 
+            check('nome').trim().not().isEmpty().withMessage('O nome precisa ser informado.').bail()
+            .isLength({ min: 3, max: 50 }).withMessage('O nome precisa ter entre 3 e 50 caracteres.'),
+
             check('senha').trim().not().isEmpty().withMessage('A senha precisa ser informada.').bail()
             .isLength({ min: 3, max: 50 }).withMessage('A senha precisa ter entre 3 e 50 caracteres.'),
 

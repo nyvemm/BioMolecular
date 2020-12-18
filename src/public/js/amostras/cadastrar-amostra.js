@@ -4,6 +4,13 @@ function postData() {
 
     let medicamentos = Array.from(document.getElementsByName('medicamento-selecionado')).map(med => med.innerHTML)
     let exames = Array.from(document.getElementsByName('exames-escolhidos')).filter(ex => $(ex).prop('checked')).map(ex => $(ex).data('id'))
+
+    if($('exames-escolhidos').length == 0) {
+        $('#warnings').html(warningMessage('É preciso escolher pelo menos 1 exame.', 'danger'))
+        window.scroll({top: 0, left: 0, behavior: 'smooth'});
+        return;
+    }
+
     formData.append('medicamentos', medicamentos)
     formData.append('exames', exames)
 
@@ -102,6 +109,7 @@ function fetchExame() {
 
             /* Cria uma lista de objetos contendo o tipo e o valor */
             let listaExames = response.map(exame => exame.tipo_analise)
+            listaExames = listaExames.filter(unique)
             let exames = []
             listaExames.forEach((tipo_exame) => {
                 exames.push({ tipo: tipo_exame, valor: [] })
@@ -175,7 +183,7 @@ $(document).ready(() => {
     $('#buscar-paciente').bind("click", () => fetchPaciente(''))
     $('#queryPaciente').keyup(() => fetchPaciente($('#queryPaciente').val()))
     $('#buscar-solicitante').bind("click", () => fetchSolicitante(''))
-    $('#querySolicitante').keyup(() => fetchPaciente($('#querySolicitante').val()))
+    $('#querySolicitante').keyup(() => fetchSolicitante($('#querySolicitante').val()))
 
     //Adiciona medicamento
     $('#adicionar-medicamento').bind("click", adicionaMedicamento)

@@ -13,34 +13,44 @@
     {{>_menu}}
     <main>
         {{>_pesquisa}}
-
-        <img src="{{usuario.foto}}" alt="Foto de Perfil" class="rounded-circle w-25 foto-perfil" />
+        <div class="border row mb-4 p-2 m-0">
+            <a href="javascript:liberar_email()" class="col-md-4">[Editar E-mail]</a>
+            <a href="javascript:liberar_senha()" class="col-md-4">[Editar Senha]</a>
+            <a href="javascript:$('#foto').click()" class="col-md-4">[Editar Foto]</a>
+        </div>
+        <img id="foto-logo" src="{{usuario.foto}}" alt="Foto de Perfil"
+            class="rounded-circle w-25 border foto-perfil" />
         <br>
         <div>
             <h4>Editar Perfil</h4>
             <hr>
-            <form action="" method="POST" id='formulario-usuario'>
+            <div id="warnings"></div>
+            <form action="" method="POST" id='formulario-usuario' enctype="multipart/form-data">
+                <input type="hidden" name="login" id="login" value="{{usuario.login}}">
+
                 <div class="form-group">
                     <label for="nome">Nome</label>
-                    <input type="text" class="form-control" id="nome" value="{{usuario.nome}}">
+                    <input type="text" class="form-control" id="nome" name="nome" value="{{usuario.nome}}">
                 </div>
 
                 <div class="form-group">
                     <label for="email">E-mail</label>
-                    <input type="email" class="form-control" id="email" value="{{usuario.email}}" disabled>
+                    <input type="email" class="form-control" id="email" name="email" value="{{usuario.email}}" readonly>
                 </div>
 
                 <div class="form-group">
                     <label for="senha">Senha</label>
-                    <input type="password" class="form-control" id="senha" value="{{usuario.senha}}" disabled>
+                    <input type="password" class="form-control" id="senha"  name="senha" value="{{usuario.senha}}" readonly>
                 </div>
 
                 <hr>
+                <input type="file" name="foto" id="foto" accept="image/*" onchange="previewFile()">
                 {{#if user.administrador}} <b> Essa conta possui privilégios de administrador. </b>
                 <hr>{{/if}}
-            </form>
-            <form id="formulario-foto">
-                <input type="file" name="foto" id="foto">
+                <div class="row m-0 mb-4">
+                    <button type="submit" id="alterar-usuario" class="btn active col mr-3">Salvar perfil</button>
+                    <button type="reset" class="btn btn-secondary col">Limpar</button>
+                </div>
             </form>
         </div>
     </main>

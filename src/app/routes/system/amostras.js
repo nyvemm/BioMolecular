@@ -32,8 +32,35 @@ module.exports = (app) => {
         database('amostra_contem_exames_aux').where('idamostraexame', id).update({
             status: true,
             liberado_em: new Date()
-        }).then((data) => {
-            res.json({ status: 'success' })
+        }).then(() => {
+            /* Pega o ID da Amostra */
+            database('amostra_contem_exames_aux').where('idamostraexame', id)
+                .select('idamostra').then(idamostra => {
+
+                    /* Pega a lista de todos os exames */
+                    database('amostra_contem_exames_aux').where('idamostra', idamostra[0].idamostra)
+                        .select().then(amostras => {
+
+                            /* Pega a lista de amostras finalizadas */
+                            let finalizadas = amostras.filter(am_ex => am_ex.status)
+                            let final_status = ''
+
+                            if (finalizadas.length == amostras.length) {
+                                final_status = 'Finalizado'
+                            } else if (finalizadas.length >= 1) {
+                                final_status = 'Parcialmente avaliado'
+                            } else {
+                                final_status = 'Não avaliado'
+                            }
+
+                            /* Seta o resultado na amostra */
+                            database('amostra').update({ status_pedido: final_status })
+                                .where('idamostra', idamostra[0].idamostra)
+                                .then(() => {
+                                    res.json({ status: 'success' })
+                                })
+                        })
+                })
         }).catch((err) => {
             res.json({ status: 'error' })
         })
@@ -45,7 +72,7 @@ module.exports = (app) => {
             idamostraexame: data.idamostraexame,
             valor_resultado: data.valor_resultado,
             observacao_resultado: data.observacao_resultado
-        }).then((data) => {
+        }).then(() => {
             res.json({ status: 'success' })
         }).catch((err) => {
             res.json({ status: 'error' })
@@ -58,11 +85,14 @@ module.exports = (app) => {
 
     app.get('/amostras/:id', loggedIn, (req, res) => {
         DAOAmostra.getAmostra(req.params.id).then((data) => {
+            console.log(data)
             data[0].cadastrado_em = utilsDate.viewDateFormat(data[0].cadastrado_em)
             data[0].dt_recebimento = utilsDate.viewDateFormat(data[0].dt_recebimento)
             data[0].dt_solicitacao = utilsDate.viewDateFormat(data[0].dt_solicitacao)
             data[0].dt_coleta = utilsDate.viewDateFormat(data[0].dt_coleta)
             data[0].dt_ult_transfusao = utilsDate.viewDateFormat(data[0].dt_ult_transfusao)
+
+            data[0].finalizado = data[0].status_pedido == 'Finalizado'
 
             database('amostra_contem_exames_aux').select().where('idamostra', req.params.id)
                 .innerJoin('exame', 'amostra_contem_exames_aux.idexame', 'exame.idexame').then(exame => {

@@ -10,7 +10,7 @@ class usuarioController {
     }
 
     all() {
-        return async function(req, res) {
+        return async function (req, res) {
             await DAOUsuario.getUsuarios()
                 .then(data => res.json(data))
                 .catch(error => res.json(error))
@@ -18,7 +18,7 @@ class usuarioController {
     }
 
     get() {
-        return async function(req, res) {
+        return async function (req, res) {
             const login = req.params.login
             await DAOUsuario.getUsuario(login)
                 .then(data => res.json(data))
@@ -27,7 +27,7 @@ class usuarioController {
     }
 
     insert() {
-        return async function(req, res) {
+        return async function (req, res) {
             //Recebe os erros de validação da requisição.
             const validation = validationResult(req)
 
@@ -43,14 +43,22 @@ class usuarioController {
     }
 
     update() {
-        return async function(req, res) {
+        return async function (req, res) {
             //Recebe os erros de validação da requisição.
             const validation = validationResult(req)
+
+            console.log(req.body)
+            console.log(req.file)
 
             if (validation.array().length != 0) {
                 res.json({ status: 'error', message: validation['errors'] })
             } else {
                 const data = req.body
+                data.foto = req.file ? `/uploads/image/${req.file.filename}` : null
+                if (data.foto == null) {
+                    data.foto = req.user.foto
+                }
+
                 await DAOUsuario.updateUsuario(data)
                     .then(data => res.json(data))
                     .catch(error => res.json(error))
@@ -59,21 +67,13 @@ class usuarioController {
     }
 
     delete() {
-        return async function(req, res) {
-            //Recebe os erros de validação da requisição.
-            const validation = validationResult(req)
-
-            if (validation.array().length != 0) {
-                res.json({ status: 'error', message: validation['errors'] })
-            } else {
-                const login = req.body.login
-                await DAOUsuario.removeUsuario(login)
-                    .then(data => res.json(data))
-                    .catch(error => res.json(error))
-            }
+        return async function (req, res) {
+            const login = req.query.login
+            await DAOUsuario.removeUsuario(login)
+                .then(data => res.json(data))
+                .catch(error => res.json(error))
         }
     }
-
 }
 
 module.exports = usuarioController

@@ -28,6 +28,7 @@ module.exports = (passport) => {
 
 //Serialização
 passport.serializeUser((user, done) => {
+    console.log(`\n${new Date().getHours()}:${new Date().getMinutes()} - Login: ${user.nome}\n`)
     done(null, user.login)
 })
 

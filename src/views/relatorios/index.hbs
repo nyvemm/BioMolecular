@@ -1,0 +1,56 @@
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/bootstrap/css/bootstrap.css">
+    <link rel="stylesheet" href="/css/utils/global.css">
+    <link rel="stylesheet" href="/css/relatorios/relatorios.css">
+    <link rel="icon" href="/img/icon.png">
+    <title>LGBM - Relatórios</title>
+</head>
+
+<body>
+    {{>_menu}}
+    <main>
+        {{>_pesquisa}}
+        <h3 class="subsection mt-2">Relatórios</h3>
+        <div>
+            <hr>
+            <a href="" class="btn active">Amostra por Situação</a>
+            <a href="" class="btn active">Amostra por Material</a>
+            <a href="" class="btn active">Amostra pelo Tipo de Exame</a>
+            <a href="/relatorios/laudo" class="btn active">Gerar Laudo da Amostra</a>
+        </div>
+
+        <table class="table table-sm mt-4">
+            <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Paciente</th>
+                    <th scope="col">Solicitante</th>
+                    <th scope="col">Material</th>
+                    <th scope="col">Data de Recebimento</th>
+                    <th scope="col">Suspeita de Diagnóstico</th>
+                    <th scope="col">Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                {{#each amostra}}
+                <tr {{#if this.em_analise}} class="table-warning"{{/if}}>
+                    <th scope="row">{{this.idamostra}}</th>
+                    <td >{{this.paciente_nome}}</td>
+                    <td>{{this.solicitante_nome}}</td>
+                    <td>{{this.material}}</td>
+                    <td>{{this.f_dt_recebimento}}</td>
+                    <td>{{#if this.suspeita_diagnostico }} {{this.suspeita_diagnostico}} {{else}} - {{/if}}</td>
+                    <td>{{this.status_pedido}}</td>
+                </tr>
+                {{/each}}
+            </tbody>
+        </table>
+    </main>
+</body>
+
+<script src="/js/libs/jquery-3.5.1.min.js"></script>
+<script src="/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="/bootstrap/js/bootstrap.min.js"></script>
+<script src="/js/relatorios/relatorios.js"></script>
