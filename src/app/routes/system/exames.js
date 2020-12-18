@@ -11,10 +11,17 @@ module.exports = (app) => {
         res.render('exames/')
     })
 
-    app.get('/exames/:id', loggedIn, (req, res) => {
+    app.get('/editar-exame/:id', loggedIn, (req, res) => {
         DAOExame.getExame(req.params.id).then((data) => {
             data[0].cadastrado_em = utilsDate.inputDateFormat(data[0].cadastrado_em)
             res.render('exames/editar', { data: data[0] })
+        })
+    })
+
+    app.get('/exames/:id', loggedIn, (req, res) => {
+        DAOExame.getExame(req.params.id).then((data) => {
+            data[0].cadastrado_em = utilsDate.viewDateFormat(data[0].cadastrado_em)
+            res.render('exames/visualizar', { data: data[0] })
         })
     })
 

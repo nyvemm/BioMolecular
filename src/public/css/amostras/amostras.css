@@ -56,8 +56,3 @@
 #medicamentos {
     display: none;
 }
-
-#lista-exames {
-    display: grid;
-    grid-template-columns: 33% 33% 33%;
-}

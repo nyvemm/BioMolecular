@@ -39,11 +39,11 @@
         <h3 class="subsection" class="mt-4">Alterações Recentes</h3>
 
         {{#each registros}}
-        <div class="row row-button bg-light rounded registro">
-            <span class="badge badge-pill badge-{{this.op}} col-md-1 p-2">{{this.op}}</span>
-            <span class="badge badge-pill badge-{{this.tabela}} col-md-1 p-2">{{this.tabela}}</span>
-            <h4 class="subsection sub-text col-md-7">{{this.conteudo}}</h4>
-            <h6>{{this.alterado_em}}</h6>
+        <div class="bg-light rounded registro">
+            <span class="badge badge-pill badge-{{this.op}} m-0 d-flex align-items-center justify-content-center">{{this.op}}</span>
+            <span class="badge badge-pill badge-{{this.tabela}} m-0 d-flex align-items-center justify-content-center">{{this.tabela}}</span>
+            <h4 class="subsection sub-text m-0">{{this.conteudo}}</h4>
+            <h6 class="m-0 d-flex align-items-center justify-content-end">{{this.alterado_em}}</h6>
         </div>
         {{/each}}
     </main>

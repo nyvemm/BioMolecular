@@ -1,11 +1,10 @@
 class usuarioDAO {
 
-    obj_error = { status: 'error' }
-    obj_success = { status: 'success' }
-
     // O construtor recebe a conexão com o banco de dados.
     constructor(database) {
         this.database = database
+        this.obj_error = { status: 'error' }
+        this.obj_sucess = { status: 'success'}
     }
 
     //Lista dados de todos os clientes.

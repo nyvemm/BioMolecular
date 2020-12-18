@@ -1,0 +1,57 @@
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/bootstrap/css/bootstrap.css">
+    <link rel="stylesheet" href="/css/utils/global.css">
+    <link rel="icon" href="/img/icon.png">
+    <title>LGBM - Exame</title>
+</head>
+
+<body>
+    {{>_menu}}
+    <main>
+        {{>_pesquisa}}
+        {{#if data}}
+        <div class="border row mb-4 p-2">
+            <a href="/editar-exame/{{data.idexame}}" class="col-md-4">[Editar Exame]</a>
+            <a href="javascript:deleteData({{data.idexame}})" class="col-md-4">[Remover Exame]</a>
+            <a href="" class="col-md-4">[Ver Amostras Associadas]</a>
+        </div>
+        <div class="warnings" id="warnings"> </div>
+
+
+        <div>
+            <p class='m-0'><b>ID</b>: {{data.idexame}}</p>
+            <p class='m-0'><b>Nome</b>: {{data.nome}}</p>
+            <p class='m-0'><b>Tipo</b>: {{data.tipo_analise}}</p>
+            <p class='m-0'><b>Método</b>: {{data.preco}}</p>
+        </div>
+        <div>
+            <hr>
+            <p class='m-0'><b>Valor de Referência</b>: {{data.valor_ref}}</p>
+            <p class='m-0'><b>Tipo do Valor de Referência</b>: {{data.tipo_valor_ref}} </p>
+            <p class='m-0'><b>Tipo de Resultado</b>: {{data.tipo_resultado}} </p>
+        </div>
+        <div>
+            <hr>
+            <p class='m-0'><b>Observações</b>: {{#if data.observacao}} {{data.observacao}} {{else}} Sem observações
+                {{/if}}</p>
+            <p class='m-0'><b>Cadastro em </b>: {{data.cadastrado_em}}</p>
+            <p class='m-0'><b>Cadastrado por</b>: {{data.cadastrado_por}}</p>
+            <hr>
+        </div>
+
+
+
+
+        {{else}}
+        <h3>Não há um exame com este ID.</h3>
+        {{/if}}
+    </main>
+</body>
+
+<script src="/js/libs/jquery-3.5.1.min.js"></script>
+<script src="/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="/bootstrap/js/bootstrap.min.js"></script>
+<script src="/js/utils/global.js"></script>
+<script src="/js/exames/visualizar-exame.js"></script>

@@ -1,10 +1,9 @@
 class pacienteDAO {
 
-    obj_error = { status: 'error' }
-    obj_success = { status: 'success' }
-
     constructor(database) {
         this.database = database
+        this.obj_error = { status: 'error' }
+        this.obj_success = { status: 'success' }
     }
 
     //Lista todos os pacientes

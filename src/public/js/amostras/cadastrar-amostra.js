@@ -22,12 +22,11 @@ function postData() {
                         innerHTML += warningMessage(response.message[i].msg, 'danger')
                     }
                 } else {
-                    console.log(response)
                     innerHTML += warningMessage('Erro interno.', 'danger')
                 }
 
             } else if (response.status == 'success') {
-                innerHTML += warningMessage('O amostra foi inserida com sucesso.', 'success')
+                innerHTML += warningMessage('A amostra foi inserida com sucesso.', 'success')
             }
 
             warnings.innerHTML = innerHTML
@@ -49,7 +48,7 @@ function fetchPaciente(query = '') {
             let response = JSON.parse(xhr.responseText)
             response.forEach((paciente) => {
                 if (paciente.nome.toLowerCase().includes(query.toLowerCase())) {
-                    $('#modal-paciente-content').append(function() {
+                    $('#modal-paciente-content').append(function () {
                         return $(`<li class="list-group-item paciente-item">${paciente.nome}</li>`).click(() => {
                             $('#idpaciente').val(paciente.idpaciente)
                             $('#nomepaciente').val(paciente.nome)
@@ -73,7 +72,7 @@ function fetchSolicitante(query = '') {
             let response = JSON.parse(xhr.responseText)
             response.forEach((solicitante) => {
                 if (solicitante.nome.toLowerCase().includes(query.toLowerCase())) {
-                    $('#modal-solicitante-content').append(function() {
+                    $('#modal-solicitante-content').append(function () {
                         return $(`<li class="list-group-item solicitante-item">${solicitante.nome}</li>`).click(() => {
                             $('#idsolicitante').val(solicitante.idsolicitante)
                             $('#nomesolicitante').val(solicitante.nome)
@@ -88,6 +87,11 @@ function fetchSolicitante(query = '') {
     xhr.send()
 }
 
+/* Pega o valor único de um array */
+function unique(value, index, self) {
+    return self.indexOf(value) === index;
+}
+
 function fetchExame() {
     const xhr = new XMLHttpRequest()
     xhr.open('GET', '/exame', true)
@@ -95,20 +99,40 @@ function fetchExame() {
     xhr.onload = (e) => {
         if (xhr.status == 200) {
             let response = JSON.parse(xhr.responseText)
-            response.forEach((exame) => {
-                $('#lista-exames').append($(`<div class="form-check">
-                <input class="form-check-input" data-id="${exame.idexame}" type="checkbox" name="exames-escolhidos" id="exame-${exame.idexame}">
-                <label class="form-check-label" for="exame-${exame.idexame}">${exame.nome}</label></div>`))
+
+            /* Cria uma lista de objetos contendo o tipo e o valor */
+            let listaExames = response.map(exame => exame.tipo_analise)
+            let exames = []
+            listaExames.forEach((tipo_exame) => {
+                exames.push({ tipo: tipo_exame, valor: [] })
             })
+
+            /* Mapeia os valores atuais pra lista de objetos */
+            response.forEach((exame) => {
+                let tipo = exame.tipo_analise
+                exames[listaExames.findIndex((elem) => elem == tipo)].valor.push(exame)
+            })
+
+            query = ''
+            exames.forEach((exame) => {
+                query += `<div><h4> ${exame.tipo} </h3>`
+                exame.valor.forEach((valor_exame) => {
+                    query += `<div class="form-check">
+                    <input class="form-check-input" data-id="${valor_exame.idexame}" type="checkbox" name="exames-escolhidos" id="exame-${valor_exame.idexame}">
+                    <label class="form-check-label" for="exame-${valor_exame.idexame}">${valor_exame.nome}</label></div>`
+                })
+                query += '<hr></div>'
+            })
+            $('#lista-exames').append($(query))
         }
     }
     xhr.send()
 }
 
 function adicionaMedicamento() {
-    $('#lista-medicamentos').append(function() {
+    $('#lista-medicamentos').append(function () {
         if ($('#queryMedicamento').val() != '')
-            return $(`<li class="list-group-item" name="medicamento-selecionado">${$('#queryMedicamento').val()}</li>`).click(function() {
+            return $(`< li class="list-group-item" name = "medicamento-selecionado" > ${$('#queryMedicamento').val()}</li > `).click(function () {
                 this.remove()
             })
     })
@@ -117,7 +141,7 @@ function adicionaMedicamento() {
 
 /* Campos */
 $(document).ready(() => {
-    $('#gestante').on('change', function() {
+    $('#gestante').on('change', function () {
         if (this.selectedIndex == 0) {
             $('#semanas_gestacao').prop('disabled', true)
             $('#semanas_gestacao').val('')
@@ -126,7 +150,7 @@ $(document).ready(() => {
         }
     })
 
-    $('#transfusao').on('change', function() {
+    $('#transfusao').on('change', function () {
         if (this.selectedIndex == 0) {
             $('#dt_ult_transfusao').prop('disabled', true)
             $('#dt_ult_transfusao').val('')
@@ -135,7 +159,7 @@ $(document).ready(() => {
         }
     })
 
-    $('#uso_medicamentos').on('change', function() {
+    $('#uso_medicamentos').on('change', function () {
         if (this.selectedIndex == 0) {
             $('#medicamentos').css('display', 'none')
         } else {
@@ -166,6 +190,6 @@ $(document).ready(() => {
     }
 
     //Impede a submissão do formulário com enter.
-    $(document).keypress(function(event) { if (event.which == '13') { event.preventDefault(); } });
+    $(document).keypress(function (event) { if (event.which == '13') { event.preventDefault(); } });
 
 })

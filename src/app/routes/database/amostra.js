@@ -10,8 +10,8 @@ module.exports = (app) => {
     app.route(routesAmostra.base)
         .get(controllerAmostra.all())
         .post(amostraModel.validations(), controllerAmostra.insert())
-        .put(amostraModel.updateValidations(), controllerAmostra.update())
-        .delete(amostraModel.removeValidations(), controllerAmostra.delete())
+        .put(controllerAmostra.update())
+        .delete(controllerAmostra.delete())
 
     app.get(routesAmostra.getId, controllerAmostra.get())
 }

@@ -10,7 +10,6 @@ function ajaxAmostra() {
 
     if (xhr.status == 200 && xhr.readyState === 4) {
         let response = JSON.parse(xhr.responseText)
-        console.log(response)
         return response
     }
 }
@@ -26,7 +25,7 @@ function updateTable(data, offset) {
     updatePagination(data, tableRowsLen, limit)
 
     if (data.length == 0) {
-        table.innerHTML = '<h3> Não há amostras cadastrados </h3>'
+        table.innerHTML = '<h3> Não há amostras cadastradas </h3>'
     } else {
         data.slice(currentOffset, currentOffset + 10).forEach((amostra) => {
             innerHTML += `<tr class='clickable-row' data-href='/amostras/${amostra.idamostra}'>

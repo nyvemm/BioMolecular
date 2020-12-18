@@ -10,7 +10,7 @@ class pacienteController {
     }
 
     all() {
-        return async function(req, res) {
+        return async function (req, res) {
             const data = req.query
             await DAOPaciente.getPacientes(data)
                 .then(data => res.json(data))
@@ -19,7 +19,7 @@ class pacienteController {
     }
 
     get() {
-        return async function(req, res) {
+        return async function (req, res) {
             const id = req.params.id
             await DAOPaciente.getPaciente(id)
                 .then(data => res.json(data))
@@ -28,7 +28,7 @@ class pacienteController {
     }
 
     insert() {
-        return async function(req, res) {
+        return async function (req, res) {
             //Recebe os erros de validação da requisição.
             const validation = validationResult(req)
             if (validation.array().length != 0) {
@@ -43,7 +43,7 @@ class pacienteController {
     }
 
     update() {
-        return async function(req, res) {
+        return async function (req, res) {
             //Recebe os erros de validação da requisição.
             const validation = validationResult(req)
 
@@ -59,7 +59,7 @@ class pacienteController {
     }
 
     delete() {
-        return async function(req, res) {
+        return async function (req, res) {
             const id = req.query.id
             await DAOPaciente.deletePaciente(id)
                 .then(data => res.json(data))

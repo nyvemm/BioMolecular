@@ -47,12 +47,8 @@
 .row-button {
     display: flex;
     align-items: center;
+    justify-content: center;
     padding: 10px;
-}
-
-.badge {
-    width: 100%;
-    margin: 0 15px;
 }
 
 .badge-Inserção {
@@ -102,5 +98,10 @@
 }
 
 .registro {
+    padding: 10px;
     text-transform: capitalize;
+    display: grid;
+    grid-template-columns: auto auto auto 1fr;
+    gap: 0 10px;
+    min-width: 430px;
 }

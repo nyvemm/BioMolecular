@@ -1,0 +1,107 @@
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/bootstrap/css/bootstrap.css">
+    <link rel="stylesheet" href="/css/utils/global.css">
+    <link rel="icon" href="/img/icon.png">
+    <title>LGBM - Amostra</title>
+</head>
+
+<body>
+    {{>_menu}}
+    <main>
+        {{>_pesquisa}}
+        {{#if data}}
+        <div class="border row mb-4 p-2">
+            <a href="/editar-amostra/{{data.idamostra}}" class="col-md-3">[Editar amostra]</a>
+            <a href="javascript:deleteData({{data.idamostra}})" class="col-md-3">[Remover amostra]</a>
+            <a href="/pacientes/{{data.idpaciente}}" class="col-md-3">[Ver Paciente Associado]</a>
+            <a href="/solicitantes/{{data.idsolicitante}}" class="col-md-3">[Ver Solicitante Associado]</a>
+        </div>
+        <div class="warnings" id="warnings"> </div>
+
+        <div class="card">
+            <h5 class="card-header">Resultados</h5>
+            <div class="card-body">
+                <h5>Situação: <span class="text-status">{{data.status_pedido}}</span></h5>
+                <p class="m-0 mt-1">Foram avaliados <b>{{exame.exames_realizados}}</b> exames de
+                    <b>{{exame.total_exames}}</b> exames.
+                </p>
+                <hr>
+                {{#each exame}}
+                <p class="m-0"><b>{{this.nome}}</b>: {{#if this.status}} <span>Submetido</span>
+                    {{else}} <span class="text-danger">Não Submetido</span> {{/if}}</p>
+                {{/each}}
+                <hr>
+                <a href="/cadastrar-resultado/{{data.idamostra}}" class="btn active mt-2">Avaliar exames</a>
+            </div>
+        </div>
+
+        <div class="card mt-4">
+            <h5 class="card-header w-100">Paciente</h5>
+            <div class="card-body">
+                <p class='m-0'><b>ID</b>: {{data.idamostra}}</p>
+                <p class='m-0'><b>Nome</b>: {{data.paciente_nome}}</p>
+                <p class='m-0'><b>Idade</b>: {{data.idade}}</p>
+                <hr>
+                <p class='m-0'><b>Gestante</b>: {{#if data.gestante}} Sim {{else}} Não {{/if}}</p>
+                {{#if data.gestante}} <p class='m-0'><b>Semanas de Gestação</b>: {{data.semanas_gestacao}}</p> {{/if}}
+                <p class='m-0'><b>Transfusão de Sangue</b>: {{#if data.transfusao}} Sim {{else}} Não {{/if}}</p>
+                {{#if data.transfusao}} <p class='m-0'><b>Data da Última Transfusão</b>: {{data.dt_ult_transfusao}}</p> {{/if}}
+                <p class='m-0'><b>Uso de Hidroxiuréia</b>: {{#if data.uso_hidroxiureia}} Sim {{else}} Não {{/if}}</p>
+                <p class='m-0'><b>Uso de Medicamentos</b>: {{#if data.uso_medicamentos}} Sim {{else}} Não {{/if}}</p>
+
+                {{#if data.uso_medicamentos}}
+                <ul class="m-0">
+                    {{#each data.medicamentos}}
+                    <li>{{this}}</li>
+                    {{/each}}
+                </ul>
+                {{/if}}
+
+                <p class='m-0'><b>Suspeita de Diagnóstico</b>: {{#if data.suspeita_diagnostico}}
+                    {{data.suspeita_diagnostico}} {{else}} Não há suspeita de diagnóstico. {{/if}}</p>
+            </div>
+        </div>
+
+        <div class="card mt-4">
+            <h5 class="card-header">Solicitante</h5>
+            <div class="card-body">
+                <p class='m-0'><b>ID</b>: {{data.idsolicitante}}</p>
+                <p class='m-0'><b>Nome</b>: {{data.solicitante_nome}}</p>
+                <p class='m-0'><b>Cidade</b>: {{data.cidade}} - {{data.estado}}</p>
+            </div>
+        </div>
+
+
+        <div class="card mt-4">
+            <h5 class="card-header">Exames</h5>
+            <div class="card-body">
+                <ul class="m-0 p-0">
+                    {{#each exame}}
+                    <li class="list-group-item paciente-item"><a class='text-dark' target='_blank'
+                            href="/exames/{{this.idexame}}">{{this.nome}}</a></li>
+                    {{/each}}
+                </ul>
+            </div>
+        </div>
+
+        <div>
+            <hr>
+            <p class='m-0'><b>Observações</b>: {{#if data.observacao}} {{data.observacao}} {{else}} Sem observações
+                {{/if}}</p>
+            <p class='m-0'><b>Cadastro em </b>: {{data.cadastrado_em}}</p>
+            <p class='m-0'><b>Cadastrado por</b>: {{data.cadastrado_por}}</p>
+            <hr>
+        </div>
+        {{else}}
+        <h3>Não há um amostra com este ID.</h3>
+        {{/if}}
+    </main>
+</body>
+
+<script src="/js/libs/jquery-3.5.1.min.js"></script>
+<script src="/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="/bootstrap/js/bootstrap.min.js"></script>
+<script src="/js/utils/global.js"></script>
+<script src="/js/amostras/visualizar-amostra.js"></script>

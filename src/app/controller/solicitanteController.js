@@ -65,6 +65,7 @@ class solicitanteController {
             const id = req.query.id
             await DAOSolicitante.removeSolicitante(id)
                 .then(data => res.json(data))
+                .catch(error => res.json(error))
 
         }
     }

@@ -11,10 +11,17 @@ module.exports = (app) => {
         res.render('solicitantes/')
     })
 
-    app.get('/solicitantes/:id', loggedIn, (req, res) => {
+    app.get('/editar-solicitante/:id', loggedIn, (req, res) => {
         DAOSolicitante.getSolicitante(req.params.id).then((data) => {
             data[0].cadastrado_em = utilsDate.inputDateFormat(data[0].cadastrado_em)
             res.render('solicitantes/editar', { data: data[0] })
+        })
+    })
+
+    app.get('/solicitantes/:id', loggedIn, (req, res) => {
+        DAOSolicitante.getSolicitante(req.params.id).then((data) => {
+            data[0].cadastrado_em = utilsDate.viewDateFormat(data[0].cadastrado_em)
+            res.render('solicitantes/visualizar', { data: data[0] })
         })
     })
 

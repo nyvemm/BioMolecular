@@ -17,6 +17,7 @@ module.exports = (app) => {
             })
     })
 
+
     app.delete('/resultados/:id', (req, res) => {
         const id = req.params.id
         database('resultados').where('idresultado', id).del().then((data) => {
@@ -57,7 +58,28 @@ module.exports = (app) => {
 
     app.get('/amostras/:id', loggedIn, (req, res) => {
         DAOAmostra.getAmostra(req.params.id).then((data) => {
-            console.log(data[0])
+            data[0].cadastrado_em = utilsDate.viewDateFormat(data[0].cadastrado_em)
+            data[0].dt_recebimento = utilsDate.viewDateFormat(data[0].dt_recebimento)
+            data[0].dt_solicitacao = utilsDate.viewDateFormat(data[0].dt_solicitacao)
+            data[0].dt_coleta = utilsDate.viewDateFormat(data[0].dt_coleta)
+            data[0].dt_ult_transfusao = utilsDate.viewDateFormat(data[0].dt_ult_transfusao)
+
+            database('amostra_contem_exames_aux').select().where('idamostra', req.params.id)
+                .innerJoin('exame', 'amostra_contem_exames_aux.idexame', 'exame.idexame').then(exame => {
+                    let cont = 0;
+                    exame.forEach((currentExame) => {
+                        if (currentExame.status) cont++
+                    })
+
+                    exame.total_exames = exame.length
+                    exame.exames_realizados = cont
+                    res.render('amostras/visualizar', { data: data[0], exame: exame })
+                })
+        })
+    })
+
+    app.get('/editar-amostra/:id', loggedIn, (req, res) => {
+        DAOAmostra.getAmostra(req.params.id).then((data) => {
             data[0].cadastrado_em = utilsDate.inputDateFormat(data[0].cadastrado_em)
             data[0].dt_recebimento = utilsDate.inputDateFormat(data[0].dt_recebimento)
             data[0].dt_solicitacao = utilsDate.inputDateFormat(data[0].dt_solicitacao)
@@ -70,7 +92,6 @@ module.exports = (app) => {
                     exame.forEach((currentExame) => {
                         if (currentExame.status) cont++
                     })
-
                     exame.total_exames = exame.length
                     exame.exames_realizados = cont
                     res.render('amostras/editar', { data: data[0], exame: exame })

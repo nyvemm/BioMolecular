@@ -3,12 +3,11 @@ const utilsDate = require('../../utils/date')
 
 class amostraDAO {
 
-    obj_error = { status: 'error' }
-    obj_success = { status: 'success' }
-
     // O construtor recebe a conexão com o banco de dados.
     constructor(database) {
         this.database = database
+        this.obj_error = { status: 'error' }
+        this.obj_success = { status: 'success' }
     }
 
     //Lista todas as amostras.
@@ -22,11 +21,9 @@ class amostraDAO {
                 .offset(offset).orderBy(sort)
             amostras.forEach((amostra) => {
                 amostra.f_dt_recebimento = utilsDate.viewDateFormat(amostra.dt_recebimento)
-                amostra.medicamentos = JSON.parse(amostra.medicamentos)
+                amostra.medicamentos = amostra.medicamentos.split(',')
             })
             return amostras
-
-
         } catch (error) {
             console.log(error)
             throw this.obj_error
@@ -43,7 +40,7 @@ class amostraDAO {
             const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
             amostra[0].f_dt_recebimento = utilsDate.viewDateFormat(amostra[0].dt_recebimento)
             amostra[0].idade = Math.floor(diffDays / 365)
-            amostra[0].medicamentos = JSON.parse(amostra[0].medicamentos)
+            amostra[0].medicamentos = amostra[0].medicamentos.split(',')
             return amostra
         } catch (error) {
             throw this.obj_error
@@ -80,7 +77,7 @@ class amostraDAO {
                 codigo_barra: data.codigo_barra ? data.codigo_barra : null,
                 status_pedido: data.status_pedido ? data.status_pedido : 'Não avaliado',
                 cadastrado_por: data.cadastrado_por,
-                medicamentos: data.medicamentos ? `[data.medicamentos]` : '[]',
+                medicamentos: data.medicamentos ? `${data.medicamentos}` : '[]',
             })
 
             //Cria resultados para exame.
@@ -110,10 +107,9 @@ class amostraDAO {
     //Atualiza uma amostra no banco de dados.
     async updateAmostra(data) {
         const id = data.idamostra
-
         try {
             await this.database('amostra').where('idamostra', id).update({
-
+                interpretacao_resultados: data.interpretacao_resultados
             })
             return this.obj_success
         } catch (error) {
@@ -125,9 +121,17 @@ class amostraDAO {
     //Remove uma amostra do banco de dados.
     async removeAmostra(id) {
         try {
+            let ids = await this.database('amostra_contem_exames_aux').distinct('idamostraexame')
+                .innerJoin('amostra', 'amostra.idamostra', 'amostra_contem_exames_aux.idamostra')
+                .select()
+                
+            ids = Array.from(ids).map(amostra=>amostra.idamostraexame)
+            await this.database('resultados').whereIn('idamostraexame', ids).del()
+            await this.database('amostra_contem_exames_aux').whereIn('idamostraexame', ids).del()
             await this.database('amostra').where('idamostra', id).del()
             return this.obj_success
         } catch (error) {
+            console.log(error)
             throw this.obj_error
         }
     }

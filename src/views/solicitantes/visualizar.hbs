@@ -1,0 +1,49 @@
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/bootstrap/css/bootstrap.css">
+    <link rel="stylesheet" href="/css/utils/global.css">
+    <link rel="icon" href="/img/icon.png">
+    <title>LGBM - Solicitante</title>
+</head>
+
+<body>
+    {{>_menu}}
+    <main>
+        {{>_pesquisa}}
+        {{#if data}}
+        <div class="border row mb-4 p-2">
+            <a href="/editar-solicitante/{{data.idsolicitante}}" class="col-md-4">[Editar Solicitante]</a>
+            <a href="javascript:deleteData({{data.idsolicitante}})" class="col-md-4">[Remover Solicitante]</a>
+            <a href="" class="col-md-4">[Ver Amostras Associadas]</a>
+        </div>
+        <div class="warnings" id="warnings"> </div>
+
+
+        <p class='m-0'><b>ID</b>: {{data.idsolicitante}}</p>
+        <p class='m-0'><b>Nome</b>: {{data.nome}}</p>
+        <p class='m-0'><b>Email</b>: {{data.e_mail}}</p>
+        <p class='m-0'><b>Contato de Referência</b>: {{data.contato_referencia}}</p>
+        <p class='m-0'><b>Estado</b>: {{data.estado}}</p>
+        <p class='m-0'><b>Cidade</b>: {{data.cidade}} </p>
+        <p class='m-0'><b>Endereço</b>: {{data.endereco}} </p>
+        <div>
+            <hr>
+            <p class='m-0'><b>Observações</b>: {{#if data.observacao}} {{data.observacao}} {{else}} Sem observações
+                {{/if}}</p>
+            <p class='m-0'><b>Cadastro em </b>: {{data.cadastrado_em}}</p>
+            <p class='m-0'><b>Cadastrado por</b>: {{data.cadastrado_por}}</p>
+            <hr>
+        </div>
+
+        {{else}}
+        <h3>Não há um solicitante com este ID.</h3>
+        {{/if}}
+    </main>
+</body>
+
+<script src="/js/libs/jquery-3.5.1.min.js"></script>
+<script src="/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="/bootstrap/js/bootstrap.min.js"></script>
+<script src="/js/utils/global.js"></script>
+<script src="/js/solicitantes/visualizar-solicitante.js"></script>
