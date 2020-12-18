@@ -85,7 +85,6 @@ module.exports = (app) => {
 
     app.get('/amostras/:id', loggedIn, (req, res) => {
         DAOAmostra.getAmostra(req.params.id).then((data) => {
-            console.log(data)
             data[0].cadastrado_em = utilsDate.viewDateFormat(data[0].cadastrado_em)
             data[0].dt_recebimento = utilsDate.viewDateFormat(data[0].dt_recebimento)
             data[0].dt_solicitacao = utilsDate.viewDateFormat(data[0].dt_solicitacao)

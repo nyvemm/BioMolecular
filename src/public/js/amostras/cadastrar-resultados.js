@@ -79,7 +79,6 @@ function putAmostra() {
     xhr.onload = (e) => {
         if(xhr.status == 200) {
             let response = JSON.parse(xhr.responseText)
-            console.log(response)
             if('success' == response.status) {
                 setWarning('A amostra foi atualizada com sucesso.', 'success')
             } else {

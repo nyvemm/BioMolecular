@@ -47,9 +47,6 @@ class usuarioController {
             //Recebe os erros de validação da requisição.
             const validation = validationResult(req)
 
-            console.log(req.body)
-            console.log(req.file)
-
             if (validation.array().length != 0) {
                 res.json({ status: 'error', message: validation['errors'] })
             } else {

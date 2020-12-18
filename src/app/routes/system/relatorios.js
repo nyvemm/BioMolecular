@@ -21,7 +21,16 @@ module.exports = (app) => {
             })
     })
 
-    app.get('/relatorios/laudo', loggedIn, (req,res) => {
+    app.get('/relatorios/laudo', loggedIn, (req, res) => {
         res.render('relatorios/laudo')
+    })
+
+    app.get('/relatorios/gerar-laudo', (req, res) => {
+        const id = req.query.id
+        database.select(database.raw(`getInfoExamesLaudo(${id})`))
+            .then(data => res.json(data))
+            .catch(error => {
+                res.json({ status: 'error' })
+            })
     })
 }
