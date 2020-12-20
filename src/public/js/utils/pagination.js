@@ -17,7 +17,7 @@ function setOffset(data, n, limit) {
 function updatePagination(data, tableRowsLen, limit) {
     let pagination = document.getElementById('pagination')
 
-    let totalPagination = Math.floor(tableRowsLen / limit)
+    let totalPagination = Math.ceil(tableRowsLen / limit)
     let currentPagination = Math.floor(currentOffset / limit)
     let innerHTML = ''
 
@@ -37,7 +37,7 @@ function updatePagination(data, tableRowsLen, limit) {
     }
 
     /* Próximo */
-    if (currentPagination == totalPagination - 1 < 0 ? 0 : totalPagination - 1) {
+    if (totalPagination - 1 < 0 || currentPagination == totalPagination - 1 ) {
         innerHTML += `<li class="page-item disabled"><a class="page-link" href="javascript:addOffset(data, ${limit})">Próximo</a></li>`
     } else {
         innerHTML += `<li class="page-item"><a class="page-link" href="javascript:addOffset(data, ${limit})">Próximo</a></li>`

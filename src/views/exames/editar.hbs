@@ -24,7 +24,7 @@
 
                 <div class="form-group col-md-6">
                     <label for="nome">Nome</label>
-                    <input type="text" class="form-control" id="nome" name="nome" placeholder="Nome"
+                    <input type="text" class="form-control" id="nome" name="nome" placeholder="N/A"
                         value='{{data.nome}}'>
                 </div>
             </div>
@@ -32,7 +32,7 @@
             <div class="row">
                 <div class="form-group col-md-4">
                     <label for="sigla">Sigla</label>
-                    <input type="text" class="form-control" id="sigla" name="sigla" placeholder="Sigla"
+                    <input type="text" class="form-control" id="sigla" name="sigla" placeholder="N/A"
                         value='{{data.siga}}'>
                 </div>
 
@@ -51,40 +51,40 @@
 
             <div class="form-group">
                 <label for=" metodo">Método</label>
-                <input type="text" class="form-control" id="metodo" name="metodo" placeholder="Método"
+                <input type="text" class="form-control" id="metodo" name="metodo" placeholder="N/A"
                     value='{{data.metodo}}'>
             </div>
 
             <div class="row">
                 <div class="form-group col-md-4">
-                    <label for="preco">Preço</label>
-                    <input type="text" class="form-control" id="preco" name="preco" placeholder="Preço"
+                    <label for="preco">Preço (opcional)</label>
+                    <input type="text" class="form-control" id="preco" name="preco" placeholder="N/A"
                         value='{{data.preco}}'>
                 </div>
 
                 <div class="form-group col-md-4">
                     <label for="valor_ref">Valor de Referência</label>
                     <input type="text" class="form-control" id="valor_ref" name="valor_ref"
-                        placeholder="Valor de Referência" value='{{data.valor_ref}}'>
+                        placeholder="N/A" value='{{data.valor_ref}}'>
                 </div>
 
                 <div class="form-group col-md-4">
                     <label for="tipo_valor_ref">Tipo de Valor de Referência</label>
                     <input type="text" class="form-control" id="tipo_valor_ref" name="tipo_valor_ref"
-                        placeholder="Tipo de Valor de Referência" value='{{data.tipo_valor_ref}}'>
+                        placeholder="N/A" value='{{data.tipo_valor_ref}}'>
                 </div>
             </div>
 
             <div class="form-group">
                 <label for="tipo_resultado">Tipo de Resultado</label>
                 <input type="text" class="form-control" id="tipo_resultado" name="tipo_resultado"
-                    placeholder="Tipo de Resultado" value='{{data.tipo_resultado}}'>
+                    placeholder="N/A" value='{{data.tipo_resultado}}'>
             </div>
             <h3 class="subsection" class="mt-4">Informações</h3>
 
             <div class="form-group mt-3">
                 <label for="observacao">Observações (caso necessário)</label>
-                <textarea class="form-control" id="observacao" rows="3">{{data.observacao}}</textarea>
+                <textarea class="form-control" name="observacao" id="observacao" rows="3">{{data.observacao}}</textarea>
             </div>
 
             <div class="form-group">

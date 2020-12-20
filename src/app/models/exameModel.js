@@ -11,19 +11,16 @@ class exameModel {
             .isLength({ min: 3, max: 45 }).withMessage('O tipo de exame precisa ter entre 3 e 45 caracteres.'),
 
             check('metodo').trim().not().isEmpty().withMessage('É necessário informar o metodo do exame.').bail()
-            .isLength({ min: 3, max: 75 }).withMessage('O metodo do exame precisa ter entre 3 e 75 caracteres.'),
+            .isLength({ min: 3, max: 75 }).withMessage('O metodo do exame precisa ter entre 3 e 75 caracteres.')
 
-            check('preco').trim().not().isEmpty().withMessage('É necessário informar o preço do exame.').bail()
-            .isNumeric().withMessage('O preço do exame precisa ser um número.'),
+            // check('tipo_resultado').trim().not().isEmpty().withMessage('É necessário informar o tipo do resultado do exame.').bail()
+            // .isLength({ max: 50 }).withMessage('O tipo de resultado não pode ter mais de 50 caracteres.'),
 
-            check('tipo_resultado').trim().not().isEmpty().withMessage('É necessário informar o tipo do resultado do exame.').bail()
-            .isLength({ max: 50 }).withMessage('O tipo de resultado não pode ter mais de 50 caracteres.'),
+            // check('valor_ref').trim().not().isEmpty().withMessage('É necessário informar o valor de referência do exame.').bail()
+            // .isLength({ max: 45 }).withMessage('O valor de referência não pode ter mais de 45 caracteres.'),
 
-            check('valor_ref').trim().not().isEmpty().withMessage('É necessário informar o valor de referência do exame.').bail()
-            .isLength({ max: 45 }).withMessage('O valor de referência não pode ter mais de 45 caracteres.'),
-
-            check('tipo_valor_ref').trim().not().isEmpty().withMessage('É necessário informar o tipo do valor de referência do exame').bail()
-            .isLength({ min: 3, max: 45 }).withMessage('O tipo do valor de referência precisa ter entre 3 e 45 caracteres')
+            // check('tipo_valor_ref').trim().not().isEmpty().withMessage('É necessário informar o tipo do valor de referência do exame').bail()
+            // .isLength({ min: 3, max: 45 }).withMessage('O tipo do valor de referência precisa ter entre 3 e 45 caracteres')
         ]
     }
 

@@ -13,7 +13,7 @@ class amostraModel {
             check('material').trim().not().isEmpty().withMessage('O material da amostra precisa ser informado').bail()
             .isLength({ min: 3, max: 45 }).withMessage('O material precisa ter entre 3 e 45 caracteres'),
 
-            check('dt_recebimento').trim().not().isEmpty().withMessage('A data de recebimento da amostra precisa ser informado.').bail()
+            check('dt_coleta').trim().not().isEmpty().withMessage('A data da coleta da amostra precisa ser informado.').bail()
             .isDate().withMessage('A data informada precisa ser válida'),
         ]
     }

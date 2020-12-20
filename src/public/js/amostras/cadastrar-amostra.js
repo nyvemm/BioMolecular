@@ -5,7 +5,7 @@ function postData() {
     let medicamentos = Array.from(document.getElementsByName('medicamento-selecionado')).map(med => med.innerHTML)
     let exames = Array.from(document.getElementsByName('exames-escolhidos')).filter(ex => $(ex).prop('checked')).map(ex => $(ex).data('id'))
 
-    if($('exames-escolhidos').length == 0) {
+    if(document.getElementsByName('exames-escolhidos').length == 0) {
         $('#warnings').html(warningMessage('É preciso escolher pelo menos 1 exame.', 'danger'))
         window.scroll({top: 0, left: 0, behavior: 'smooth'});
         return;
@@ -43,6 +43,7 @@ function postData() {
         }
     }
     xhr.send(new URLSearchParams(formData))
+    window.scroll({top: 0, left: 0, behavior: 'smooth'});
 }
 
 
@@ -140,7 +141,7 @@ function fetchExame() {
 function adicionaMedicamento() {
     $('#lista-medicamentos').append(function () {
         if ($('#queryMedicamento').val() != '')
-            return $(`< li class="list-group-item" name = "medicamento-selecionado" > ${$('#queryMedicamento').val()}</li > `).click(function () {
+            return $(`<li class="list-group-item" name="medicamento-selecionado"> ${$('#queryMedicamento').val()} </li>`).click(function () {
                 this.remove()
             })
     })

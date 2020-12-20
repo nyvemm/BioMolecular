@@ -37,10 +37,11 @@ class exameDAO {
                 metodo: data.metodo,
                 valor_ref: data.valor_ref,
                 tipo_valor_ref: data.tipo_valor_ref,
-                preco: data.preco,
+                preco: data.preco ? data.preco : 0,
                 tipo_resultado: data.tipo_resultado,
                 valor_ref: data.valor_ref,
                 tipo_valor_ref: data.tipo_valor_ref,
+                observacao: data.observacao,
                 cadastrado_por: data.cadastrado_por
             })
             return this.obj_success
@@ -58,13 +59,15 @@ class exameDAO {
                 sigla: data.sigla,
                 tipo_analise: data.tipo_analise,
                 metodo: data.metodo,
-                preco: data.preco,
+                preco: data.preco ? data.preco : 0,
                 valor_ref: data.valor_ref,
                 tipo_resultado: data.tipo_resultado,
-                tipo_valor_ref: data.tipo_valor_ref
+                tipo_valor_ref: data.tipo_valor_ref,
+                observacao: data.observacao,
             })
             return this.obj_success
         } catch (error) {
+            console.log(error)
             return this.obj_error
         }
     }

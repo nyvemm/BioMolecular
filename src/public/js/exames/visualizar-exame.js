@@ -22,3 +22,8 @@ function deleteData(id) {
 
     xhr.send()
 }
+
+$(document).ready(() => {
+    $('#menu-link-exames').addClass('active')
+})
+

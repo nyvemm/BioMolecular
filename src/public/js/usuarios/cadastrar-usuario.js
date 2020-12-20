@@ -7,7 +7,6 @@ function cadastrar_usuario() {
     xhr.onload = (e) => {
         if (xhr.status == 200) {
             let response = JSON.parse(xhr.responseText)
-            console.log(response)
             if (response.status == 'success') {
                 $('#warnings').html(warningMessage('Usuário cadastrado com sucesso'))
             } else {

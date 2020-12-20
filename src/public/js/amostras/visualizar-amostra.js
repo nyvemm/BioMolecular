@@ -17,7 +17,6 @@ function deleteData(id) {
     xhr.onload = (e) => {
         if (xhr.status == 200) {
             let response = JSON.parse(xhr.response)
-            console.log(response)
             if ('success' == response.status) {
                 window.location.href = '/amostras'
             } else {
@@ -35,3 +34,7 @@ function deleteData(id) {
 
     xhr.send()
 }
+
+$(document).ready(() => {
+    $('#menu-link-amostras').addClass('active')
+})

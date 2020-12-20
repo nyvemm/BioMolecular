@@ -22,3 +22,7 @@ function deleteData(id) {
 
     xhr.send()
 }
+
+$(document).ready(() => {
+    $('#menu-link-pacientes').addClass('active')
+})

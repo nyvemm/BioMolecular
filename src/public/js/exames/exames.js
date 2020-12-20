@@ -32,8 +32,8 @@ function updateTable(data, offset) {
                         <th scope="row">${exame.idexame}</th>
                         <td>${exame.nome}</td>
                         <td>${exame.tipo_analise}</td>
-                        <td>${exame.metodo}</td>
-                        <td>${exame.valor_ref}</td>
+                        <td>${exame.metodo ? exame.metodo : 'N/A'}</td>
+                        <td>${exame.valor_ref ? exame.valor_ref : 'N/A'}</td>
                     </tr>`
         })
     }

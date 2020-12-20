@@ -32,7 +32,7 @@ function updateTable(data, offset) {
                         <th scope="row">${paciente.idpaciente}</th>
                         <td>${paciente.nome}</td>
                         <td>${paciente.naturalidade_cidade}-${paciente.naturalidade_estado}</td>
-                        <td>${paciente.idade}</td>
+                        <td>${paciente.idade}a ${paciente.idade_meses}m</td>
                     </tr>`
         })
     }

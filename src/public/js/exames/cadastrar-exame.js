@@ -10,7 +10,6 @@ function postData() {
         if (xhr.status == 200) {
             let response = JSON.parse(xhr.responseText)
             let innerHTML = ''
-
             if (response.status == 'error') {
                 if ('message' in response) {
                     for (let i = 0; i < response.message.length; i++) {

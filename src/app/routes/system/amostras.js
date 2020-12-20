@@ -54,7 +54,7 @@ module.exports = (app) => {
                             }
 
                             /* Seta o resultado na amostra */
-                            database('amostra').update({ status_pedido: final_status })
+                            database('amostra').update({ status_pedido: final_status, dt_liberacao: new Date() })
                                 .where('idamostra', idamostra[0].idamostra)
                                 .then(() => {
                                     res.json({ status: 'success' })
@@ -86,12 +86,20 @@ module.exports = (app) => {
     app.get('/amostras/:id', loggedIn, (req, res) => {
         DAOAmostra.getAmostra(req.params.id).then((data) => {
             data[0].cadastrado_em = utilsDate.viewDateFormat(data[0].cadastrado_em)
-            data[0].dt_recebimento = utilsDate.viewDateFormat(data[0].dt_recebimento)
-            data[0].dt_solicitacao = utilsDate.viewDateFormat(data[0].dt_solicitacao)
-            data[0].dt_coleta = utilsDate.viewDateFormat(data[0].dt_coleta)
-            data[0].dt_ult_transfusao = utilsDate.viewDateFormat(data[0].dt_ult_transfusao)
+            data[0].f_dt_recebimento = utilsDate.viewDateFormat(data[0].dt_recebimento)
+            data[0].f_dt_solicitacao = utilsDate.viewDateFormat(data[0].dt_solicitacao)
+            data[0].f_dt_coleta = utilsDate.viewDateFormat(data[0].dt_coleta)
+            data[0].f_dt_ult_transfusao = utilsDate.viewDateFormat(data[0].dt_ult_transfusao)
 
             data[0].finalizado = data[0].status_pedido == 'Finalizado'
+
+            /* Idade do Paciente */
+            if (data[0].dt_coleta) {
+                const diffTime = Math.abs(data[0].dt_coleta - data[0].dt_nasc);
+                const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+                data[0].idade_coleta = Math.floor(diffDays / 365)
+                data[0].idade_coleta_meses = Math.floor((diffDays % 365) / 30)
+            }
 
             database('amostra_contem_exames_aux').select().where('idamostra', req.params.id)
                 .innerJoin('exame', 'amostra_contem_exames_aux.idexame', 'exame.idexame').then(exame => {
@@ -157,7 +165,7 @@ module.exports = (app) => {
                             data.exames[lista_exames.findIndex((elem) => elem == tipo)].valor.push(exame)
                         })
 
-                        res.render('amostras/resultados', { data: data })
+                        res.render('amostras/resultados', { data: data, amostra: exames[0] })
                     })
 
             })

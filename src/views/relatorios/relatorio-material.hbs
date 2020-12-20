@@ -5,24 +5,28 @@
     <link rel="stylesheet" href="/css/utils/global.css">
     <link rel="stylesheet" href="/css/relatorios/relatorios.css">
     <link rel="icon" href="/img/icon.png">
-    <title>LGBM - Relatórios</title>
+    <title>LGBM - Amostra por Material</title>
 </head>
 
 <body>
     {{>_menu}}
     <main>
         {{>_pesquisa}}
-        <h3 class="subsection mt-2">Gerar Laudo da Amostra</h3>
+        <h3 class="subsection mt-2">Amostra</h3>
 
         <div>
             <hr>
             <div id="warnings"></div>
-            <div class="form-group w-25 m-0 d-inline-block">
-                <label for="id">ID da Amostra</label>
-                <input type="number" class="form-control" id="id" name="id">
+            <div class="form-group">
+                <label for="material">Situação</label>
+                <select class="form-control" id="material" onchange="gerar_amostras_material()">
+                    {{#each materiais}}
+                    <option>{{this}}</option>
+                    {{/each}}
+                </select>
             </div>
-            <button type="button" class="btn active ml-1" onclick="gerar_laudo()">Gerar Laudo</button>
         </div>
+
         <div id="tabela">
 
         </div>

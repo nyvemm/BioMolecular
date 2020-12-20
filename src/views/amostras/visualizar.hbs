@@ -36,10 +36,11 @@
                 {{#if data.finalizado}}
                 <hr>
                 <p class="m-0"><b>Resultado</b>: {{data.resultado}}</p>
+                <p class="m-0"><b>Data de Liberação</b>: {{data.dt_liberacao}}</p>
                 <hr>
                 <p class="m-0"><b>Interpretação dos resultados</b>:
-                {{#if data.interpretacao_resultados}} {{data.interpretacao_resultados}}
-                {{else}} Não há interpretações para este resultado.{{/if}}</p>
+                    {{#if data.interpretacao_resultados}} {{data.interpretacao_resultados}}
+                    {{else}} Não há interpretações para este resultado.{{/if}}</p>
                 {{/if}}
 
                 <hr>
@@ -86,6 +87,16 @@
             </div>
         </div>
 
+        <div class="card mt-4">
+            <h5 class="card-header">Amostra</h5>
+            <div class="card-body">
+                <p class='m-0'><b>Data de Solicitação</b>: {{#if data.f_dt_solicitacao}} {{data.f_dt_solicitacao}} {{else}} N/A {{/if}}</p>
+                <p class='m-0'><b>Data de Recebimento</b>: {{#if data.f_dt_recebimento}} {{data.f_dt_recebimento}} {{else}} N/A {{/if}}</p>
+                <p class='m-0'><b>Data de Coleta</b>: {{#if data.f_dt_coleta}} {{data.f_dt_coleta}} {{else}} N/A {{/if}}</p>
+                <hr>
+                {{#if data.idade_coleta}} <b>Idade do paciente durante a coleta</b>: {{data.idade_coleta}}a {{data.idade_coleta_meses}}m.  {{/if}}
+            </div>
+        </div>
 
         <div class="card mt-4">
             <h5 class="card-header">Exames</h5>
@@ -104,7 +115,7 @@
             <p class='m-0'><b>Observações</b>: {{#if data.observacao}} {{data.observacao}} {{else}} Sem observações
                 {{/if}}</p>
             <p class='m-0'><b>Cadastro em </b>: {{data.cadastrado_em}}</p>
-            <p class='m-0'><b>Cadastrado por</b>: {{data.cadastrado_por}}</p>
+            {{#if data.cadastrado_por}} <p class='m-0'><b>Cadastrado por</b>: {{data.cadastrado_por}}</p> {{/if}}
             <hr>
         </div>
         {{else}}

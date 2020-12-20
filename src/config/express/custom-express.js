@@ -96,7 +96,6 @@ app.use((req, res, next) => {
 //Caso ocorra um erro interno no servidor, retorna uma mensagem.
 app.use(function(error, req, resp, next) {
     resp.status(500).end('Houve um erro interno no servidor.')
-    console.log(error)
 })
 
 module.exports = app

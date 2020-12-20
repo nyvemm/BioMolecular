@@ -20,7 +20,14 @@ class amostraDAO {
                 .innerJoin('solicitante', 'amostra.idsolicitante', 'solicitante.idsolicitante')
                 .offset(offset).orderBy(sort)
             amostras.forEach((amostra) => {
+                const diffTime = Math.abs(new Date() - amostra.dt_nasc);
+                const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+                amostra.idade = Math.floor(diffDays / 365)
+                amostra.idade_meses = Math.floor((diffDays % 365) / 30)
+
                 amostra.f_dt_recebimento = utilsDate.viewDateFormat(amostra.dt_recebimento)
+                amostra.f_dt_coleta = utilsDate.viewDateFormat(amostra.dt_coleta)
+                amostra.f_dt_solicitacao = utilsDate.viewDateFormat(amostra.dt_solicitacao)
                 amostra.medicamentos = amostra.medcaimentos ? amostra.medicamentos.split(',') : []
             })
             return amostras
@@ -38,9 +45,12 @@ class amostraDAO {
                 .innerJoin('solicitante', 'amostra.idsolicitante', 'solicitante.idsolicitante')
             const diffTime = Math.abs(new Date() - amostra[0].dt_nasc);
             const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
-            amostra[0].f_dt_recebimento = utilsDate.viewDateFormat(amostra[0].dt_recebimento)
+        amostra[0].f_dt_recebimento = utilsDate.viewDateFormat(amostra[0].dt_recebimento)
+            amostra[0].f_dt_coleta = utilsDate.viewDateFormat(amostra[0].dt_coleta)
             amostra[0].idade = Math.floor(diffDays / 365)
+            amostra[0].idade_meses = Math.floor((diffDays % 365) / 30)
             amostra[0].medicamentos = amostra[0].medicamentos ? amostra[0].medicamentos.split(',') : []
+            amostra[0].dt_liberacao = utilsDate.viewDateFormat(amostra[0].dt_liberacao)
             return amostra
         } catch (error) {
             throw this.obj_error
@@ -49,7 +59,6 @@ class amostraDAO {
 
     //Adiciona um novo amostra ao banco de dados.
     async addAmostra(data) {
-
         //Verifica se o paciente e solicitante existem no banco de dados.   
         const hasPaciente = await this.database.select().from('paciente').where('idpaciente', data.idpaciente)
         const hasSolicitante = await this.database.select().from('solicitante').where('idsolicitante', data.idsolicitante)
@@ -74,7 +83,7 @@ class amostraDAO {
                 dt_coleta: data.dt_coleta ? data.dt_coleta : null,
                 dt_recebimento: data.dt_recebimento ? data.dt_recebimento : null,
                 dt_solicitacao: data.dt_solicitacao ? data.dt_solicitacao : null,
-                codigo_barra: data.codigo_barra ? data.codigo_barra : null,
+                codigo_barra_amostra_solicitante: data.codigo_barra_amostra_solicitante ? data.codigo_barra_amostra_solicitante : null,
                 status_pedido: data.status_pedido ? data.status_pedido : 'Não avaliado',
                 cadastrado_por: data.cadastrado_por,
                 medicamentos: data.medicamentos ? `${data.medicamentos}` : '[]',
@@ -109,7 +118,8 @@ class amostraDAO {
         const id = data.idamostra
         try {
             await this.database('amostra').where('idamostra', id).update({
-                interpretacao_resultados: data.interpretacao_resultados
+                interpretacao_resultados: data.interpretacao_resultados,
+                resultado: data.resultado
             })
             return this.obj_success
         } catch (error) {

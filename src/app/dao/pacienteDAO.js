@@ -17,6 +17,7 @@ class pacienteDAO {
                 const diffTime = Math.abs(new Date() - paciente.dt_nasc);
                 const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
                 paciente.idade = Math.floor(diffDays / 365)
+                paciente.idade_meses = Math.floor((diffDays % 365) / 30)
             })
 
             return pacientes
@@ -32,6 +33,7 @@ class pacienteDAO {
             const diffTime = Math.abs(new Date() - paciente.dt_nasc);
             const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
             paciente.idade = Math.floor(diffDays / 365)
+            paciente.idade_meses = Math.floor((diffDays % 365) / 30)
             return paciente
         } catch (error) {
             throw this.obj_error

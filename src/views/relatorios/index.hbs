@@ -15,10 +15,12 @@
         <h3 class="subsection mt-2">Relatórios</h3>
         <div>
             <hr>
-            <a href="" class="btn active">Amostra por Situação</a>
-            <a href="" class="btn active">Amostra por Material</a>
-            <a href="" class="btn active">Amostra pelo Tipo de Exame</a>
-            <a href="/relatorios/laudo" class="btn active">Gerar Laudo da Amostra</a>
+            <div class="row m-0">
+                <a href="/relatorios/amostras-situacao" class="btn active col mr-2">Amostra por Situação</a>
+                <a href="/relatorios/amostras-material" class="btn active col mr-2">Amostra por Material</a>
+                <a href="/relatorios/amostras-tipo-exame" class="btn active col mr-2">Amostra pelo Tipo de Exame</a>
+                <a href="/relatorios/laudo" class="btn active col">Gerar Laudo da Amostra</a>
+            </div>
         </div>
 
         <table class="table table-sm mt-4">
@@ -35,13 +37,13 @@
             </thead>
             <tbody>
                 {{#each amostra}}
-                <tr {{#if this.em_analise}} class="table-warning"{{/if}}>
+                <tr {{#if this.em_analise}} class="table-warning clickable-row" {{/if}} class="clickable-row" onclick=javascript:window.location.href='/amostras/{{this.idamostra}}'>
                     <th scope="row">{{this.idamostra}}</th>
-                    <td >{{this.paciente_nome}}</td>
+                    <td>{{this.paciente_nome}}</td>
                     <td>{{this.solicitante_nome}}</td>
                     <td>{{this.material}}</td>
                     <td>{{this.f_dt_recebimento}}</td>
-                    <td>{{#if this.suspeita_diagnostico }} {{this.suspeita_diagnostico}} {{else}} - {{/if}}</td>
+                    <td>{{#if this.suspeita_diagnostico }} {{this.suspeita_diagnostico}} {{else}} N/A {{/if}}</td>
                     <td>{{this.status_pedido}}</td>
                 </tr>
                 {{/each}}

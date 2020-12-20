@@ -33,7 +33,7 @@ function updateTable(data, offset) {
                         <td>${amostra.solicitante_nome}</td>
                         <td>${amostra.material}</td>
                         <td class="text-status">${amostra.status_pedido}</td>
-                        <td>${amostra.f_dt_recebimento}</td>
+                        <td>${amostra.f_dt_coleta}</td>
                     </tr>`
         })
     }

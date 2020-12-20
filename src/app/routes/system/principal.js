@@ -5,11 +5,17 @@ async function getData() {
     let nPacientes = await database('paciente').select().count({ count: '*' })
     let nExames = await database('exame').select().count({ count: '*' })
     let nSolicitantes = await database('solicitante').select().count({ count: '*' })
+    let nAmostras = await database('amostra').select().count({count: '*'})
+    let nAmostrasP = await database('amostra').select().where('status_pedido', 'Parcialmente avaliada').count({count: '*'})
+    let nAmostrasNA = await database('amostra').select().where('status_pedido', 'Não avaliado').count({count: '*'})
 
     return {
         pacientes: nPacientes[0].count,
         exames: nExames[0].count,
         solicitantes: nSolicitantes[0].count,
+        amostras: nAmostras[0].count,
+        amostrasP: nAmostrasP[0].count,
+        amostrasNA : nAmostrasNA[0].count
     }
 }
 

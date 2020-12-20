@@ -30,12 +30,18 @@
                     <input type="hidden" class="form-control" id="idamostra" name="idamostra" value={{data.idamostra}}>
                     <div class="form-group">
                         <label for="interpretacao_resultados">Interpretação dos Resultados</label>
-                        <textarea class="form-control" id="interpretacao_resultados" rows="3"></textarea>
+                        <textarea class="form-control" id="interpretacao_resultados" rows="3">{{amostra.interpretacao_resultados}}</textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="resultado">Resultado</label>
+                    <textarea class="form-control" id="resultado" rows="3">{{amostra.resultado}}</textarea>
                     </div>
 
                     <div class="row m-0 mt-4">
                         <div class="col pl-0">
-                            <button id='atualizar-amostra' type="button"  class="btn active btn-block" onclick="putAmostra()">Atualizar Amostra</button>
+                            <button id='atualizar-amostra' type="button" class="btn active btn-block"
+                                onclick="putAmostra()">Atualizar Amostra</button>
                         </div>
 
                         <div class="col pr-0">
@@ -69,12 +75,11 @@
                                     <p class="m-0 col-md-4 p-0">Tipo de Resultado: {{this.tipo_resultado}}</p>
                                 </div>
                                 <hr>
-                                {{#unless this.status}}
                                 <form method="POST" id='formulario-{{this.idamostraexame}}'>
                                     <input type="hidden" name="idamostraexame" value="{{this.idamostraexame}}">
                                     <div class="form-group">
                                         <label for="valor_resultado">Resultado do Exame</label>
-                                        <input type="text" class="form-control" id="valor_resultado"
+                                        <input type="text" class="form-control" id="valor_resultado_{{this.idamostraexame}}"
                                             name="valor_resultado">
                                     </div>
                                     <div class="form-group">
@@ -90,7 +95,6 @@
                                         Resultado</button>
                                 </form>
                                 <hr>
-                                {{/unless}}
                                 <div id="amostraexame-{{this.idamostraexame}}" class='resultado-exame-block'></div>
                             </div>
                         </div>

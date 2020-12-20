@@ -10,12 +10,11 @@ function atualizaResultados() {
                 let xButton = ` <div class="col-md-1">
                 <span style="cursor:pointer;" aria-hidden="true" onclick='deleteResultado(${resultado.idresultado})'>&times;</span>
                 </div>`
-                xButton = !resultado.status ? xButton : ''
+                // xButton = !resultado.status ? xButton : ''
 
                 $(`#amostraexame-${resultado.idamostraexame}`).append(`
                     <div class="row">
                         <div class="col-md-11">
-                        <p class="m-0"> <b>ID</b>: ${resultado.idresultado} </p>
                         <p class="m-0"> <b>Resultado</b>: ${resultado.valor_resultado} </p>
                         <p class="m-0"> <b>Observação</b>: ${resultado.observacao_resultado == '' ? 'Sem observações.' : resultado.observacao_resultado} </p>
                         </div>
@@ -71,6 +70,7 @@ function putAmostra() {
     const formData = new FormData()
     formData.append('idamostra', $('#idamostra').val())
     formData.append('interpretacao_resultados', $('#interpretacao_resultados').val())
+    formData.append('resultado', $('#resultado').val())
 
     const xhr = new XMLHttpRequest()
     xhr.open('PUT', '/amostra', true)
@@ -93,7 +93,7 @@ function postResultados(id) {
     const xhr = new XMLHttpRequest()
     const formData = new FormData(document.getElementById(`formulario-${id}`))
 
-    if ($('#valor_resultado').val() == '') {
+if ($(`#valor_resultado_${id}`).val() == '') {
         setWarning('O campo de resultado não pode estar vazio.', 'danger')
         window.scroll({top: 0, left: 0, behavior: 'smooth'});
         return;
