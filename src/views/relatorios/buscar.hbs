@@ -1,0 +1,182 @@
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/bootstrap/css/bootstrap.css">
+    <link rel="stylesheet" href="/css/utils/global.css">
+    <link rel="stylesheet" href="/css/relatorios/relatorios.css">
+    <link rel="icon" href="/img/icon.png">
+    <title>LGBM - Relatórios</title>
+</head>
+
+<body>
+    {{>_menu}}
+    <main>
+        {{>_pesquisa}}
+
+        {{#unless pacientes}}
+        {{#unless solicitantes}}
+        {{#unless exames}}
+        {{#unless amostras}}
+        <h3>Nada foi encontrado no banco de dados.</h3>
+        {{/unless}}
+        {{/unless}}
+        {{/unless}}
+        {{/unless}}
+
+        {{#if pacientes}}
+        <h3 class="subsection mt-2">Pacientes</h3>
+        <div>
+            <hr>
+            <table class="table table-sm">
+                <thead>
+                    <tr class="bg-secondary text-white">
+                        <th scope="col">#</th>
+                        <th scope="col">Nome</th>
+                        <th scope="col">Sexo</th>
+                        <th scope="col">Etnia</th>
+                        <th scope="col">Cidade</th>
+                        <th scope="col">Estado</th>
+                        <th scope="col">Recém Nascido</th>
+                        <th scope="col">Data de Nascimento</th>
+                        <th scope="col">Cadastrado em</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {{#each pacientes}}
+                    <tr onclick="javascript:window.location.href='/pacientes/{{this.idpaciente}}'"
+                        class="clickable-row">
+                        <th scope="row">{{this.idpaciente}}</th>
+                        <td>{{this.nome}}</td>
+                        <td>{{this.sexo}}</td>
+                        <td>{{this.etnia}}</td>
+                        <td>{{this.naturalidade_cidade}}</td>
+                        <td>{{this.naturalidade_estado}}</td>
+                        <td>{{this.recem_nascido}}</td>
+                        <td>{{this.dt_nasc}}</td>
+                        <td>{{this.cadastrado_em}}</td>
+                    </tr>
+                    {{/each}}
+                </tbody>
+            </table>
+            {{/if}}
+
+            {{#if solicitantes}}
+            <hr>
+            <h3 class="subsection mt-2">Solicitantes</h3>
+            <hr>
+            <table class="table table-sm">
+                <thead>
+                    <tr class="bg-secondary text-white">
+                        <th scope="col">#</th>
+                        <th scope="col">Nome</th>
+                        <th scope="col">Cidade</th>
+                        <th scope="col">Estado</th>
+                        <th scope="col">Endereço</th>
+                        <th scope="col">E-mail</th>
+                        <th scope="col">Contato</th>
+                        <th scope="col">Cadastrado em</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {{#each solicitantes}}
+                    <tr onclick="javascript:window.location.href='/solicitantes/{{this.idsolicitante}}'"
+                        class="clickable-row">
+                        <th scope="row">{{this.idsolicitante}}</th>
+                        <td>{{this.nome}}</td>
+                        <td>{{this.cidade}}</td>
+                        <td>{{this.estado}}</td>
+                        <td>{{this.endereco}}</td>
+                        <td>{{#if this.e_mail}} {{this.e_mail}} {{else}} N/A {{/if}}</td>
+                        <td>{{#if this.contato_referencia}} {{this.contato_referencia}} {{else}} N/A {{/if}}</td>
+                        <td>{{this.cadastrado_em}}</td>
+                    </tr>
+                    {{/each}}
+                </tbody>
+            </table>
+            {{/if}}
+
+            {{#if exames}}
+            <hr>
+            <h3 class="subsection mt-2">Exames</h3>
+            <hr>
+            <table class="table table-sm">
+                <thead>
+                    <tr class="bg-secondary text-white">
+                        <th scope="col">#</th>
+                        <th scope="col">Nome</th>
+                        <th scope="col">Sigla</th>
+                        <th scope="col">Tipo</th>
+                        <th scope="col">Método</th>
+                        <th scope="col">Preço</th>
+                        <th scope="col">Valor de Referência</th>
+                        <th scope="col">Tipo de Valor de Referência</th>
+                        <th scope="col">Tipo de Resultado</th>
+                        <th scope="col">Cadastrado em</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {{#each exames}}
+                    <tr onclick="javascript:window.location.href='/exames/{{this.idexame}}'" class="clickable-row">
+                        <th scope="row">{{this.idexame}}</th>
+                        <td>{{this.nome}}</td>
+                        <td>{{#if this.sigla}} {{this.sigla}} {{else}} N/A {{/if}}</td>
+                        <td>{{#if this.tipo_analise}} {{this.tipo_analise}} {{else}} N/A {{/if}}</td>
+                        <td>{{#if this.metodo}} {{this.metodo}} {{else}} N/A {{/if}}</td>
+                        <td>{{#if this.preco}} {{this.preco}} {{else}} N/A {{/if}}</td>
+                        <td>{{#if this.valor_ref}} {{this.valor_ref}} {{else}} N/A {{/if}}</td>
+                        <td>{{#if this.tipo_valor_ref}} {{this.tipo_valor_ref}} {{else}} N/A {{/if}}</td>
+                        <td>{{#if this.tipo_resultado}} {{this.tipo_resultado}} {{else}} N/A {{/if}}</td>
+                        <td>{{this.cadastrado_em}}</td>
+                    </tr>
+                    {{/each}}
+                </tbody>
+            </table>
+            {{/if}}
+
+            {{#if amostras}}
+            <hr>
+            <h3 class="subsection mt-2">Amostras</h3>
+            <hr>
+            <table class="table table-sm">
+                <thead>
+                    <tr class="bg-secondary text-white">
+                        <th scope="col">#</th>
+                        <th scope="col">Material</th>
+                        <th scope="col">Data de Solicitação</th>
+                        <th scope="col">Data de Recebimento</th>
+                        <th scope="col">Data de Coleta</th>
+                        <th scope="col">Gestante</th>
+                        <th scope="col">Transfusão de Sangue</th>
+                        <th scope="col">Uso de Medicamentos</th>
+                        <th scope="col">Status</th>
+                        <th scope="col">Data de Liberação</th>
+                        <th scope="col">Cadastrado em</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {{#each amostras}}
+                    <tr onclick="javascript:window.location.href='/amostras/{{this.idamostra}}'" class="clickable-row">
+                        <th scope="row">{{this.idamostra}}</th>
+                        <td>{{this.nome}}</td>
+                        <td>{{#if this.material}} {{this.material}} {{else}} N/A {{/if}}</td>
+                        <td>{{#if this.dt_solicitacao}} {{this.dt_solicitacao}} {{else}} N/A {{/if}}</td>
+                        <td>{{#if this.dt_recebimento}} {{this.dt_recebimento}} {{else}} N/A {{/if}}</td>
+                        <td>{{#if this.dt_coleta}} {{this.dt_coleta}} {{else}} N/A {{/if}}</td>
+                        <td>{{#if this.gestante}} {{this.gestante}} {{else}} N/A {{/if}}</td>
+                        <td>{{#if this.transfusao}} {{this.transfusao}} {{else}} N/A {{/if}}</td>
+                        <td>{{#if this.status_pedido}} {{this.status_pedido}} {{else}} N/A {{/if}}</td>
+                        <td>{{#if this.dt_liberacao}} {{this.dt_liberacao}} {{else}} N/A {{/if}}</td>
+                        <td>{{this.cadastrado_em}}</td>
+                    </tr>
+                    {{/each}}
+                </tbody>
+            </table>
+            {{/if}}
+        </div>
+    </main>
+</body>
+
+<script src="/js/libs/jquery-3.5.1.min.js"></script>
+<script src="/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="/bootstrap/js/bootstrap.min.js"></script>
+<script src="/js/relatorios/buscar.js"></script>

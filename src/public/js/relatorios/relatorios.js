@@ -15,39 +15,16 @@ function gerar_laudo() {
             }
 
             response.forEach(({ tipo, valor }) => {
-                if (tipo.toLowerCase().includes('molecular')) {
-                    let subquery = valor.map((x => {
-                        return `<tr>
-                        <th>${x.nome}</th>
-                        <td>${x.resultado ? x.resultado : 'Sem resultados'}</td>
-                        <td>${x.metodo ? x.metodo : 'N/A'}</td>
-                    </tr>`
-                    })).join('')
-
-                    let query = `<table class="table table border mt-4">
-                        <thead>
-                            <tr class="bg-secondary text-white font-weight-bold">
-                                <th scope="col">${tipo}</th>
-                                <th scope="col">Resultado</th>
-                                <th scope="col">Método</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                        ${subquery}
-                        </tbody>
-                    </table>`
-                    tabela.html(tabela.html() + query)
-                } else {
-                    let subquery = valor.map((x => {
-                        return `<tr>
+                let subquery = valor.map((x => {
+                    return `<tr>
                         <th>${x.nome}</th>
                         <td>${x.valor_resultado ? x.valor_resultado : 'Sem resultados'}</td>
                         <td>${x.metodo ? x.metodo : 'N/A'}</td>
                         <td>${x.valor_ref ? x.valor_ref : 'N/A'}</td>
                     </tr>`
-                    })).join('')
+                })).join('')
 
-                    let query = `<table class="table table border mt-4">
+                let query = `<table class="table table border mt-4">
                         <thead>
                             <tr class="bg-secondary text-white font-weight-bold">
                                 <th scope="col">${tipo}</th>
@@ -60,8 +37,8 @@ function gerar_laudo() {
                         ${subquery}
                         </tbody>
                     </table>`
-                    tabela.html(tabela.html() + query)
-                }
+                tabela.html(tabela.html() + query)
+                $('#warnings').html('')
             })
         }
     }
@@ -90,9 +67,9 @@ function gerar_amostras_situacao() {
                         <td>${amostra.material}</td>
                         <td>${amostra.f_dt_coleta}</td>
                     </tr>`
-            })
+            }).join('')
 
-            $('#tabela').html($('#tabela').html() + `<table class="table table border mt-4">
+            tabela.html(`<table class="table table border mt-4">
                         <thead>
                             <tr class="bg-secondary text-white font-weight-bold">
                                 <th scope="col">Nome do Solicitante</th>
@@ -134,9 +111,9 @@ function gerar_amostras_material() {
                         <td>${amostra.material}</td>
                         <td>${amostra.f_dt_coleta}</td>
                     </tr>`
-            })
+            }).join('')
 
-            $('#tabela').html($('#tabela').html() + `<table class="table table border mt-4">
+            tabela.html(`<table class="table table border mt-4">
                         <thead>
                             <tr class="bg-secondary text-white font-weight-bold">
                                 <th scope="col">Nome do Solicitante</th>
@@ -172,15 +149,16 @@ function gerar_amostras_tipo_analise() {
             }
 
             let subquery = response.map(amostra => {
+                console.log(amostra)
                 return `<tr onclick="javascript:window.location.href='/amostras/${amostra.idamostra}'" class="clickable-row">
                         <td>${amostra.paciente_nome}</td>
                         <td>${amostra.solicitante_nome}</td>
                         <td>${amostra.material}</td>
                         <td>${amostra.f_dt_coleta}</td>
                     </tr>`
-            })
+            }).join('')
 
-            tabela.html(tabela.html() + `<table class="table table border mt-4">
+            tabela.html(`<table class="table table border mt-4">
                         <thead>
                             <tr class="bg-secondary text-white font-weight-bold">
                                 <th scope="col">Nome do Solicitante</th>

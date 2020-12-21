@@ -23,7 +23,7 @@
             </div>
         </div>
 
-        <table class="table table-sm mt-4">
+        <table class="table table-sm mt-4 border">
             <thead>
                 <tr>
                     <th scope="col">#</th>
@@ -37,12 +37,16 @@
             </thead>
             <tbody>
                 {{#each amostra}}
-                <tr {{#if this.em_analise}} class="table-warning clickable-row" {{/if}} class="clickable-row" onclick=javascript:window.location.href='/amostras/{{this.idamostra}}'>
+                <tr {{#if this.em_analise}} class="table-warning clickable-row" {{else}} 
+                {{#if this.cadastrado}} class="table-danger clickable-row" {{else}}
+                {{#if this.finalizado}} class="table-success clickable-row" {{else}}
+                class="clickable-row" {{/if}} {{/if}} {{/if}}
+                  onclick=javascript:window.location.href='/amostras/{{this.idamostra}}'>
                     <th scope="row">{{this.idamostra}}</th>
                     <td>{{this.paciente_nome}}</td>
                     <td>{{this.solicitante_nome}}</td>
                     <td>{{this.material}}</td>
-                    <td>{{this.f_dt_recebimento}}</td>
+                    <td>{{#if this.f_dt_coleta}} {{this.f_dt_coleta}}{{/if}}</td>
                     <td>{{#if this.suspeita_diagnostico }} {{this.suspeita_diagnostico}} {{else}} N/A {{/if}}</td>
                     <td>{{this.status_pedido}}</td>
                 </tr>
