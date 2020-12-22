@@ -50,6 +50,13 @@
                 </div>
 
                 <hr>
+
+                <div class="form-group">
+                    <label for="solicitacao">Solicitação</label>
+                    <input type="text" class="form-control" id="solicitacao" name="solicitacao" placeholder="-"
+                        value='{{data.solicitacao}}' disabled>
+                </div>
+                
                 <div class="row">
                     <div class="form-group col-md-6">
                         <label for="gestante">Gestante</label>
@@ -64,7 +71,7 @@
                     <div class="form-group col-md-6">
                         <label for="semanas_gestacao">Semanas de Gestação (opcional) </label>
                         <input type="text" class="form-control" id="semanas_gestacao" name="semanas_gestacao"
-                            value='{{data.semanas_gestacao}}' placeholder='-' disabled>
+                            value='{{data.semanas_gestacao}}' placeholder='N/A' disabled>
                     </div>
                 </div>
 
@@ -108,12 +115,13 @@
                     </div>
                 </div>
 
-
+                {{#if data.medicamentos}}
                 <ul id="lista-medicamentos" class="list-group">
                     {{#each data.medicamentos}}
                     <li class="list-group-item paciente-item">{{this}}</li>
                     {{/each}}
                 </ul>
+                {{/if}}
 
 
                 <div class="form-group">

@@ -122,6 +122,7 @@ module.exports = (app) => {
             data[0].dt_solicitacao = utilsDate.inputDateFormat(data[0].dt_solicitacao)
             data[0].dt_coleta = utilsDate.inputDateFormat(data[0].dt_coleta)
             data[0].dt_ult_transfusao = utilsDate.inputDateFormat(data[0].dt_ult_transfusao)
+            data[0].medicamentos = JSON.parse(data[0].medicamentos).length > 0 ? JSON.parse(data[0].medicamentos).split(',') : null
 
             database('amostra_contem_exames_aux').select().where('idamostra', req.params.id)
                 .innerJoin('exame', 'amostra_contem_exames_aux.idexame', 'exame.idexame').then(exame => {

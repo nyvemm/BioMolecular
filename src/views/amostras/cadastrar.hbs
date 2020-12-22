@@ -52,6 +52,11 @@
                         </div>
                     </div>
                     <hr>
+                    <div class="form-group">
+                        <label for="solicitacao">Solicitação</label>
+                        <input type="text" class="form-control" id="solicitacao" name="solicitacao"
+                            value="Diagnóstico - Hemoglobinopatias" placeholder="Solicitação">
+                    </div>
                     <div class="row">
                         <div class="form-group col-md-6">
                             <label for="gestante">Gestante</label>
@@ -64,7 +69,7 @@
                         <div class="form-group col-md-6">
                             <label for="semanas_gestacao">Semanas de Gestação (opcional) </label>
                             <input type="text" class="form-control" id="semanas_gestacao" name="semanas_gestacao"
-                                placeholder="Semanas de Gestação" disabled>
+                                placeholder="N/A" disabled>
                         </div>
                     </div>
 
@@ -80,7 +85,7 @@
                         <div class="form-group col-md-6">
                             <label for="dt_ult_transfusao">Data da última transfusão (opcional)</label>
                             <input type="date" class="form-control" id="dt_ult_transfusao" name="dt_ult_transfusao"
-                                placeholder="Data da Última Transfusão" disabled>
+                                placeholder="N/A"  disabled>
                         </div>
                     </div>
 
@@ -172,7 +177,7 @@
             <div class="card mt-4">
                 <h5 class="card-header">Amostra</h5>
                 <div class="card-body">
-                    
+
                     <div class="form-group">
                         <label for="material">Material da Amostra</label>
                         <select class="form-control" id="material" name="material">
@@ -202,10 +207,9 @@
 
                     <div class="form-group">
                         <label for="codigo_barra_amostra_solicitante">Código de Barras (opcional)</label>
-                        <input type="text" class="form-control" id="codigo_barra_amostra_solicitante" name="codigo_barra_amostra_solicitante"
-                            placeholder="Código de Barras">
+                        <input type="text" class="form-control" id="codigo_barra_amostra_solicitante"
+                            name="codigo_barra_amostra_solicitante" placeholder="Código de Barras">
                     </div>
-
                     <hr>
                     <h3 class="subsection" class="mt-4">Exames</h3>
 

@@ -90,6 +90,7 @@
         <div class="card mt-4">
             <h5 class="card-header">Amostra</h5>
             <div class="card-body">
+                <p class='m-0'><b>Solicitação</b>: {{#if data.solicitacao}} {{data.solicitacao}} {{else}} N/A {{/if}}</p>
                 <p class='m-0'><b>Data de Solicitação</b>: {{#if data.f_dt_solicitacao}} {{data.f_dt_solicitacao}} {{else}} N/A {{/if}}</p>
                 <p class='m-0'><b>Data de Recebimento</b>: {{#if data.f_dt_recebimento}} {{data.f_dt_recebimento}} {{else}} N/A {{/if}}</p>
                 <p class='m-0'><b>Data de Coleta</b>: {{#if data.f_dt_coleta}} {{data.f_dt_coleta}} {{else}} N/A {{/if}}</p>

@@ -28,8 +28,9 @@ class amostraDAO {
                 amostra.f_dt_recebimento = utilsDate.viewDateFormat(amostra.dt_recebimento)
                 amostra.f_dt_coleta = utilsDate.viewDateFormat(amostra.dt_coleta)
                 amostra.f_dt_solicitacao = utilsDate.viewDateFormat(amostra.dt_solicitacao)
-                amostra.medicamentos = amostra.medcaimentos ? amostra.medicamentos.split(',') : []
+                amostra.medicamentos = JSON.parse(amostra.medicamentos).length > 0 ? JSON.parse(amostra.medicamentos).split(',') : null
             })
+
             return amostras
         } catch (error) {
             console.log(error)
@@ -85,6 +86,7 @@ class amostraDAO {
                 dt_solicitacao: data.dt_solicitacao ? data.dt_solicitacao : null,
                 codigo_barra_amostra_solicitante: data.codigo_barra_amostra_solicitante ? data.codigo_barra_amostra_solicitante : null,
                 status_pedido: data.status_pedido ? data.status_pedido : 'Não avaliado',
+                solicitacao: data.solicitacao ? data.solicitacao : null,
                 cadastrado_por: data.cadastrado_por,
                 medicamentos: data.medicamentos ? `${data.medicamentos}` : '[]',
             })
@@ -133,7 +135,7 @@ class amostraDAO {
         try {
             let ids = await this.database('amostra_contem_exames_aux').distinct('idamostraexame')
                 .innerJoin('amostra', 'amostra.idamostra', 'amostra_contem_exames_aux.idamostra')
-                .select()
+                .where('amostra.idamostra', id).select()
                 
             ids = Array.from(ids).map(amostra=>amostra.idamostraexame)
             await this.database('resultados').whereIn('idamostraexame', ids).del()

@@ -22,7 +22,7 @@ function deleteData(id) {
             } else {
                 $('#warnings').html(`
                 <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                    Há amostras associadas a esse amostra.
+                    Erro ao remover amostra.
                     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
