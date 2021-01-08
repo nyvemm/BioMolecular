@@ -149,7 +149,6 @@ function gerar_amostras_tipo_analise() {
             }
 
             let subquery = response.map(amostra => {
-                console.log(amostra)
                 return `<tr onclick="javascript:window.location.href='/amostras/${amostra.idamostra}'" class="clickable-row">
                         <td>${amostra.paciente_nome}</td>
                         <td>${amostra.solicitante_nome}</td>

@@ -175,4 +175,14 @@ module.exports = (app) => {
     app.get('/cadastrar-amostra', loggedIn, (req, res) => {
         res.render('amostras/cadastrar')
     })
+
+    app.get('/amostra-exames', loggedIn, (req, res) => {
+        const id = req.query.id
+        database('amostra_contem_exames_aux').where('idamostra', id).then(data => {
+            res.json(data)
+        }).catch(error => {
+            res.json({ status: error })
+            console.log(error)
+        })
+    })
 }

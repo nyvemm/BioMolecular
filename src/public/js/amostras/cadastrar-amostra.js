@@ -175,8 +175,6 @@ $(document).ready(() => {
             $('#medicamentos').css('display', 'block')
         }
     })
-
-
 })
 
 $(document).ready(() => {

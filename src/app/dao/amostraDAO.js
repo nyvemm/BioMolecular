@@ -41,12 +41,13 @@ class amostraDAO {
     // Lista a amostra pela sua chave primária.
     async getAmostra(id) {
         try {
-            let amostra = await this.database('amostra').where('idamostra', id).select(database.raw(`*, paciente.nome as paciente_nome, solicitante.nome as solicitante_nome`))
+            let amostra = await this.database('amostra').where('idamostra', id).select(database.raw(`*, paciente.nome as paciente_nome, solicitante.nome as solicitante_nome, amostra.cadastrado_por as cadastrado_por`))
                 .innerJoin('paciente', 'amostra.idpaciente', 'paciente.idpaciente')
                 .innerJoin('solicitante', 'amostra.idsolicitante', 'solicitante.idsolicitante')
             const diffTime = Math.abs(new Date() - amostra[0].dt_nasc);
             const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
-        amostra[0].f_dt_recebimento = utilsDate.viewDateFormat(amostra[0].dt_recebimento)
+
+            amostra[0].f_dt_recebimento = utilsDate.viewDateFormat(amostra[0].dt_recebimento)
             amostra[0].f_dt_coleta = utilsDate.viewDateFormat(amostra[0].dt_coleta)
             amostra[0].idade = Math.floor(diffDays / 365)
             amostra[0].idade_meses = Math.floor((diffDays % 365) / 30)
@@ -117,11 +118,25 @@ class amostraDAO {
 
     //Atualiza uma amostra no banco de dados.
     async updateAmostra(data) {
+        console.log(data)
         const id = data.idamostra
         try {
             await this.database('amostra').where('idamostra', id).update({
-                interpretacao_resultados: data.interpretacao_resultados,
-                resultado: data.resultado
+                interpretacao_resultados: data.interpretacao_resultados ? data.interpretacao_resultados : null,
+                resultado: data.resultado ? data.resultado : null,
+
+                solicitacao: data.solicitacao ? data.solicitacao : null,
+                gestante: data.gestante ? data.gestante : null,
+                semanas_gestacao: data.semanas_gestacao ? data.semanas_gestacao : null,
+                transfusao: data.transfusao ? data.transfusao : null,
+                dt_ult_transfusao: data.dt_ult_transfusao ? data.dt_ult_transfusao : null,
+                suspeita_diagnostico: data.suspeita_diagnostico ? data.suspeita_diagnostico : null,
+                material: data.material ? data.material : null,
+                dt_solicitacao: data.dt_solicitacao ? data.dt_solicitacao : null,
+                dt_coleta: data.dt_coleta ? data.dt_coleta: null,
+                dt_recebimento: data.dt_recebimento ? data.dt_recebimento : null,
+                codigo_barra : data.codigo_barra ? data.codigo_barra : null,
+                observacao : data.observacao ? data.observacao : null
             })
             return this.obj_success
         } catch (error) {
@@ -136,8 +151,8 @@ class amostraDAO {
             let ids = await this.database('amostra_contem_exames_aux').distinct('idamostraexame')
                 .innerJoin('amostra', 'amostra.idamostra', 'amostra_contem_exames_aux.idamostra')
                 .where('amostra.idamostra', id).select()
-                
-            ids = Array.from(ids).map(amostra=>amostra.idamostraexame)
+
+            ids = Array.from(ids).map(amostra => amostra.idamostraexame)
             await this.database('resultados').whereIn('idamostraexame', ids).del()
             await this.database('amostra_contem_exames_aux').whereIn('idamostraexame', ids).del()
             await this.database('amostra').where('idamostra', id).del()

@@ -27,221 +27,233 @@
         </div>
 
         <!-- Paciente !-->
-        <div class="card mt-4">
-            <h5 class="card-header">Paciente</h5>
-            <div class="card-body">
-                <div class="row">
-                    <div class="form-group col-md-3">
-                        <label for="idpaciente">ID do Paciente</label>
-                        <input type="text" class="form-control" id="idpaciente" name="idpaciente"
-                            value={{data.idpaciente}} readonly required>
+        <form method="PUT" id="formulario">
+            <div class="card mt-4">
+                <h5 class="card-header">Paciente</h5>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="form-group col-md-3">
+                            <label for="idpaciente">ID do Paciente</label>
+                            <input type="text" class="form-control" id="idpaciente" name="idpaciente"
+                                value={{data.idpaciente}} readonly required>
+                        </div>
+
+                        <div class="form-group col-md-6">
+                            <label for="nomepaciente">Nome do Paciente</label>
+                            <input type="text" class="form-control" id="nomepaciente" name="nomepaciente"
+                                value='{{data.paciente_nome}}' readonly>
+                        </div>
+
+                        <div class="form-group col-md-3">
+                            <label for="idade">Idade</label>
+                            <input type="text" class="form-control" id="idade" name="idade" value={{data.idade}}
+                                readonly>
+                        </div>
                     </div>
 
-                    <div class="form-group col-md-6">
-                        <label for="nomepaciente">Nome do Paciente</label>
-                        <input type="text" class="form-control" id="nomepaciente" name="nomepaciente"
-                            value='{{data.paciente_nome}}' readonly>
+                    <hr>
+
+                    <div class="form-group">
+                        <label for="solicitacao">Solicitação</label>
+                        <input type="text" class="form-control" id="solicitacao" name="solicitacao" placeholder="N/A"
+                            value='{{data.solicitacao}}'>
                     </div>
 
-                    <div class="form-group col-md-3">
-                        <label for="idade">Idade</label>
-                        <input type="text" class="form-control" id="idade" name="idade" value={{data.idade}} readonly>
-                    </div>
-                </div>
+                    <div class="row">
+                        <div class="form-group col-md-6">
+                            <label for="gestante">Gestante</label>
+                            <select class="form-control" id="gestante" name="gestante">
+                                {{#select data.gestante}}
+                                <option value=false>Não</option>
+                                <option value=true>Sim</option>
+                                {{/select}}
+                            </select>
+                        </div>
 
-                <hr>
-
-                <div class="form-group">
-                    <label for="solicitacao">Solicitação</label>
-                    <input type="text" class="form-control" id="solicitacao" name="solicitacao" placeholder="-"
-                        value='{{data.solicitacao}}' disabled>
-                </div>
-                
-                <div class="row">
-                    <div class="form-group col-md-6">
-                        <label for="gestante">Gestante</label>
-                        <select class="form-control" id="gestante" name="gestante" disabled>
-                            {{#select data.gestante}}
-                            <option value=false>Não</option>
-                            <option value=true>Sim</option>
-                            {{/select}}
-                        </select>
+                        <div class="form-group col-md-6">
+                            <label for="semanas_gestacao">Semanas de Gestação (opcional) </label>
+                            <input type="text" class="form-control" id="semanas_gestacao" name="semanas_gestacao"
+                                value='{{data.semanas_gestacao}}' placeholder='N/A' disabled>
+                        </div>
                     </div>
 
-                    <div class="form-group col-md-6">
-                        <label for="semanas_gestacao">Semanas de Gestação (opcional) </label>
-                        <input type="text" class="form-control" id="semanas_gestacao" name="semanas_gestacao"
-                            value='{{data.semanas_gestacao}}' placeholder='N/A' disabled>
-                    </div>
-                </div>
+                    <div class="row">
+                        <div class="form-group col-md-6">
+                            <label for="transfusao">Transfusão de Sangue</label>
+                            <select class="form-control" id="transfusao" name="transfusao">
+                                {{#select data.transfusao}}
+                                <option value=false>Não</option>
+                                <option value=true>Sim</option>
+                                {{/select}}
+                            </select>
+                        </div>
 
-                <div class="row">
-                    <div class="form-group col-md-6">
-                        <label for="transfusao">Transfusão de Sangue</label>
-                        <select class="form-control" id="transfusao" name="transfusao" disabled>
-                            {{#select data.transfusao}}
-                            <option value=false>Não</option>
-                            <option value=true>Sim</option>
-                            {{/select}}
-                        </select>
-                    </div>
-
-                    <div class="form-group col-md-6">
-                        <label for="dt_ult_transfusao">Data da última transfusão (opcional)</label>
-                        <input type="text" class="form-control" id="dt_ult_transfusao" name="dt_ult_transfusao"
-                            value="{{dt.dt_ult_transfusao}}" placeholder='-' disabled>
-                    </div>
-                </div>
-
-                <div class="row">
-                    <div class="form-group col-md-6">
-                        <label for="uso_hidroxiureia">Uso de Hidroxiuréia</label>
-                        <select class="form-control" id="uso_hidroxiureia" name="uso_hidroxiureia" disabled>
-                            {{#select data.uso_hidroxiureia}}
-                            <option value=false>Não</option>
-                            <option value=true>Sim</option>
-                            {{/select}}
-                        </select>
+                        <div class="form-group col-md-6">
+                            <label for="dt_ult_transfusao">Data da última transfusão (opcional)</label>
+                            <input type="text" class="form-control" id="dt_ult_transfusao" name="dt_ult_transfusao"
+                                value="{{dt.dt_ult_transfusao}}" placeholder='N/A' onfocus="this.type='date'" disabled>
+                        </div>
                     </div>
 
-                    <div class="form-group col-md-6">
-                        <label for="uso_medicamentos">Uso de Medicamentos</label>
-                        <select class="form-control" id="uso_medicamentos" name="uso_medicamentos" disabled>
-                            {{#select data.uso_medicamentos}}
-                            <option value=false>Não</option>
-                            <option value=true>Sim</option>
-                            {{/select}}
-                        </select>
-                    </div>
-                </div>
+                    <div class="row">
+                        <div class="form-group col-md-6">
+                            <label for="uso_hidroxiureia">Uso de Hidroxiuréia</label>
+                            <select class="form-control" id="uso_hidroxiureia" name="uso_hidroxiureia" disabled>
+                                {{#select data.uso_hidroxiureia}}
+                                <option value=false>Não</option>
+                                <option value=true>Sim</option>
+                                {{/select}}
+                            </select>
+                        </div>
 
-                {{#if data.medicamentos}}
-                <ul id="lista-medicamentos" class="list-group">
-                    {{#each data.medicamentos}}
-                    <li class="list-group-item paciente-item">{{this}}</li>
-                    {{/each}}
-                </ul>
-                {{/if}}
-
-
-                <div class="form-group">
-                    <label for="suspeita_diagnostico">Suspeita de Diagnóstico (opcional)</label>
-                    <input type="text" class="form-control" id="suspeita_diagnostico" name="suspeita_diagnostico"
-                        placeholder="-" value='{{data.suspeita_diagnostico}}' disabled>
-                </div>
-            </div>
-        </div>
-
-
-        <!-- Solicitante !-->
-        <div class="card mt-4">
-            <h5 class="card-header">Solicitante</h5>
-            <div class="card-body">
-                <div class="row">
-                    <div class="form-group col-md-3">
-                        <label for="idsolicitante">ID do Solicitante</label>
-                        <input type="text" class="form-control" id="idsolicitante" name="idsolicitante" placeholder="ID"
-                            value={{data.idsolicitante}} readonly required>
+                        <div class="form-group col-md-6">
+                            <label for="uso_medicamentos">Uso de Medicamentos</label>
+                            <select class="form-control" id="uso_medicamentos" name="uso_medicamentos" disabled>
+                                {{#select data.uso_medicamentos}}
+                                <option value=false>Não</option>
+                                <option value=true>Sim</option>
+                                {{/select}}
+                            </select>
+                        </div>
                     </div>
 
-                    <div class="form-group col-md-5">
-                        <label for="nomesolicitante">Nome do Solicitante</label>
-                        <input type="text" class="form-control" id="nomesolicitante" name="nomesolicitante"
-                            value='{{data.solicitante_nome}}' readonly>
-                    </div>
+                    {{#if data.medicamentos}}
+                    <ul id="lista-medicamentos" class="list-group">
+                        {{#each data.medicamentos}}
+                        <li class="list-group-item paciente-item">{{this}}</li>
+                        {{/each}}
+                    </ul>
+                    {{/if}}
 
-                    <div class="form-group col-md-4">
-                        <label for="cidadeestado">Cidade</label>
-                        <input type="text" class="form-control" id="cidadeestado" name="cidadeestado"
-                            placeholder="Cidade" value='{{data.naturalidade_cidade}} - {{data.naturalidade_estado}}'
-                            readonly>
+
+                    <div class="form-group">
+                        <label for="suspeita_diagnostico">Suspeita de Diagnóstico (opcional)</label>
+                        <input type="text" class="form-control" id="suspeita_diagnostico" name="suspeita_diagnostico"
+                            placeholder="N/A" value='{{data.suspeita_diagnostico}}'>
                     </div>
                 </div>
             </div>
-        </div>
 
-        <!-- Amostra !-->
-        <div class="card mt-4">
-            <h5 class="card-header">Amostra</h5>
-            <div class="card-body">
-                <div class="row">
-                    <div class="form-group col-md-4">
-                        <label for="idamostra">ID</label>
-                        <input type="text" class="form-control" id="idamostra" name="idamostra" value={{data.idamostra}}
-                            disabled>
+
+            <!-- Solicitante !-->
+            <div class="card mt-4">
+                <h5 class="card-header">Solicitante</h5>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="form-group col-md-3">
+                            <label for="idsolicitante">ID do Solicitante</label>
+                            <input type="text" class="form-control" id="idsolicitante" name="idsolicitante"
+                                placeholder="ID" value={{data.idsolicitante}} readonly required>
+                        </div>
+
+                        <div class="form-group col-md-5">
+                            <label for="nomesolicitante">Nome do Solicitante</label>
+                            <input type="text" class="form-control" id="nomesolicitante" name="nomesolicitante"
+                                value='{{data.solicitante_nome}}' readonly>
+                        </div>
+
+                        <div class="form-group col-md-4">
+                            <label for="cidadeestado">Cidade</label>
+                            <input type="text" class="form-control" id="cidadeestado" name="cidadeestado"
+                                placeholder="Cidade" value='{{data.naturalidade_cidade}} - {{data.naturalidade_estado}}'
+                                readonly>
+                        </div>
                     </div>
-                    <div class="form-group col-md-8">
-                        <label for="material">Material da Amostra</label>
-                        {{#select data.material}}
-                        <select class="form-control" id="material" name="material" disabled>
-                            <option>Sangue Total</option>
-                            <option>DNA</option>
-                            <option>Papel Filtro</option>
-                            <option>Outro</option>
-                        </select>
-                        {{/select}}
-                    </div>
-                </div>
-
-                <div class="row">
-                    <div class="form-group col-md-4">
-                        <label for="dt_solicitacao">Data de Solicitação (opcional)</label>
-                        <input type="text" placeholder='-' class="form-control" id="dt_solicitacao"
-                            name="dt_solicitacao" value='{{data.dt_solicitacao}}' disabled>
-                    </div>
-
-                    <div class="form-group col-md-4">
-                        <label for="dt_coleta">Data de Coleta (opcional)</label>
-                        <input type="text" placeholder='-' class="form-control" id="dt_coleta" name="dt_coleta"
-                            value='{{data.dt_coleta}}' disabled>
-                    </div>
-
-                    <div class="form-group col-md-4">
-                        <label for="dt_recebimento">Data de Recebimento</label>
-                        <input type="text" placeholder='-' class="form-control" id="dt_recebimento"
-                            name="dt_recebimento" value='{{data.dt_recebimento}}' disabled>
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    <label for="codigo_barra">Código de Barras (opcional)</label>
-                    <input type="text" class="form-control" id="codigo_barra" name="codigo_barra" placeholder="-"
-                        value='{{data.codigo_barra}}' disabled>
-                </div>
-
-                <hr>
-                <h3 class="subsection" class="mt-4">Exames</h3>
-                <ul id="lista-exames" class="list-group">
-                    {{#each exame}}
-                    <li class="list-group-item paciente-item"><a target='_blank'
-                            href="/exames/{{this.idexame}}">{{this.nome}}</a></li>
-                    {{/each}}
-                </ul>
-
-                <hr>
-                <h3 class="subsection" class="mt-4">Informações</h3>
-
-                <div class="form-group">
-                    <label for="observacao">Observações (caso necessário)</label>
-                    <textarea class="form-control" id="observacao" rows="3" disabled>{{data.observacao}}</textarea>
-                </div>
-
-                <div class="form-group mt-4">
-                    <label for="cadastrado_em">Cadastrado em</label>
-                    <input type="date" class="form-control" id="cadastrado_em" name="cadastrado_em"
-                        value='{{data.cadastrado_em}}' readonly>
-                </div>
-
-                <div class="form-group mb-4">
-                    <label for="cadastrado_por">Cadastrado por</label>
-                    <input type="text" class="form-control" id="cadastrado_por" name="cadastrado_por"
-                        value='{{data.cadastrado_por}}' readonly>
                 </div>
             </div>
 
-        </div>
+            <!-- Amostra !-->
+            <div class="card mt-4">
+                <h5 class="card-header">Amostra</h5>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="form-group col-md-4">
+                            <label for="idamostra">ID</label>
+                            <input type="text" class="form-control" id="idamostra" name="idamostra"
+                                value={{data.idamostra}} disabled>
+                        </div>
+                        <div class="form-group col-md-8">
+                            <label for="material">Material da Amostra</label>
+                            {{#select data.material}}
+                            <select class="form-control" id="material" name="material">
+                                <option>Sangue Total</option>
+                                <option>DNA</option>
+                                <option>Papel Filtro</option>
+                                <option>Outro</option>
+                            </select>
+                            {{/select}}
+                        </div>
+                    </div>
 
+                    <div class="row">
+                        <div class="form-group col-md-4">
+                            <label for="dt_solicitacao">Data de Solicitação (opcional)</label>
+                            <input type="text" placeholder='N/A' class="form-control" id="dt_solicitacao"
+                                name="dt_solicitacao" value='{{data.dt_solicitacao}}' onfocus="this.type='date'">
+                        </div>
 
+                        <div class="form-group col-md-4">
+                            <label for="dt_coleta">Data de Coleta (opcional)</label>
+                            <input type="text" placeholder='N/A' class="form-control" id="dt_coleta" name="dt_coleta"
+                                value='{{data.dt_coleta}}' onfocus="this.type='date'">
+                        </div>
+
+                        <div class="form-group col-md-4">
+                            <label for="dt_recebimento">Data de Recebimento</label>
+                            <input type="text" placeholder='N/A' class="form-control" id="dt_recebimento"
+                                name="dt_recebimento" value='{{data.dt_recebimento}}' onfocus="this.type='date'">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="codigo_barra">Código de Barras (opcional)</label>
+                        <input type="text" class="form-control" id="codigo_barra" name="codigo_barra" placeholder="N/A"
+                            value='{{data.codigo_barra}}'>
+                    </div>
+
+                    <hr>
+                    <h3 class="subsection" class="mt-4">Exames</h3>
+                    <ul id="lista-exames" class="list-group">
+                        {{!-- {{#each exame}}
+                        <li class="list-group-item paciente-item"><a target='_blank'
+                                href="/exames/{{this.idexame}}">{{this.nome}}</a></li>
+                        {{/each}} --}}
+                    </ul>
+
+                    <hr>
+                    <h3 class="subsection" class="mt-4">Informações</h3>
+
+                    <div class="form-group">
+                        <label for="observacao">Observações (caso necessário)</label>
+                        <textarea class="form-control" id="observacao" rows="3">{{data.observacao}}</textarea>
+                    </div>
+
+                    <div class="form-group mt-4">
+                        <label for="cadastrado_em">Cadastrado em</label>
+                        <input type="date" class="form-control" id="cadastrado_em" name="cadastrado_em"
+                            value='{{data.cadastrado_em}}' readonly>
+                    </div>
+
+                    <div class="form-group mb-4">
+                        <label for="cadastrado_por">Cadastrado por</label>
+                        <input type="text" class="form-control" id="cadastrado_por" name="cadastrado_por"
+                            value='{{data.cadastrado_por}}' readonly>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row m-0 mt-4">
+                <div class="col pl-0">
+                    <button type="submit" class="btn active btn-block" id="submeter">Atualizar amostra</button>
+                </div>
+
+                <div class="col pr-0">
+                    <button type="button" class="btn btn-danger btn-block" id="excluir">Excluir amostra</button>
+                </div>
+            </div>
+
+            <button type="reset" class="btn btn-secondary mt-3 w-100">Limpar</button>
+        </form>
         {{else}}
         <h3>Não há um amostra com este ID.</h3>
         {{/if}}

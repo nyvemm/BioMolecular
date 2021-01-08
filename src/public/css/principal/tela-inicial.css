@@ -76,6 +76,11 @@
     color: white;
 }
 
+.badge-solicitante {
+    background-color: #E3D812;
+    color: black;
+}
+
 .badge-exame {
     background-color: #94162D;
     color: white;
