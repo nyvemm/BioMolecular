@@ -3,9 +3,9 @@ var database = require('knex')({
     client: 'pg',
     version: '7.2',
     connection: {
-        host: 'localhost',
-        user: 'postgres',
-        password: 'master',
+        host: 'biomol.postgres.uhserver.com',
+        user: 'bio_lab',
+        password: 'projeto@ufms2021',
         database: 'biomol'
     }
 })
