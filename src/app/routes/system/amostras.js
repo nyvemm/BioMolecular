@@ -17,6 +17,20 @@ module.exports = (app) => {
             })
     })
 
+    /*Atualizar Resultados de uma amostra */
+    app.put('/amostra-resultados', (req, res) => {
+        const id = req.body.idamostra
+
+        database('amostra').where('idamostra', id).update({
+            interpretacao_resultados: req.body.interpretacao_resultados ? req.body.interpretacao_resultados : null,
+            resultado: req.body.resultado ? req.body.resultado : null,
+        }).then((data) => {
+            res.json({ status: 'success' })
+        }).catch((data) => {
+            res.json({ status: 'error' })
+        })
+    })
+
 
     app.delete('/resultados/:id', (req, res) => {
         const id = req.params.id
@@ -110,6 +124,7 @@ module.exports = (app) => {
 
                     exame.total_exames = exame.length
                     exame.exames_realizados = cont
+                    console.log(data[0])
                     res.render('amostras/visualizar', { data: data[0], exame: exame })
                 })
         })
@@ -132,6 +147,7 @@ module.exports = (app) => {
                     })
                     exame.total_exames = exame.length
                     exame.exames_realizados = cont
+                
                     res.render('amostras/editar', { data: data[0], exame: exame })
                 })
         })

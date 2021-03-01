@@ -73,7 +73,7 @@ function putAmostra() {
     formData.append('resultado', $('#resultado').val())
 
     const xhr = new XMLHttpRequest()
-    xhr.open('PUT', '/amostra', true)
+    xhr.open('PUT', '/amostra-resultados', true)
     xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded')
 
     xhr.onload = (e) => {

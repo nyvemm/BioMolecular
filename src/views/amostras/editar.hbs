@@ -63,17 +63,17 @@
                         <div class="form-group col-md-6">
                             <label for="gestante">Gestante</label>
                             <select class="form-control" id="gestante" name="gestante">
-                                {{#select data.gestante}}
-                                <option value=false>Não</option>
-                                <option value=true>Sim</option>
-                                {{/select}}
+                            {{#select data.gestante}}
+                                <option value="false">Não</option>
+                                <option value="true">Sim</option>
+                            {{/select}}
                             </select>
                         </div>
 
                         <div class="form-group col-md-6">
                             <label for="semanas_gestacao">Semanas de Gestação (opcional) </label>
                             <input type="text" class="form-control" id="semanas_gestacao" name="semanas_gestacao"
-                                value='{{data.semanas_gestacao}}' placeholder='N/A' disabled>
+                                value='{{data.semanas_gestacao}}' placeholder='N/A' readonly>
                         </div>
                     </div>
 
@@ -82,8 +82,8 @@
                             <label for="transfusao">Transfusão de Sangue</label>
                             <select class="form-control" id="transfusao" name="transfusao">
                                 {{#select data.transfusao}}
-                                <option value=false>Não</option>
-                                <option value=true>Sim</option>
+                                <option value="false">Não</option>
+                                <option value="true">Sim</option>
                                 {{/select}}
                             </select>
                         </div>
@@ -91,7 +91,7 @@
                         <div class="form-group col-md-6">
                             <label for="dt_ult_transfusao">Data da última transfusão (opcional)</label>
                             <input type="text" class="form-control" id="dt_ult_transfusao" name="dt_ult_transfusao"
-                                value="{{dt.dt_ult_transfusao}}" placeholder='N/A' onfocus="this.type='date'" disabled>
+                                value="{{dt.dt_ult_transfusao}}" placeholder='N/A' onfocus="this.type='date'" readonly>
                         </div>
                     </div>
 
@@ -100,8 +100,8 @@
                             <label for="uso_hidroxiureia">Uso de Hidroxiuréia</label>
                             <select class="form-control" id="uso_hidroxiureia" name="uso_hidroxiureia" disabled>
                                 {{#select data.uso_hidroxiureia}}
-                                <option value=false>Não</option>
-                                <option value=true>Sim</option>
+                                <option value="false">Não</option>
+                                <option value="true">Sim</option>
                                 {{/select}}
                             </select>
                         </div>
@@ -110,8 +110,8 @@
                             <label for="uso_medicamentos">Uso de Medicamentos</label>
                             <select class="form-control" id="uso_medicamentos" name="uso_medicamentos" disabled>
                                 {{#select data.uso_medicamentos}}
-                                <option value=false>Não</option>
-                                <option value=true>Sim</option>
+                                <option value="false">Não</option>
+                                <option value="true">Sim</option>
                                 {{/select}}
                             </select>
                         </div>
@@ -170,7 +170,7 @@
                         <div class="form-group col-md-4">
                             <label for="idamostra">ID</label>
                             <input type="text" class="form-control" id="idamostra" name="idamostra"
-                                value={{data.idamostra}} disabled>
+                                value={{data.idamostra}} readonly>
                         </div>
                         <div class="form-group col-md-8">
                             <label for="material">Material da Amostra</label>

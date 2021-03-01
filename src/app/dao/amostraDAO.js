@@ -85,7 +85,7 @@ class amostraDAO {
                 dt_coleta: data.dt_coleta ? data.dt_coleta : null,
                 dt_recebimento: data.dt_recebimento ? data.dt_recebimento : null,
                 dt_solicitacao: data.dt_solicitacao ? data.dt_solicitacao : null,
-                codigo_barra_amostra_solicitante: data.codigo_barra_amostra_solicitante ? data.codigo_barra_amostra_solicitante : null,
+                codigo_barra: data.codigo_barra ? data.codigo_barra : null,
                 status_pedido: data.status_pedido ? data.status_pedido : 'Não avaliado',
                 solicitacao: data.solicitacao ? data.solicitacao : null,
                 cadastrado_por: data.cadastrado_por,
@@ -118,13 +118,9 @@ class amostraDAO {
 
     //Atualiza uma amostra no banco de dados.
     async updateAmostra(data) {
-        console.log(data)
         const id = data.idamostra
         try {
             await this.database('amostra').where('idamostra', id).update({
-                interpretacao_resultados: data.interpretacao_resultados ? data.interpretacao_resultados : null,
-                resultado: data.resultado ? data.resultado : null,
-
                 solicitacao: data.solicitacao ? data.solicitacao : null,
                 gestante: data.gestante ? data.gestante : null,
                 semanas_gestacao: data.semanas_gestacao ? data.semanas_gestacao : null,
@@ -133,10 +129,10 @@ class amostraDAO {
                 suspeita_diagnostico: data.suspeita_diagnostico ? data.suspeita_diagnostico : null,
                 material: data.material ? data.material : null,
                 dt_solicitacao: data.dt_solicitacao ? data.dt_solicitacao : null,
-                dt_coleta: data.dt_coleta ? data.dt_coleta: null,
+                dt_coleta: data.dt_coleta ? data.dt_coleta : null,
                 dt_recebimento: data.dt_recebimento ? data.dt_recebimento : null,
-                codigo_barra : data.codigo_barra ? data.codigo_barra : null,
-                observacao : data.observacao ? data.observacao : null
+                codigo_barra: data.codigo_barra ? data.codigo_barra : null,
+                observacao: data.observacao ? data.observacao : null
             })
             return this.obj_success
         } catch (error) {

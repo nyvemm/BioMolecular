@@ -73,16 +73,15 @@ function putData() {
     xhr.onload = (e) => {
         if (xhr.status == 200) {
             let response = JSON.parse(xhr.responseText)
-            console.log(response)
 
             if (response.status == 'success') {
-                $('#warnings').val(warningMessage('Amostra atualizada com sucesso', 'success'))
+                $('#warnings').html(warningMessage('Amostra atualizada com sucesso', 'success'))
             } else {
-                $('#warnings').val(warningMessage('Erro ao atualizar amostra', 'danger'))
+                $('#warnings').html(warningMessage('Erro ao atualizar amostra', 'danger'))
             }
+            window.scroll({ top: 0, left: 0, behavior: 'smooth' })
         }
     }
-    console.log(new URLSearchParams(formData))
     xhr.send(new URLSearchParams(formData))
 }
 
@@ -103,21 +102,28 @@ function deleteData() {
 
 /* Campos */
 $(document).ready(() => {
+    if ($('#gestante').selectedIndex != 0)
+        $('#semanas_gestacao').prop('readonly', false)
+
+    if ($('#transfusao').selectedIndex != 0)
+        $('#dt_ult_transfusao').prop('readonly', false)
+
+
     $('#gestante').on('change', function () {
         if (this.selectedIndex == 0) {
-            $('#semanas_gestacao').prop('disabled', true)
+            $('#semanas_gestacao').prop('readonly', true)
             $('#semanas_gestacao').val('')
         } else {
-            $('#semanas_gestacao').prop('disabled', false)
+            $('#semanas_gestacao').prop('readonly', false)
         }
     })
 
     $('#transfusao').on('change', function () {
         if (this.selectedIndex == 0) {
-            $('#dt_ult_transfusao').prop('disabled', true)
+            $('#dt_ult_transfusao').prop('readonly', true)
             $('#dt_ult_transfusao').val('')
         } else {
-            $('#dt_ult_transfusao').prop('disabled', false)
+            $('#dt_ult_transfusao').prop('readonly', false)
         }
     })
 })
