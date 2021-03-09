@@ -20,7 +20,7 @@ CREATE TABLE IF NOT EXISTS paciente(
 	sexo CHAR NOT NULL,
 	naturalidade_cidade VARCHAR(45) NULL,
 	naturalidade_estado VARCHAR(2) NULL,
-	observacao VARCHAR(200),
+	observacao TEXT,
 	cadastrado_em DATE DEFAULT NOW(),
 	cadastrado_por VARCHAR(100),
 	
@@ -39,7 +39,7 @@ CREATE TABLE IF NOT EXISTS exame(
 	tipo_resultado VARCHAR(50) NOT NULL,
 	cadastrado_em DATE DEFAULT NOW(),
 	cadastrado_por VARCHAR(100),
-	observacao VARCHAR(200),
+	observacao TEXT,
 
 	CONSTRAINT pk_exames PRIMARY KEY (idExame)
 	/*CONSTRAINT tipo_valido CHECK(tipo_analise = 'Análise Citológica' or tipo_analise = 'Análise Eletroforética' or tipo_analise = 'Análise Cromatográfica' or tipo_analise = 'Análise Molecular') */
@@ -54,7 +54,7 @@ CREATE TABLE IF NOT EXISTS solicitante(
 	e_mail VARCHAR(45) NULL,
 	contato_referencia VARCHAR(45) NULL,
 	codigo_barra_solicitante VARCHAR(45) NULL,
-	observacao VARCHAR(200) NULL,
+	observacao TEXT NULL,
 	cadastrado_em DATE DEFAULT NOW(),
 	cadastrado_por VARCHAR(100),
 
@@ -77,13 +77,13 @@ CREATE TABLE IF NOT EXISTS amostra(
 	suspeita_diagnostico VARCHAR(45) NULL,
 	uso_hidroxiureia BOOLEAN NULL,
 	uso_medicamentos BOOLEAN NULL,
-	medicamentos VARCHAR(200) NULL,
-	interpretacao_resultados VARCHAR(200) NULL,
+	medicamentos TEXT NULL,
+	interpretacao_resultados TEXT NULL,
 	dt_liberacao DATE NULL,
 	status_pedido VARCHAR(45) NULL DEFAULT 'Não avaliado',
-	observacao VARCHAR(200),
+	observacao TEXT,
 	solicitacao VARCHAR(100),
-	resultado VARCHAR(100),
+	resultado TEXT,
 	cadastrado_em DATE DEFAULT NOW(),
 	cadastrado_por VARCHAR(100),
 	
@@ -108,8 +108,8 @@ CREATE TABLE IF NOT EXISTS amostra_contem_exames_aux(
 CREATE TABLE IF NOT EXISTS resultados(
 	idResultado SERIAL NOT NULL,
 	idAmostraExame INT NOT NULL,
-	valor_resultado VARCHAR(200),
-	observacao_resultado VARCHAR(200),
+	valor_resultado TEXT,
+	observacao_resultado TEXT,
 	
 	CONSTRAINT pk_resultado PRIMARY KEY (idResultado),
 	CONSTRAINT fk_idAmostraExame FOREIGN KEY (idAmostraExame) REFERENCES amostra_contem_exames_aux(idAmostraExame)

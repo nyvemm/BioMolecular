@@ -26,6 +26,7 @@ module.exports = (app) => {
             })
     })
 
+    /* Geração de Relatórios */
     app.get('/relatorios/laudo', loggedIn, (req, res) => {
         res.render('relatorios/laudo')
     })
@@ -49,6 +50,67 @@ module.exports = (app) => {
                 res.render('relatorios/relatorio-tipo-exame', { tipo_analises: tipo_analises.map(x => x.tipo_analise) })
             })
 
+    })
+
+    /* Geração de Laudo */
+
+    app.get('/relatorios/imprimir-laudo', (req, res) => {
+        const id = req.query.id
+        database('amostra_contem_exames_aux').where('amostra_contem_exames_aux.idamostra', id)
+            .innerJoin('amostra', 'amostra.idamostra', 'amostra_contem_exames_aux.idamostra')
+            .innerJoin('exame', 'exame.idexame', 'amostra_contem_exames_aux.idexame')
+            .innerJoin('paciente', 'amostra.idpaciente', 'paciente.idpaciente')
+            .innerJoin('solicitante', 'amostra.idsolicitante', 'solicitante.idsolicitante')
+            .leftJoin('resultados', 'resultados.idamostraexame', 'amostra_contem_exames_aux.idamostraexame')
+            .select(database.raw(`*, paciente.nome as paciente_nome, solicitante.nome as solicitante_nome, exame.nome as exame_nome, exame.observacao as exame_observacao`))
+            .then(data => {
+
+                let amostra = data
+                amostra.forEach((data) => {
+                    data.f_dt_recebimento = utilsDate.viewDateFormat(data.dt_recebimento)
+                    data.f_dt_coleta = utilsDate.viewDateFormat(data.dt_coleta)
+                    data.f_dt_solicitacao = utilsDate.viewDateFormat(data.dt_solicitacao)
+                    data.f_dt_nasc = utilsDate.viewDateFormat(data.dt_nasc)
+                    data.f_dt_liberacao = utilsDate.viewDateFormat(data.dt_liberacao)
+
+                    const diffTime = Math.abs(new Date() - amostra.dt_nasc);
+                    const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+                    amostra.idade = Math.floor(diffDays / 365)
+                    amostra.idade_meses = Math.floor((diffDays % 365) / 30)
+                    amostra.cod = req.query.cod
+                })
+
+                database('amostra_contem_exames_aux').select('tipo_analise').distinct().where('idamostra', id)
+                    .innerJoin('exame', 'amostra_contem_exames_aux.idexame', 'exame.idexame')
+                    .then((tipos_exame) => {
+                        let resultados_exames = []
+
+                        let lista_exames = tipos_exame.map(t => t.tipo_analise)
+                        lista_exames.forEach((tipo_exame) => {
+                            resultados_exames.push({ tipo: tipo_exame, valor: [] })
+                        })
+
+
+                        data.forEach((exame) => {
+                            exame.liberado_em = utilsDate.viewDateFormat(exame.liberado_em)
+                            let tipo = exame.tipo_analise
+                            resultados_exames[lista_exames.findIndex((elem) => elem == tipo)].valor.push(exame)
+                        })
+
+                        res.render('relatorios/a4', {
+                            amostra: amostra[0],
+                            exames: resultados_exames,
+                            codigo: req.query.cod,
+                            responsavel: req.query.responsavel,
+                            crbio: req.query.crbio
+                        })
+                    })
+            })
+
+        .catch(error => {
+            console.log(error)
+            res.json({ status: 'error' })
+        })
     })
 
     /* CRUD */
@@ -148,53 +210,53 @@ module.exports = (app) => {
                         // console.log(amostras)
 
                         pacientes = pacientes.filter(paciente => {
-                            return (paciente.idpaciente == parseInt(query))
-                                || (paciente.nome.includes(query))
-                                || (paciente.etnia ? paciente.etnia.includes(query) : false)
-                                || (paciente.naturalidade_cidade ? paciente.naturalidade_cidade.includes(query) : false)
-                                || (paciente.naturalidade_estado ? paciente.naturalidade_estado.includes(query) : false)
-                                || (paciente.observacao ? paciente.observacao.includes(query) : false)
-                                || (paciente.cadastrado_por ? paciente.cadastrado_por.includes(query) : false)
+                            return (paciente.idpaciente == parseInt(query)) ||
+                                (paciente.nome.includes(query)) ||
+                                (paciente.etnia ? paciente.etnia.includes(query) : false) ||
+                                (paciente.naturalidade_cidade ? paciente.naturalidade_cidade.includes(query) : false) ||
+                                (paciente.naturalidade_estado ? paciente.naturalidade_estado.includes(query) : false) ||
+                                (paciente.observacao ? paciente.observacao.includes(query) : false) ||
+                                (paciente.cadastrado_por ? paciente.cadastrado_por.includes(query) : false)
                         })
 
                         solicitantes = solicitantes.filter(solicitante => {
-                            return solicitante.idsolicitante == parseInt(query)
-                                || (solicitante.nome.includes(query))
-                                || (solicitante.estado ? solicitante.estado.includes(query) : false)
-                                || (solicitante.cidade ? solicitante.cidade.includes(query) : false)
-                                || (solicitante.e_mail ? solicitante.e_mail.includes(query) : false)
-                                || (solicitante.contato_referencia ? solicitante.contato_referencia.includes(query) : false)
-                                || (solicitante.observacao ? solicitante.observacao.includes(query) : false)
-                                || (solicitante.cadastrado_por ? solicitante.cadastrado_por.includes(query) : false)
+                            return solicitante.idsolicitante == parseInt(query) ||
+                                (solicitante.nome.includes(query)) ||
+                                (solicitante.estado ? solicitante.estado.includes(query) : false) ||
+                                (solicitante.cidade ? solicitante.cidade.includes(query) : false) ||
+                                (solicitante.e_mail ? solicitante.e_mail.includes(query) : false) ||
+                                (solicitante.contato_referencia ? solicitante.contato_referencia.includes(query) : false) ||
+                                (solicitante.observacao ? solicitante.observacao.includes(query) : false) ||
+                                (solicitante.cadastrado_por ? solicitante.cadastrado_por.includes(query) : false)
                         })
 
                         exames = exames.filter(exame => {
-                            return exame.idexame == parseInt(query)
-                                || (exame.nome.includes(query))
-                                || (exame.sigla ? exame.sigla == parseInt(query) : false)
-                                || (exame.tipo_analise ? exame.tipo_analise.includes(query) : false)
-                                || (exame.metodo ? exame.metodo.includes(query) : false)
-                                || (exame.preco ? exame.preco.includes(query) : false)
-                                || (exame.valor_ref ? exame.valor_ref.includes(query) : false)
-                                || (exame.tipo_valor_ref ? exame.tipo_valor_ref.includes(query) : false)
-                                || (exame.tipo_resultado ? exame.tipo_resultado.includes(query) : false)
-                                || (exame.observacao ? exame.observacao.includes(query) : false)
-                                || (exame.cadastrado_por ? exame.cadastrado_por.includes(query) : false)
+                            return exame.idexame == parseInt(query) ||
+                                (exame.nome.includes(query)) ||
+                                (exame.sigla ? exame.sigla == parseInt(query) : false) ||
+                                (exame.tipo_analise ? exame.tipo_analise.includes(query) : false) ||
+                                (exame.metodo ? exame.metodo.includes(query) : false) ||
+                                (exame.preco ? exame.preco.includes(query) : false) ||
+                                (exame.valor_ref ? exame.valor_ref.includes(query) : false) ||
+                                (exame.tipo_valor_ref ? exame.tipo_valor_ref.includes(query) : false) ||
+                                (exame.tipo_resultado ? exame.tipo_resultado.includes(query) : false) ||
+                                (exame.observacao ? exame.observacao.includes(query) : false) ||
+                                (exame.cadastrado_por ? exame.cadastrado_por.includes(query) : false)
                         })
 
                         amostras = amostras.filter(amostra => {
-                            return amostra.idamostra == parseInt(query)
-                                || (amostra.idpaciente == parseInt(query))
-                                || (amostra.idsolicitante == parseInt(query))
-                                || (amostra.material ? amostra.material.includes(query) : false)
-                                || (amostra.codigo_barra ? amostra.codigo_barra.includes(query) : false)
-                                || (amostra.suspeita_diagnostico ? amostra.suspeita_diagnostico.includes(query) : false)
-                                || (amostra.medicamentos ? amostra.medicamentos.includes(query) : false)
-                                || (amostra.interpretacao_resultados ? amostra.interpretacao_resultados.includes(query) : false)
-                                || (amostra.status_pedido ? amostra.status_pedido.includes(query) : false)
-                                || (amostra.contato_referencia ? amostra.contato_referencia.includes(query) : false)
-                                || (amostra.observacao ? amostra.observacao.includes(query) : false)
-                                || (amostra.cadastrado_por ? amostra.cadastrado_por.includes(query) : false)
+                            return amostra.idamostra == parseInt(query) ||
+                                (amostra.idpaciente == parseInt(query)) ||
+                                (amostra.idsolicitante == parseInt(query)) ||
+                                (amostra.material ? amostra.material.includes(query) : false) ||
+                                (amostra.codigo_barra ? amostra.codigo_barra.includes(query) : false) ||
+                                (amostra.suspeita_diagnostico ? amostra.suspeita_diagnostico.includes(query) : false) ||
+                                (amostra.medicamentos ? amostra.medicamentos.includes(query) : false) ||
+                                (amostra.interpretacao_resultados ? amostra.interpretacao_resultados.includes(query) : false) ||
+                                (amostra.status_pedido ? amostra.status_pedido.includes(query) : false) ||
+                                (amostra.contato_referencia ? amostra.contato_referencia.includes(query) : false) ||
+                                (amostra.observacao ? amostra.observacao.includes(query) : false) ||
+                                (amostra.cadastrado_por ? amostra.cadastrado_por.includes(query) : false)
                         })
 
                         pacientes.forEach(paciente => {
@@ -221,7 +283,7 @@ module.exports = (app) => {
                             amostra.gestante = amostra.gestante ? 'Sim' : 'Não'
                             amostra.uso_medicamentos = amostra.uso_medicamentos ? 'Sim' : 'Não'
                         })
-                        
+
                         res.render('relatorios/buscar', {
                             pacientes: pacientes,
                             solicitantes: solicitantes,

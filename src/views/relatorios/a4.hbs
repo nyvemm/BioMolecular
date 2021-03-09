@@ -1,0 +1,123 @@
+<page size="A4">
+
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+
+    <section class="box">
+        <div class="header-t w-100">
+            <h2>Informações do Paciente</h2>
+        </div>
+        <div class="field">
+            <p><b>Nome: </b>{{amostra.paciente_nome}}</p>
+        </div>
+        <div class="field row">
+            <p><b>Data de Nascimento: </b>{{amostra.f_dt_nasc}}</p>
+            <p><b>Idade: </b>{{amostra.f_dt_nasc}}</p>
+            <p><b>Código: </b>{{#if codigo}} {{codigo}} {{else}} {{amostra.idamostra}} {{/if}}</p>
+        </div>
+        <div class="field row">
+            <p><b>Material: </b>{{amostra.material}}</p>
+            <p><b>Sexo: </b>{{amostra.sexo}}</p>
+            <p><b>Gestante: </b>{{#if amostra.gestante}} Sim {{else}} Não {{/if}}</p>
+        </div>
+        <div class="field row">
+            <p><b>Data de coleta: </b>{{amostra.f_dt_coleta}}</p>
+            <p><b>Data de recebimento: </b>{{#if amostra.f_dt_recebimento}} {{amostra.f_dt_recebimento}} {{else}} N/A
+                {{/if}} </p>
+            <p><b>Naturalidade: </b>{{amostra.naturalidade_cidade}}</p>
+        </div>
+        <div style="padding-left: 5px;">
+            <p><b>Referido por: </b>{{amostra.solicitante_nome}} - {{amostra.cidade}}/{{amostra.estado}}</p>
+        </div>
+        <div style="padding-left: 5px;">
+            <p><b>Solicitação: </b>{{amostra.solicitacao}}</p>
+        </div>
+    </section>
+
+    <br>
+
+    {{#each exames}}
+    <br>
+    <section class="box">
+        <table>
+            <thead>
+                <tr>
+                    <th> {{this.tipo}}</th>
+                    <th> Resultado</th>
+                    <th> Método</th>
+                    <th> Refêrencia</th>
+                </tr>
+            </thead>
+            <tbody>
+                    {{#each this.valor}}
+                    <tr>
+                    <td>{{this.exame_nome}}</td>
+                    <td>{{this.valor_resultado}}</td>
+                    <td>{{this.metodo}}</td>
+                    <td>{{this.valor_ref}}</td>
+                    {{#if this.observacao_resultado}} <input type="hidden" data-valor='resultado' value='{{this.observacao_resultado}}'> {{/if}}
+                    {{#if this.exame_observacao}} <input type="hidden" value='{{this.exame_observacao}}'> {{/if}}
+                    </tr>
+                    {{/each}}
+            </tbody>
+            </tr>
+        </table>
+
+    </section>
+    {{/each}}
+
+    <br>
+
+    <section class="box">
+        <div class="header-t w-100">
+            <h2>Interpretação de Resultados</h2>
+        </div>
+        <p style="padding-left: 5px;">{{amostra.interpretacao_resultados}}</p>
+    </section>
+
+    <br>
+
+    <section class="box">
+        <div class="header-t w-100">
+            <h2>Resultado</h2>
+        </div>
+        <p style="padding-left: 5px;">{{amostra.resultado}}</p>
+    </section>
+
+    <br>
+
+    <section class="box">
+        <div class="header-t w-100">
+            <h2>Observações</h2>
+        </div>
+        <p style="padding-left: 5px;">{{#if amostra.observacao}} {{amostra.observacao}} {{else}} Sem observações.
+            {{/if}}</p>
+    </section>
+
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+
+    <div class="sign">
+        <p>Liberado e conferido em {{amostra.f_dt_liberacao}}</p>
+        <b>{{responsavel}} <br>
+            &#8287; CRBio {{crbio}}
+        </b>
+    </div>
+
+
+</page>
+
+<link rel="stylesheet" href="/css/utils/a4.css">
+<script src="/js/libs/jquery-3.5.1.min.js"></script>
+<script src="/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="/bootstrap/js/bootstrap.min.js"></script>
+<script src="/js/utils/a4.js"></script>

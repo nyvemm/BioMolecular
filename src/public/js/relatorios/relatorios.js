@@ -7,10 +7,19 @@ function gerar_laudo() {
         if (xhr.status == 200) {
             let response = JSON.parse(xhr.responseText)
             let tabela = $('#tabela')
-            tabela.html('')
+            tabela.html('<hr>')
 
             if (response.length == 0) {
                 $('#warnings').html(warningMessage('Essa amostra não tem dados cadastrados.', 'warning'))
+                $('#btn-imprimir').remove()
+                return;
+            } else if ($('#id').val() == '') {
+                $('#warnings').html(warningMessage('É necessário preencher o ID da amostra.', 'warning'))
+                $('#btn-imprimir').remove()
+                return;
+            }else if (response.status == 'error') {
+                $('#warnings').html(warningMessage('Falha ao procurar amostra.', 'danger'))
+                $('#btn-imprimir').remove()
                 return;
             }
 
@@ -37,8 +46,16 @@ function gerar_laudo() {
                         ${subquery}
                         </tbody>
                     </table>`
+
                 tabela.html(tabela.html() + query)
                 $('#warnings').html('')
+
+                if ($('#btn-imprimir').length == 0) {
+                    $('#form-imprimir-laudo').append(`
+                    <button type = "submit" class="btn btn-primary ml-1 mt-4" id="btn-imprimir"> Imprimir Laudo</button>
+                `)
+                }
+
             })
         }
     }
@@ -57,6 +74,9 @@ function gerar_amostras_situacao() {
             tabela.html('')
             if (response.length == 0) {
                 $('#warnings').html(warningMessage('Não há amostras cadastradas.', 'warning'))
+                $('.form-group').first().remove()
+                $('.close').first().remove()
+                $('#warnings').append('<hr><a class="btn active" href="/relatorios">Voltar</a>')
                 return;
             }
 
@@ -101,6 +121,9 @@ function gerar_amostras_material() {
 
             if (response.length == 0) {
                 $('#warnings').html(warningMessage('Não há amostras cadastradas.', 'warning'))
+                $('.form-group').first().remove()
+                $('.close').first().remove()
+                $('#warnings').append('<hr><a class="btn active" href="/relatorios">Voltar</a>')
                 return;
             }
 
@@ -145,6 +168,9 @@ function gerar_amostras_tipo_analise() {
 
             if (response.length == 0) {
                 $('#warnings').html(warningMessage('Não há amostras cadastradas.', 'warning'))
+                $('.form-group').first().remove()
+                $('.close').first().remove()
+                $('#warnings').append('<hr><a class="btn active" href="/relatorios">Voltar</a>')
                 return;
             }
 

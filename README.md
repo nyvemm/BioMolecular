@@ -26,14 +26,14 @@
 
 ## ✏️ Coisas a alterar no protótipo
 
-- [ ]  Amostra em **papel filtro**
-- [ ]  Adicionar **data de nascimento**
-- [ ]  Trocar **data de envio** por **data de recebimento**
-- [ ]  Adicionar campo de **interpretação dos resultados** nos laudos
-- [ ]  Adicionar campo de **observação** nos laudos
-- [ ]  Adicionar campo de **resultados** nos laudos
-- [ ]  Adicionar o **solicitante** na tabela da amostra
-- [ ]  Adicionar o **número de parceiros** (solicitantes) na tela inicial
+- [x]  Amostra em **papel filtro**
+- [x]  Adicionar **data de nascimento**
+- [x]  Trocar **data de envio** por **data de recebimento**
+- [x]  Adicionar campo de **interpretação dos resultados** nos laudos
+- [x]  Adicionar campo de **observação** nos laudos
+- [x]  Adicionar campo de **resultados** nos laudos
+- [x]  Adicionar o **solicitante** na tabela da amostra
+- [x]  Adicionar o **número de parceiros** (solicitantes) na tela inicial
 
 ---
 

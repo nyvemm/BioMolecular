@@ -15,7 +15,7 @@ class amostraDAO {
         try {
             let offset = data.offset ? data.offset : 0
             let sort = data.sort ? data.sort : 'paciente.idpaciente'
-            let amostras = await this.database('amostra').select(database.raw(`*, paciente.nome as paciente_nome, solicitante.nome as solicitante_nome`))
+            let amostras = await this.database('amostra').select(database.raw(`*, paciente.nome as paciente_nome, solicitante.nome as solicitante_nome, amostra.observacao as observacao`))
                 .innerJoin('paciente', 'amostra.idpaciente', 'paciente.idpaciente')
                 .innerJoin('solicitante', 'amostra.idsolicitante', 'solicitante.idsolicitante')
                 .offset(offset).orderBy(sort)
@@ -41,7 +41,8 @@ class amostraDAO {
     // Lista a amostra pela sua chave primária.
     async getAmostra(id) {
         try {
-            let amostra = await this.database('amostra').where('idamostra', id).select(database.raw(`*, paciente.nome as paciente_nome, solicitante.nome as solicitante_nome, amostra.cadastrado_por as cadastrado_por`))
+            let amostra = await this.database('amostra').where('idamostra', id).select(database.raw(`*, paciente.nome as paciente_nome, solicitante.nome as solicitante_nome, amostra.cadastrado_por as cadastrado_por
+                , amostra.observacao as observacao`))
                 .innerJoin('paciente', 'amostra.idpaciente', 'paciente.idpaciente')
                 .innerJoin('solicitante', 'amostra.idsolicitante', 'solicitante.idsolicitante')
             const diffTime = Math.abs(new Date() - amostra[0].dt_nasc);

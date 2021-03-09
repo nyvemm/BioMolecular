@@ -7,13 +7,17 @@ function cadastrar_usuario() {
     xhr.onload = (e) => {
         if (xhr.status == 200) {
             let response = JSON.parse(xhr.responseText)
+            console.log(response)
             if (response.status == 'success') {
-                $('#warnings').html(warningMessage('Usuário cadastrado com sucesso'))
+                $('#warnings').html(warningMessage('Usuário cadastrado com sucesso.', 'success'))
             } else {
                 if ('message' in response) {
-                    response.message.forEach((error => $('#warnings').html($('#warnings').html() + warningMessage(error.msg, 'danger'))))
+                    if (Array.isArray(response.message))
+                        response.message.forEach((error => $('#warnings').html($('#warnings').html() + warningMessage(error.msg, 'danger'))))
+                    else
+                        $('#warnings').html(warningMessage(`${response.message}`, 'danger'))
                 } else {
-                    $('#warnings').html(warningMessage('Usuário cadastrado com sucesso'))
+                    $('#warnings').html(warningMessage('Erro ao cadastrar usuário.', 'danger'))
                 }
             }
         }

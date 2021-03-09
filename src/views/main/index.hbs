@@ -50,8 +50,9 @@
             <a href="/cadastrar-amostra" class="btn btn-primary quickbtn">Cadastrar amostras</a>
             <a href="/cadastrar-exame" class="btn btn-primary quickbtn">Cadastrar exames</a>
         </div>
-        <h3 class="subsection" class="mt-4 mb-4">Próximas Atividades</h3>
 
+        {{#if amostras}}
+        <h3 class="subsection">Próximas Atividades</h3>
         <div class="row m-0 mt-2 mb-4">
             {{#each amostras}}
             <div class="unit bg-{{#if this.em_analise}}warning{{else}}danger{{/if}} {{#if this.em_analise}} text-dark {{/if}}  unit-amostra col mr-2"
@@ -62,9 +63,10 @@
             </div>
             {{/each}}
         </div>
+        {{/if}}
 
-        <h3 class="subsection" class="mt-4">Registro de Atividades</h3>
-
+        {{#if registros}}
+        <h3 class="subsection mb-4">Registro de Atividades</h3>
         <div class="card-header border" id="headingOne" type="button" data-toggle="collapse"
             data-target="#collapseAlteracoes" aria-expanded="false" aria-controls="collapseAlteracoes">
             <h5 class="mb-0">
@@ -85,6 +87,7 @@
                 {{/each}}
             </div>
         </div>
+        {{/if}}
 
     </main>
 

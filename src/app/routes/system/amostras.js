@@ -124,7 +124,6 @@ module.exports = (app) => {
 
                     exame.total_exames = exame.length
                     exame.exames_realizados = cont
-                    console.log(data[0])
                     res.render('amostras/visualizar', { data: data[0], exame: exame })
                 })
         })
@@ -147,7 +146,7 @@ module.exports = (app) => {
                     })
                     exame.total_exames = exame.length
                     exame.exames_realizados = cont
-                
+
                     res.render('amostras/editar', { data: data[0], exame: exame })
                 })
         })

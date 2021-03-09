@@ -102,10 +102,10 @@ function deleteData() {
 
 /* Campos */
 $(document).ready(() => {
-    if ($('#gestante').selectedIndex != 0)
+    if ($('#gestante').prop('selectedIndex') != 0)
         $('#semanas_gestacao').prop('readonly', false)
 
-    if ($('#transfusao').selectedIndex != 0)
+    if ($('#transfusao').prop('selectedIndex') != 0)
         $('#dt_ult_transfusao').prop('readonly', false)
 
 

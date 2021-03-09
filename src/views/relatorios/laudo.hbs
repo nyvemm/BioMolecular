@@ -16,15 +16,36 @@
 
         <div>
             <hr>
-            <div id="warnings"></div>
-            <div class="form-group w-25 m-0 d-inline-block">
-                <label for="id">ID da Amostra</label>
-                <input type="number" class="form-control" id="id" name="id">
-            </div>
-            <button type="button" class="btn active ml-1" onclick="gerar_laudo()">Gerar Laudo</button>
+            <form method="GET" action="./imprimir-laudo" id="form-imprimir-laudo" target="_blank">
+                <div id="warnings"></div>
+                <div class="form-group w-25 m-0 d-block">
+                    <label for="id">ID da Amostra</label>
+                    <input type="number" class="form-control" id="id" name="id" placeholder="Ex: 1, 2, 3...">
+                </div>
+                <div class="row">
+                    <div class="form-group col-md-4 m-0 d-block mt-4">
+                        <label for="cod">Código da Amostra</label>
+                        <input type="text" class="form-control" id="cod" name="cod" placeholder="Ex: 149/21">
+                    </div>
+                    <div class="form-group col-md-4 m-0 d-block mt-4">
+                        <label for="cod">Nome do Responsável</label>
+                        <input type="text" class="form-control" id="responsavel" name="responsavel" placeholder="Ex: Dr. Édis Belini Júnior" value="Dr. Édis Belini Júnior">
+                    </div>
+                    <div class="form-group col-md-4 m-0 d-block mt-4">
+                        <label for="cod">CRBIO do Responsável</label>
+                        <input type="text" class="form-control" id="crbio" name="crbio" placeholder="Ex: 113217/02-D" value="113217/02-D">
+                    </div>
+                </div>
+
+                <div class="form-check mt-4 m-0">
+                    <input type="checkbox" class="form-check-input" id="papel" name="papel" checked>
+                    <label class="form-check-label" for="papel">Imprimir com papel do laborátório</label>
+                </div>
+
+                <button type="button" class="btn active ml-1 mt-4" onclick="gerar_laudo()">Gerar Laudo</button>
+            </form>
         </div>
         <div id="tabela">
-
         </div>
     </main>
 </body>

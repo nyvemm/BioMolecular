@@ -23,6 +23,7 @@
             </div>
         </div>
 
+        {{#if amostra}}
         <table class="table table-sm mt-4 border">
             <thead>
                 <tr>
@@ -37,11 +38,10 @@
             </thead>
             <tbody>
                 {{#each amostra}}
-                <tr {{#if this.em_analise}} class="table-warning clickable-row" {{else}} 
-                {{#if this.cadastrado}} class="table-danger clickable-row" {{else}}
-                {{#if this.finalizado}} class="table-success clickable-row" {{else}}
-                class="clickable-row" {{/if}} {{/if}} {{/if}}
-                  onclick=javascript:window.location.href='/amostras/{{this.idamostra}}'>
+                <tr {{#if this.em_analise}} class="table-warning clickable-row" {{else}} {{#if this.cadastrado}}
+                    class="table-danger clickable-row" {{else}} {{#if this.finalizado}}
+                    class="table-success clickable-row" {{else}} class="clickable-row" {{/if}} {{/if}} {{/if}}
+                    onclick=javascript:window.location.href='/amostras/{{this.idamostra}}'>
                     <th scope="row">{{this.idamostra}}</th>
                     <td>{{this.paciente_nome}}</td>
                     <td>{{this.solicitante_nome}}</td>
@@ -53,6 +53,12 @@
                 {{/each}}
             </tbody>
         </table>
+        {{else}}
+        <div>
+            <hr>
+            <h4>Não há amostras cadastradas.</h4>
+        </div>
+        {{/if}}
     </main>
 </body>
 
