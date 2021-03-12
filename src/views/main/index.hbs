@@ -43,52 +43,39 @@
             </div>
         </div>
 
-        <h3 class="subsection" class="mt-4">Acesso Rápido</h3>
+        <div>
+            <hr>
+            <h3 class="subsection" class="mt-4">Acesso Rápido</h3>
 
-        <div class="highlights mt-4 mb-4">
-            <a href="/cadastrar-paciente" class="btn btn-primary quickbtn">Cadastrar pacientes</a>
-            <a href="/cadastrar-amostra" class="btn btn-primary quickbtn">Cadastrar amostras</a>
-            <a href="/cadastrar-exame" class="btn btn-primary quickbtn">Cadastrar exames</a>
+            <div class="highlights mt-4 mb-2">
+                <a href="/cadastrar-paciente" class="btn btn-primary quickbtn">Cadastrar pacientes</a>
+                <a href="/cadastrar-amostra" class="btn btn-primary quickbtn">Cadastrar amostras</a>
+                <a href="/cadastrar-exame" class="btn btn-primary quickbtn">Cadastrar exames</a>
+            </div>
+
+            <div class="highlights">
+                <a href="/cadastrar-solicitante" class="btn btn-primary quickbtn">Cadastra solicitantes</a>
+                <a href="/relatorios/amostras-material" class="btn btn-primary quickbtn">Verificar situação de amostras</a>
+                <a href="/relatorios/laudo" class="btn btn-primary quickbtn">Gerar Laudos</a>
+            </div>
         </div>
 
         {{#if amostras}}
-        <h3 class="subsection">Próximas Atividades</h3>
-        <div class="row m-0 mt-2 mb-4">
-            {{#each amostras}}
-            <div class="unit bg-{{#if this.em_analise}}warning{{else}}danger{{/if}} {{#if this.em_analise}} text-dark {{/if}}  unit-amostra col mr-2"
-                onclick="javascript:window.location.href='/amostras/{{this.idamostra}}'">
-                <p class="unit-text m-0">Amostra-{{this.idamostra}}</p>
-                <h4 class="unit-value m-0">{{this.nome}}</h4>
-                {{#if this.f_cadastrado_em}} <p class="unit-text m-0">{{this.f_cadastrado_em}}</p>{{/if}}
-            </div>
-            {{/each}}
-        </div>
-        {{/if}}
-
-        {{#if registros}}
-        <h3 class="subsection mb-4">Registro de Atividades</h3>
-        <div class="card-header border" id="headingOne" type="button" data-toggle="collapse"
-            data-target="#collapseAlteracoes" aria-expanded="false" aria-controls="collapseAlteracoes">
-            <h5 class="mb-0">
-                Alterações Recentes
-            </h5>
-        </div>
-        <div class="collapse" id="collapseAlteracoes">
-            <div class="card card-body m-0 p-0">
-                {{#each registros}}
-                <div class="bg-light rounded registro">
-                    <span
-                        class="badge badge-pill badge-{{this.op}} m-0 d-flex align-items-center justify-content-center">{{this.op}}</span>
-                    <span
-                        class="badge badge-pill badge-{{this.tabela}} m-0 d-flex align-items-center justify-content-center">{{this.tabela}}</span>
-                    <h4 class="subsection sub-text m-0">{{this.conteudo}}</h4>
-                    <h6 class="m-0 d-flex align-items-center justify-content-end">{{this.alterado_em}}</h6>
+        <div>
+            <hr>
+            <h3 class="subsection">Próximas Atividades</h3>
+            <div class="row m-0 mt-2 mb-4">
+                {{#each amostras}}
+                <div class="unit bg-{{#if this.em_analise}}warning{{else}}danger{{/if}} {{#if this.em_analise}} text-dark {{/if}}  unit-amostra col mr-2"
+                    onclick="javascript:window.location.href='/amostras/{{this.idamostra}}'">
+                    <p class="unit-text m-0">Amostra-{{this.idamostra}}</p>
+                    <h4 class="unit-value m-0">{{this.nome}}</h4>
+                    {{#if this.f_cadastrado_em}} <p class="unit-text m-0">{{this.f_cadastrado_em}}</p>{{/if}}
                 </div>
                 {{/each}}
             </div>
         </div>
         {{/if}}
-
     </main>
 
 </body>

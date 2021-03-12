@@ -20,34 +20,14 @@ async function getData() {
     }
 }
 
-async function getReg() {
-    let regs = await database('registro').select().orderBy('alterado_em', 'desc').limit(6)
-
-    regs.forEach((reg) => {
-        //Formatação de data
-        let data = new Date(reg.alterado_em)
-        let fdata = data.getDate().toString().padStart(2, '0') + '/' + (data.getMonth() + 1).toString().padStart(2, '0') + '/' + data.getFullYear() + ' ' + data.getHours().toString().padStart(2, '0') + ':' + data.getMinutes().toString().padStart(2, '0') + ':' + data.getSeconds().toString().padStart(2, '0')
-
-        if (reg.op == 'INSERT')
-            reg.op = 'Inserção'
-        else if (reg.op == 'UPDATE')
-            reg.op = 'Alteração'
-        else
-            reg.op = 'Remoção'
-
-        reg.alterado_em = fdata
-    })
-
-    return regs
-}
 
 async function getProximasAmostras() {
     let amostras = await database('amostra').whereIn('status_pedido', ['Não avaliado', 'Parcialmente avaliado'])
-    .innerJoin('solicitante', 'solicitante.idsolicitante', 'amostra.idsolicitante')
-    .orderBy('amostra.cadastrado_em', 'desc').limit(5).select()
+        .innerJoin('solicitante', 'solicitante.idsolicitante', 'amostra.idsolicitante')
+        .orderBy('amostra.cadastrado_em', 'desc').limit(5).select()
 
-    amostras.map(x=>x.em_analise = x.status_pedido == 'Parcialmente avaliado' ? true : false)
-    amostras.map(x=>x.f_cadastrado_em = dateUtils.viewDateFormat(x.cadastrado_em))
+    amostras.map(x => x.em_analise = x.status_pedido == 'Parcialmente avaliado' ? true : false)
+    amostras.map(x => x.f_cadastrado_em = dateUtils.viewDateFormat(x.cadastrado_em))
     return amostras
 }
 
@@ -60,13 +40,10 @@ module.exports = (app) => {
     //Tela principal
     app.get('/dashboard', loggedIn, (req, res) => {
         getData().then((dataContador) => {
-            getReg().then((dataRegs) => {
-                getProximasAmostras().then(amostras => {
-                    res.render('main/', {
-                        contador: dataContador,
-                        registros: dataRegs,
-                        amostras: amostras
-                    })
+            getProximasAmostras().then(amostras => {
+                res.render('main/', {
+                    contador: dataContador,
+                    amostras: amostras
                 })
             })
         })
