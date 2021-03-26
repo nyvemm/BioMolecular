@@ -44,8 +44,8 @@
 
             <div class="row">
                 <div class="form-group col-md-4">
-                    <label for="preco">Preço</label>
-                    <input type="text" class="form-control" id="preco" name="preco" placeholder="Preço">
+                    <label for="preco">Preço (opcional)</label>
+                    <input type="number" class="form-control" id="preco" name="preco" placeholder="Preço">
                 </div>
 
                 <div class="form-group col-md-4">
@@ -56,16 +56,45 @@
 
                 <div class="form-group col-md-4">
                     <label for="tipo_valor_ref">Tipo de Valor de Referência</label>
-                    <input type="text" class="form-control" id="tipo_valor_ref" name="tipo_valor_ref"
-                        placeholder="Tipo de Valor de Referência">
+                    <select class="form-control" id="tipo_valor_ref" name="tipo_valor_ref">
+                        <option>Númerico</option>
+                        <option>Texto</option>
+                        <option>Porcentagem</option>
+                        <option>Booleano</option>
+                        <option>Intervalo de valores</option>
+                        <option>Idade</option>
+                    </select>
                 </div>
             </div>
 
-            <div class="form-group">
-                <label for="tipo_resultado">Tipo de Resultado (opcional)</label>
-                <input type="text" class="form-control" id="tipo_resultado" name="tipo_resultado"
-                    placeholder="Tipo de Resultado">
+            <div class="tab-ref-idade" style="display:none;">
+                <h3 class="subsection" class="mt-4">Tabela de referências por idade</h3>
+                <table class="table table-sm">
+                    <thead>
+                        <tr>
+                            <th scope="col">Idade (mês)</th>
+                            <th scope="col">Valor de Referência</th>
+                            <th>Ação</th>
+                        </tr>
+                    </thead>
+                    <tbody id="table-body">
+                        <tr>
+                            <th>
+                                <input type="text" class="form-control is-invalid" placeholder="Ex: 1-3" onkeyup="eventValidate(this)">
+                            </th>
+                            <th>
+                                <input type="text" class="form-control"  placeholder="Ex: 58-84%">
+                            </th>
+                            <th>
+                                <button type="button" class="btn btn-primary w-100" onclick='addRow()'>Adicionar</button>
+                            </th>
+                        </tr>
+                    </tbody>
+                </table>
+                <small>*Por favor, coloque os valores em ordem cronológica.</small>
+                <hr>
             </div>
+
 
             <h3 class="subsection" class="mt-4">Informações</h3>
 

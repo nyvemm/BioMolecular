@@ -14,14 +14,25 @@ module.exports = (app) => {
     app.get('/editar-exame/:id', loggedIn, (req, res) => {
         DAOExame.getExame(req.params.id).then((data) => {
             data[0].cadastrado_em = utilsDate.inputDateFormat(data[0].cadastrado_em)
-            res.render('exames/editar', { data: data[0] })
+
+            intervalo = null
+            if (data[0].tabela_intervalo != null) {
+                intervalo = JSON.parse(data[0].tabela_intervalo)
+            }
+            res.render('exames/editar', { data: data[0], intervalo: intervalo })
         })
     })
 
     app.get('/exames/:id', loggedIn, (req, res) => {
         DAOExame.getExame(req.params.id).then((data) => {
             data[0].cadastrado_em = utilsDate.viewDateFormat(data[0].cadastrado_em)
-            res.render('exames/visualizar', { data: data[0] })
+
+            intervalo = null
+            if (data[0].tabela_intervalo != null) {
+                intervalo = JSON.parse(data[0].tabela_intervalo)
+            }
+
+            res.render('exames/visualizar', { data: data[0], intervalo: intervalo })
         })
     })
 

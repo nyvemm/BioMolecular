@@ -53,7 +53,7 @@
         <div class="card mt-4">
             <h5 class="card-header w-100">Paciente</h5>
             <div class="card-body">
-                <p class='m-0'><b>ID</b>: {{data.idamostra}}</p>
+                <p class='m-0'><b>ID</b>: {{data.idpaciente}}</p>
                 <p class='m-0'><b>Nome</b>: {{data.paciente_nome}}</p>
                 <p class='m-0'><b>Idade</b>: {{data.idade}}</p>
                 <hr>
@@ -90,12 +90,19 @@
         <div class="card mt-4">
             <h5 class="card-header">Amostra</h5>
             <div class="card-body">
-                <p class='m-0'><b>Solicitação</b>: {{#if data.solicitacao}} {{data.solicitacao}} {{else}} N/A {{/if}}</p>
-                <p class='m-0'><b>Data de Solicitação</b>: {{#if data.f_dt_solicitacao}} {{data.f_dt_solicitacao}} {{else}} N/A {{/if}}</p>
-                <p class='m-0'><b>Data de Recebimento</b>: {{#if data.f_dt_recebimento}} {{data.f_dt_recebimento}} {{else}} N/A {{/if}}</p>
-                <p class='m-0'><b>Data de Coleta</b>: {{#if data.f_dt_coleta}} {{data.f_dt_coleta}} {{else}} N/A {{/if}}</p>
+                <p class='m-0'><b>Solicitação</b>: {{#if data.solicitacao}} {{data.solicitacao}} {{else}} N/A {{/if}}
+                </p>
+                <p class='m-0'><b>Código de Barras</b>: {{#if data.codigo_barra}} {{data.codigo_barra}} {{else}} N/A
+                    {{/if}}</p>
+
+                <p class='m-0'><b>Data de Solicitação</b>: {{#if data.f_dt_solicitacao}} {{data.f_dt_solicitacao}}
+                    {{else}} N/A {{/if}}</p>
+                <p class='m-0'><b>Data de Recebimento</b>: {{#if data.f_dt_recebimento}} {{data.f_dt_recebimento}}
+                    {{else}} N/A {{/if}}</p>
+                <p class='m-0'><b>Data de Coleta</b>: {{#if data.f_dt_coleta}} {{data.f_dt_coleta}} {{else}} N/A {{/if}}
+                </p>
                 <hr>
-                {{#if data.idade_coleta}} <b>Idade do paciente durante a coleta</b>: {{data.idade_coleta}}a {{data.idade_coleta_meses}}m.  {{/if}}
+                <b>Idade do paciente durante a coleta</b>: {{data.idade_coleta}}a {{data.idade_coleta_meses}}m.
             </div>
         </div>
 

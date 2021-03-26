@@ -18,22 +18,32 @@
             <hr>
             <form method="GET" action="./imprimir-laudo" id="form-imprimir-laudo" target="_blank">
                 <div id="warnings"></div>
-                <div class="form-group w-25 m-0 d-block">
-                    <label for="id">ID da Amostra</label>
-                    <input type="number" class="form-control" id="id" name="id" placeholder="Ex: 1, 2, 3...">
-                </div>
                 <div class="row">
+                    <div class="form-group col-md-4 m-0 d-block mt-4">
+                        <label for="id">ID da Amostra</label>
+                        <input type="number" class="form-control" id="id" name="id" placeholder="Ex: 1, 2, 3...">
+                    </div>
+
                     <div class="form-group col-md-4 m-0 d-block mt-4">
                         <label for="cod">Código da Amostra</label>
                         <input type="text" class="form-control" id="cod" name="cod" placeholder="Ex: 149/21">
                     </div>
+                </div>
+                <div class="row">
                     <div class="form-group col-md-4 m-0 d-block mt-4">
                         <label for="cod">Nome do Responsável</label>
-                        <input type="text" class="form-control" id="responsavel" name="responsavel" placeholder="Ex: Dr. Édis Belini Júnior" value="Dr. Édis Belini Júnior">
+                        <input type="text" class="form-control" id="responsavel" name="responsavel"
+                            placeholder="Ex: Dr. Édis Belini Júnior" value="Dr. Édis Belini Júnior">
                     </div>
                     <div class="form-group col-md-4 m-0 d-block mt-4">
                         <label for="cod">CRBIO do Responsável</label>
-                        <input type="text" class="form-control" id="crbio" name="crbio" placeholder="Ex: 113217/02-D" value="113217/02-D">
+                        <input type="text" class="form-control" id="crbio" name="crbio" placeholder="Ex: 113217/02-D"
+                            value="113217/02-D">
+                    </div>
+                    <div class="form-group col-md-4 m-0 d-block mt-4">
+                        <label for="cod">ART do Responsável</label>
+                        <input type="text" class="form-control" id="art" name="art" placeholder="Ex: 2019/01090"
+                            value="2019/01090">
                     </div>
                 </div>
 

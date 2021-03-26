@@ -153,9 +153,12 @@ module.exports = (app) => {
     })
 
     app.get('/cadastrar-resultado/:id', loggedIn, (req, res) => {
-        database('amostra_contem_exames_aux').select().where('amostra.idamostra', req.params.id)
+        database('amostra_contem_exames_aux').select(database.raw(`*, exame.nome as exame_nome, paciente.nome as paciente_nome, amostra.observacao as observacao`))
+            .where('amostra.idamostra', req.params.id)
             .innerJoin('exame', 'amostra_contem_exames_aux.idexame', 'exame.idexame')
-            .innerJoin('amostra', 'amostra.idamostra', 'amostra_contem_exames_aux.idamostra').then(exames => {
+            .innerJoin('amostra', 'amostra.idamostra', 'amostra_contem_exames_aux.idamostra')
+            .innerJoin('paciente', 'paciente.idpaciente', 'amostra.idpaciente')
+            .then(exames => {
                 let cont = 0;
                 let data = {}
 
@@ -177,10 +180,52 @@ module.exports = (app) => {
 
                         exames.forEach((exame) => {
                             exame.liberado_em = utilsDate.viewDateFormat(exame.liberado_em)
+                            let intervalo_valor = JSON.parse(exame.tabela_intervalo)
+
+                            const diffTime = Math.abs(exame.dt_coleta - exame.dt_nasc);
+                            const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+                            exame.idade_coleta = Math.floor(diffDays / 365)
+                            exame.idade_coleta_meses = Math.floor((diffDays % 365) / 30)
+                            exame.intervalo_bool = exame.tipo_valor_ref == 'Idade'
+                            exame.intervalo_certo = `Não há valor de referência cadastrado para essa idade ${exame.idade_coleta}a ${exame.idade_coleta_meses}m.`
+
+                            if (intervalo_valor) {
+                                intervalo_valor.forEach(it => {
+                                    if (it.idade.startsWith('>')) {
+                                        if (exame.idade_coleta > parseInt(it.idade.substring(1))) {
+                                            console.log('>')
+                                            exame.intervalo_certo = it.valor
+                                            return
+                                        }
+                                    } else if (it.idade.startsWith('<')) {
+                                        console.log('<')
+                                        if (exame.idade_coleta < parseInt(it.idade.substring(1))) {
+                                            exame.intervalo_certo = it.valor
+                                            return
+                                        }
+                                    } else {
+                                        if (it.idade.indexOf('-') != -1) {
+                                            console.log('range')
+                                            if (parseInt(it.idade.substring(0, it.idade.indexOf('-')) <= exame.idade_coleta && exame.idade_coleta <= parseInt(it.idade.substring(it.idade.indexOf('-') + 1)))) {
+                                                exame.intervalo_certo = it.valor
+                                                return
+                                            }
+                                        } else {
+                                            console.log('value')
+                                            if (parseInt(it.idade) == exame.idade_coleta) {
+                                                exame.intervalo_certo = it.valor
+                                                return
+                                            }
+                                        }
+                                    }
+                                })
+                            }
+
                             let tipo = exame.tipo_analise
                             data.exames[lista_exames.findIndex((elem) => elem == tipo)].valor.push(exame)
                         })
 
+                        //console.log(data.exames[0].valor)
                         res.render('amostras/resultados', { data: data, amostra: exames[0] })
                     })
 

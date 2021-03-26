@@ -110,7 +110,6 @@
                         <th scope="col">Preço</th>
                         <th scope="col">Valor de Referência</th>
                         <th scope="col">Tipo de Valor de Referência</th>
-                        <th scope="col">Tipo de Resultado</th>
                         <th scope="col">Cadastrado em</th>
                     </tr>
                 </thead>
@@ -125,7 +124,6 @@
                         <td>{{#if this.preco}} {{this.preco}} {{else}} N/A {{/if}}</td>
                         <td>{{#if this.valor_ref}} {{this.valor_ref}} {{else}} N/A {{/if}}</td>
                         <td>{{#if this.tipo_valor_ref}} {{this.tipo_valor_ref}} {{else}} N/A {{/if}}</td>
-                        <td>{{#if this.tipo_resultado}} {{this.tipo_resultado}} {{else}} N/A {{/if}}</td>
                         <td>{{this.cadastrado_em}}</td>
                     </tr>
                     {{/each}}

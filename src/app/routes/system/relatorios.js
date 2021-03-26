@@ -97,12 +97,36 @@ module.exports = (app) => {
                             resultados_exames[lista_exames.findIndex((elem) => elem == tipo)].valor.push(exame)
                         })
 
+                        novos_exames = []
+                        tipos = ['Análise Citológica', 'Análise Eletroforética', 'Análise Cromatográfica', 'Análise Molecular']
+
+                        tipos_index = 0
+                        last_index = tipos_index
+                        while(resultados_exames.length != 0) {
+                            for(let i = 0; i < resultados_exames.length; i++) {
+                                if(resultados_exames[i].tipo == tipos[tipos_index]) {
+                                    last_index = tipos_index
+                                    tipos_index++
+                                    novos_exames.push(resultados_exames[i])
+                                    resultados_exames.splice(i, 1)
+                                    break
+                                }
+                            }
+
+                            /* Não encontrou o resultado */
+                            if(last_index == tipos_index) {
+                                tipos_index++
+                                last_index = tipos_index
+                            }
+                        }
+
                         res.render('relatorios/a4', {
                             amostra: amostra[0],
-                            exames: resultados_exames,
+                            exames: novos_exames,
                             codigo: req.query.cod,
                             responsavel: req.query.responsavel,
-                            crbio: req.query.crbio
+                            crbio: req.query.crbio,
+                            art: req.query.art
                         })
                     })
             })
@@ -239,7 +263,6 @@ module.exports = (app) => {
                                 (exame.preco ? exame.preco.includes(query) : false) ||
                                 (exame.valor_ref ? exame.valor_ref.includes(query) : false) ||
                                 (exame.tipo_valor_ref ? exame.tipo_valor_ref.includes(query) : false) ||
-                                (exame.tipo_resultado ? exame.tipo_resultado.includes(query) : false) ||
                                 (exame.observacao ? exame.observacao.includes(query) : false) ||
                                 (exame.cadastrado_por ? exame.cadastrado_por.includes(query) : false)
                         })

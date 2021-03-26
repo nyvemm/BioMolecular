@@ -30,12 +30,13 @@
                     <input type="hidden" class="form-control" id="idamostra" name="idamostra" value={{data.idamostra}}>
                     <div class="form-group">
                         <label for="interpretacao_resultados">Interpretação dos Resultados</label>
-                        <textarea class="form-control" id="interpretacao_resultados" rows="3">{{amostra.interpretacao_resultados}}</textarea>
+                        <textarea class="form-control" id="interpretacao_resultados"
+                            rows="3">{{amostra.interpretacao_resultados}}</textarea>
                     </div>
 
                     <div class="form-group">
                         <label for="resultado">Resultado</label>
-                    <textarea class="form-control" id="resultado" rows="3">{{amostra.resultado}}</textarea>
+                        <textarea class="form-control" id="resultado" rows="3">{{amostra.resultado}}</textarea>
                     </div>
 
                     <div class="row m-0 mt-4">
@@ -57,7 +58,7 @@
                         {{#each this.valor}}
                         <div class="card">
                             <div class="card-body">
-                                <h5 class="card-title">{{this.nome}}</h5>
+                                <h5 class="card-title">{{this.exame_nome}} - {{this.metodo}}</h5>
                                 {{#if this.status}}
                                 <p class="mb-1"><b>Status</b>: <span class="text-success">Este exame já foi
                                         avaliado</span></p>
@@ -72,15 +73,21 @@
                                 <div class="row m-0">
                                     <p class="m-0 col-md-4 p-0">Valor de Referência: {{this.valor_ref}}</p>
                                     <p class="m-0 col-md-4 p-0">Tipo de Referência: {{this.tipo_valor_ref}}</p>
-                                    <p class="m-0 col-md-4 p-0">Tipo de Resultado: {{this.tipo_resultado}}</p>
+                                    <p class="m-0 col-md-4 p-0">Idade do Paciente: {{this.idade_coleta}}a
+                                        {{this.idade_coleta_meses}}m.</p>
                                 </div>
+                                {{#if this.intervalo_bool}}
+                                <p class="m-0 col-md-12 p-0">Valor de Referência (Idade):
+                                    <span style="color: green;">{{this.intervalo_certo}}</span>
+                                </p>
+                                {{/if}}
                                 <hr>
                                 <form method="POST" id='formulario-{{this.idamostraexame}}'>
                                     <input type="hidden" name="idamostraexame" value="{{this.idamostraexame}}">
                                     <div class="form-group">
                                         <label for="valor_resultado">Resultado do Exame</label>
-                                        <input type="text" class="form-control" id="valor_resultado_{{this.idamostraexame}}"
-                                            name="valor_resultado">
+                                        <input type="text" class="form-control"
+                                            id="valor_resultado_{{this.idamostraexame}}" name="valor_resultado">
                                     </div>
                                     <div class="form-group">
                                         <label for="observacao_resultado">Observações (caso necessário)</label>

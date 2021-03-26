@@ -90,12 +90,12 @@ routesViews(app)
 
 //Caso a página requisitada não exista, retorna uma mensagem.
 app.use((req, res, next) => {
-    res.status(404).end('Página não encontrada.')
+    res.status(404).render('layouts/not_found')
 })
 
 //Caso ocorra um erro interno no servidor, retorna uma mensagem.
-app.use(function(error, req, resp, next) {
-    resp.status(500).end('Houve um erro interno no servidor.')
+app.use(function(error, req, res, next) {
+    res.status(500).render('layouts/fatal_error', {error: error})
     console.log(error)
 })
 

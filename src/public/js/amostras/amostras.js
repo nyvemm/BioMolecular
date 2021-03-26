@@ -30,6 +30,7 @@ function updateTable(data, offset) {
         data.slice(currentOffset, currentOffset + 10).forEach((amostra) => {
             innerHTML += `<tr class='clickable-row' data-href='/amostras/${amostra.idamostra}'>
                         <th scope="row">${amostra.idamostra}</th>
+                        <td>${amostra.paciente_nome}</td>
                         <td>${amostra.solicitante_nome}</td>
                         <td>${amostra.material}</td>
                         <td class="text-status">${amostra.status_pedido}</td>

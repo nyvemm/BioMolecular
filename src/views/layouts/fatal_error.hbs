@@ -1,0 +1,36 @@
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="/img/icon.png">
+    <title>LGBM UFMS/CPTL</title>
+
+    <link rel="stylesheet" href="bootstrap/css/bootstrap.css">
+    <link rel="stylesheet" href="css/utils/not_found.css">
+</head>
+
+<body>
+    <div class="d-flex justify-content-center align-items-center vw-100 vh-100">
+        <div>
+            <h3>Houve um erro fatal!</h3>
+            <br>
+            <h4>Houve um erro interno que impediu todo o funcionamento do sistema.</h4>
+            <br> <br>
+            <div class="d-flex justify-content-center">
+                <img src="/svg/dna.svg" alt="DNA">
+            </div>
+            <br> <br> <br>
+            <input type="hidden" id="error-log" value='{{error}}'>
+            <div class="d-flex justify-content-center">
+                <a href="/dashboard">[Ir para o menu principal]</a>
+                <p>.</p>
+                <a href="javascript:downloadEvent();" class="text-danger">[Salvar registro do erro]</a>
+            </div>
+        </div>
+    </div>
+</body>
+
+<script src="/js/libs/jquery-3.5.1.min.js"></script>
+<script src="bootstrap/js/bootstrap.min.js"></script>
+<script src="/js/utils/download.js"></script>
+
+</html>

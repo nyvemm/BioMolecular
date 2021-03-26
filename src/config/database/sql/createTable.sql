@@ -36,10 +36,10 @@ CREATE TABLE IF NOT EXISTS exame(
 	preco DECIMAL(10,2) NULL,
 	valor_ref VARCHAR(45) NOT NULL,
 	tipo_valor_ref VARCHAR(45) NOT NULL,
-	tipo_resultado VARCHAR(50) NOT NULL,
 	cadastrado_em DATE DEFAULT NOW(),
 	cadastrado_por VARCHAR(100),
 	observacao TEXT,
+	tabela_intervalo TEXT,
 
 	CONSTRAINT pk_exames PRIMARY KEY (idExame)
 	/*CONSTRAINT tipo_valido CHECK(tipo_analise = 'Análise Citológica' or tipo_analise = 'Análise Eletroforética' or tipo_analise = 'Análise Cromatográfica' or tipo_analise = 'Análise Molecular') */

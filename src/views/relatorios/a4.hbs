@@ -23,7 +23,6 @@
         <div class="field row">
             <p><b>Material: </b>{{amostra.material}}</p>
             <p><b>Sexo: </b>{{amostra.sexo}}</p>
-            <p><b>Gestante: </b>{{#if amostra.gestante}} Sim {{else}} Não {{/if}}</p>
         </div>
         <div class="field row">
             <p><b>Data de coleta: </b>{{amostra.f_dt_coleta}}</p>
@@ -57,7 +56,7 @@
                     {{#each this.valor}}
                     <tr>
                     <td>{{this.exame_nome}}</td>
-                    <td>{{this.valor_resultado}}</td>
+                    <td>{{#if this.valor_resultado}} {{this.valor_resultado}} {{else}} <p style="color:red;">Ainda não avaliado</p> {{/if}}</td>
                     <td>{{this.metodo}}</td>
                     <td>{{this.valor_ref}}</td>
                     {{#if this.observacao_resultado}} <input type="hidden" data-valor='resultado' value='{{this.observacao_resultado}}'> {{/if}}
@@ -77,7 +76,11 @@
         <div class="header-t w-100">
             <h2>Interpretação de Resultados</h2>
         </div>
-        <p style="padding-left: 5px;">{{amostra.interpretacao_resultados}}</p>
+        {{#if interpretacao_resultados}}
+            <p style="padding-left: 5px;">{{amostra.interpretacao_resultados}}</p>
+        {{else}}
+            <p style="color:red;padding-left: 5px;">Ainda sem interpretações do resultado.</p> 
+        {{/if}}
     </section>
 
     <br>
@@ -86,7 +89,11 @@
         <div class="header-t w-100">
             <h2>Resultado</h2>
         </div>
-        <p style="padding-left: 5px;">{{amostra.resultado}}</p>
+        {{#if resultado}}
+            <p style="padding-left: 5px;">{{amostra.resultado}}</p>
+        {{else}}
+            <p style="color:red;padding-left: 5px;">Ainda sem resultados.</p> 
+        {{/if}}
     </section>
 
     <br>
@@ -109,7 +116,8 @@
     <div class="sign">
         <p>Liberado e conferido em {{amostra.f_dt_liberacao}}</p>
         <b>{{responsavel}} <br>
-            &#8287; CRBio {{crbio}}
+            CRBio {{crbio}} <br>
+            ART {{art}}
         </b>
     </div>
 
