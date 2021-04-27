@@ -7,8 +7,8 @@ const { loggedIn } = require("../../helpers/login")
 module.exports = (app) => {
     app.get('/relatorios', loggedIn, (req, res) => {
         database('amostra').select(database.raw(`*, paciente.nome as paciente_nome, solicitante.nome as solicitante_nome`))
-            .innerJoin('paciente', 'amostra.idpaciente', 'paciente.idpaciente')
-            .innerJoin('solicitante', 'amostra.idsolicitante', 'solicitante.idsolicitante')
+            .innerJoin('paciente', 'amostra.idPaciente', 'paciente.idPaciente')
+            .innerJoin('solicitante', 'amostra.idSolicitante', 'solicitante.idSolicitante')
             .orderBy('dt_coleta', 'desc').then(amostra => {
                 amostra.forEach(amostra => {
                     amostra.f_dt_recebimento = utilsDate.viewDateFormat(amostra.dt_recebimento)
@@ -44,8 +44,8 @@ module.exports = (app) => {
     })
 
     app.get('/relatorios/amostras-tipo-exame', loggedIn, (req, res) => {
-        database('amostra').innerJoin('amostra_contem_exames_aux', 'amostra_contem_exames_aux.idamostra', 'amostra.idamostra')
-            .innerJoin('exame', 'exame.idexame', 'amostra_contem_exames_aux.idexame')
+        database('amostra').innerJoin('amostra_contem_exames_aux', 'amostra_contem_exames_aux.idAmostra', 'amostra.idAmostra')
+            .innerJoin('exame', 'exame.idExame', 'amostra_contem_exames_aux.idExame')
             .select('tipo_analise').distinct().then(tipo_analises => {
                 res.render('relatorios/relatorio-tipo-exame', { tipo_analises: tipo_analises.map(x => x.tipo_analise) })
             })
@@ -56,12 +56,12 @@ module.exports = (app) => {
 
     app.get('/relatorios/imprimir-laudo', (req, res) => {
         const id = req.query.id
-        database('amostra_contem_exames_aux').where('amostra_contem_exames_aux.idamostra', id)
-            .innerJoin('amostra', 'amostra.idamostra', 'amostra_contem_exames_aux.idamostra')
-            .innerJoin('exame', 'exame.idexame', 'amostra_contem_exames_aux.idexame')
-            .innerJoin('paciente', 'amostra.idpaciente', 'paciente.idpaciente')
-            .innerJoin('solicitante', 'amostra.idsolicitante', 'solicitante.idsolicitante')
-            .leftJoin('resultados', 'resultados.idamostraexame', 'amostra_contem_exames_aux.idamostraexame')
+        database('amostra_contem_exames_aux').where('amostra_contem_exames_aux.idAmostra', id)
+            .innerJoin('amostra', 'amostra.idAmostra', 'amostra_contem_exames_aux.idAmostra')
+            .innerJoin('exame', 'exame.idExame', 'amostra_contem_exames_aux.idExame')
+            .innerJoin('paciente', 'amostra.idPaciente', 'paciente.idPaciente')
+            .innerJoin('solicitante', 'amostra.idSolicitante', 'solicitante.idSolicitante')
+            .leftJoin('resultados', 'resultados.idAmostraExame', 'amostra_contem_exames_aux.idAmostraExame')
             .select(database.raw(`*, paciente.nome as paciente_nome, solicitante.nome as solicitante_nome, exame.nome as exame_nome, exame.observacao as exame_observacao`))
             .then(data => {
 
@@ -80,8 +80,8 @@ module.exports = (app) => {
                     amostra.cod = req.query.cod
                 })
 
-                database('amostra_contem_exames_aux').select('tipo_analise').distinct().where('idamostra', id)
-                    .innerJoin('exame', 'amostra_contem_exames_aux.idexame', 'exame.idexame')
+                database('amostra_contem_exames_aux').select('tipo_analise').distinct().where('idAmostra', id)
+                    .innerJoin('exame', 'amostra_contem_exames_aux.idExame', 'exame.idExame')
                     .then((tipos_exame) => {
                         let resultados_exames = []
 
@@ -140,14 +140,14 @@ module.exports = (app) => {
     /* CRUD */
     app.get('/relatorios/gerar-laudo', loggedIn, (req, res) => {
         const id = req.query.id
-        database('amostra_contem_exames_aux').where('amostra_contem_exames_aux.idamostra', id)
-            .innerJoin('amostra', 'amostra.idamostra', 'amostra_contem_exames_aux.idamostra')
-            .innerJoin('exame', 'exame.idexame', 'amostra_contem_exames_aux.idexame')
-            .leftJoin('resultados', 'resultados.idamostraexame', 'amostra_contem_exames_aux.idamostraexame')
+        database('amostra_contem_exames_aux').where('amostra_contem_exames_aux.idAmostra', id)
+            .innerJoin('amostra', 'amostra.idAmostra', 'amostra_contem_exames_aux.idAmostra')
+            .innerJoin('exame', 'exame.idExame', 'amostra_contem_exames_aux.idExame')
+            .leftJoin('resultados', 'resultados.idAmostraExame', 'amostra_contem_exames_aux.idAmostraExame')
             .then(data => {
 
-                database('amostra_contem_exames_aux').select('tipo_analise').distinct().where('idamostra', id)
-                    .innerJoin('exame', 'amostra_contem_exames_aux.idexame', 'exame.idexame').then((tipos_exame) => {
+                database('amostra_contem_exames_aux').select('tipo_analise').distinct().where('idAmostra', id)
+                    .innerJoin('exame', 'amostra_contem_exames_aux.idExame', 'exame.idExame').then((tipos_exame) => {
                         let resultados_exames = []
 
                         let lista_exames = tipos_exame.map(t => t.tipo_analise)
@@ -175,8 +175,8 @@ module.exports = (app) => {
     app.get('/relatorios/gerar-amostras-situacao', (req, res) => {
         const situacao = req.query.situacao
         database('amostra').select(database.raw(`*, paciente.nome as paciente_nome, solicitante.nome as solicitante_nome`))
-            .innerJoin('paciente', 'amostra.idpaciente', 'paciente.idpaciente')
-            .innerJoin('solicitante', 'amostra.idsolicitante', 'solicitante.idsolicitante')
+            .innerJoin('paciente', 'amostra.idPaciente', 'paciente.idPaciente')
+            .innerJoin('solicitante', 'amostra.idSolicitante', 'solicitante.idSolicitante')
             .where('status_pedido', situacao)
             .then(data => {
                 data.map(x => x.f_dt_coleta = utilsDate.viewDateFormat(x.dt_coleta))
@@ -191,8 +191,8 @@ module.exports = (app) => {
     app.get('/relatorios/gerar-amostras-material', (req, res) => {
         const material = req.query.material
         database('amostra').select(database.raw(`*, paciente.nome as paciente_nome, solicitante.nome as solicitante_nome`))
-            .innerJoin('paciente', 'amostra.idpaciente', 'paciente.idpaciente')
-            .innerJoin('solicitante', 'amostra.idsolicitante', 'solicitante.idsolicitante')
+            .innerJoin('paciente', 'amostra.idPaciente', 'paciente.idPaciente')
+            .innerJoin('solicitante', 'amostra.idSolicitante', 'solicitante.idSolicitante')
             .where('material', material)
             .then(data => {
                 data.map(x => x.f_dt_coleta = utilsDate.viewDateFormat(x.dt_coleta))
@@ -206,11 +206,11 @@ module.exports = (app) => {
     /* CRUD */
     app.get('/relatorios/gerar-amostras-tipo-exame', (req, res) => {
         const tipo_analise = req.query.tipo_analise
-        database('amostra').distinct().select(database.raw(`amostra.idamostra, material, dt_coleta, paciente.nome as paciente_nome, solicitante.nome as solicitante_nome`))
-            .innerJoin('paciente', 'amostra.idpaciente', 'paciente.idpaciente')
-            .innerJoin('solicitante', 'amostra.idsolicitante', 'solicitante.idsolicitante')
-            .innerJoin('amostra_contem_exames_aux', 'amostra_contem_exames_aux.idamostra', 'amostra.idamostra')
-            .innerJoin('exame', 'exame.idexame', 'amostra_contem_exames_aux.idexame')
+        database('amostra').distinct().select(database.raw(`amostra.idAmostra, material, dt_coleta, paciente.nome as paciente_nome, solicitante.nome as solicitante_nome`))
+            .innerJoin('paciente', 'amostra.idPaciente', 'paciente.idPaciente')
+            .innerJoin('solicitante', 'amostra.idSolicitante', 'solicitante.idSolicitante')
+            .innerJoin('amostra_contem_exames_aux', 'amostra_contem_exames_aux.idAmostra', 'amostra.idAmostra')
+            .innerJoin('exame', 'exame.idExame', 'amostra_contem_exames_aux.idExame')
             .where('tipo_analise', tipo_analise)
             .then(data => {
                 data.map(x => x.f_dt_coleta = utilsDate.viewDateFormat(x.dt_coleta))
@@ -234,7 +234,7 @@ module.exports = (app) => {
                         // console.log(amostras)
 
                         pacientes = pacientes.filter(paciente => {
-                            return (paciente.idpaciente == parseInt(query)) ||
+                            return (paciente.idPaciente == parseInt(query)) ||
                                 (paciente.nome.includes(query)) ||
                                 (paciente.etnia ? paciente.etnia.includes(query) : false) ||
                                 (paciente.naturalidade_cidade ? paciente.naturalidade_cidade.includes(query) : false) ||
@@ -244,7 +244,7 @@ module.exports = (app) => {
                         })
 
                         solicitantes = solicitantes.filter(solicitante => {
-                            return solicitante.idsolicitante == parseInt(query) ||
+                            return solicitante.idSolicitante == parseInt(query) ||
                                 (solicitante.nome.includes(query)) ||
                                 (solicitante.estado ? solicitante.estado.includes(query) : false) ||
                                 (solicitante.cidade ? solicitante.cidade.includes(query) : false) ||
@@ -255,7 +255,7 @@ module.exports = (app) => {
                         })
 
                         exames = exames.filter(exame => {
-                            return exame.idexame == parseInt(query) ||
+                            return exame.idExame == parseInt(query) ||
                                 (exame.nome.includes(query)) ||
                                 (exame.sigla ? exame.sigla == parseInt(query) : false) ||
                                 (exame.tipo_analise ? exame.tipo_analise.includes(query) : false) ||
@@ -268,9 +268,9 @@ module.exports = (app) => {
                         })
 
                         amostras = amostras.filter(amostra => {
-                            return amostra.idamostra == parseInt(query) ||
-                                (amostra.idpaciente == parseInt(query)) ||
-                                (amostra.idsolicitante == parseInt(query)) ||
+                            return amostra.idAmostra == parseInt(query) ||
+                                (amostra.idPaciente == parseInt(query)) ||
+                                (amostra.idSolicitante == parseInt(query)) ||
                                 (amostra.material ? amostra.material.includes(query) : false) ||
                                 (amostra.codigo_barra ? amostra.codigo_barra.includes(query) : false) ||
                                 (amostra.suspeita_diagnostico ? amostra.suspeita_diagnostico.includes(query) : false) ||

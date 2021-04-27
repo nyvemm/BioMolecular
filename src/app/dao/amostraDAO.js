@@ -14,10 +14,10 @@ class amostraDAO {
     async getAmostras(data) {
         try {
             let offset = data.offset ? data.offset : 0
-            let sort = data.sort ? data.sort : 'paciente.idpaciente'
+            let sort = data.sort ? data.sort : 'paciente.idPaciente'
             let amostras = await this.database('amostra').select(database.raw(`*, paciente.nome as paciente_nome, solicitante.nome as solicitante_nome, amostra.observacao as observacao`))
-                .innerJoin('paciente', 'amostra.idpaciente', 'paciente.idpaciente')
-                .innerJoin('solicitante', 'amostra.idsolicitante', 'solicitante.idsolicitante')
+                .innerJoin('paciente', 'amostra.idPaciente', 'paciente.idPaciente')
+                .innerJoin('solicitante', 'amostra.idSolicitante', 'solicitante.idSolicitante')
                 .offset(offset).orderBy(sort)
             amostras.forEach((amostra) => {
                 const diffTime = Math.abs(new Date() - amostra.dt_nasc);
@@ -41,10 +41,10 @@ class amostraDAO {
     // Lista a amostra pela sua chave primária.
     async getAmostra(id) {
         try {
-            let amostra = await this.database('amostra').where('idamostra', id).select(database.raw(`*, paciente.nome as paciente_nome, solicitante.nome as solicitante_nome, amostra.cadastrado_por as cadastrado_por
+            let amostra = await this.database('amostra').where('idAmostra', id).select(database.raw(`*, paciente.nome as paciente_nome, solicitante.nome as solicitante_nome, amostra.cadastrado_por as cadastrado_por
                 , amostra.observacao as observacao`))
-                .innerJoin('paciente', 'amostra.idpaciente', 'paciente.idpaciente')
-                .innerJoin('solicitante', 'amostra.idsolicitante', 'solicitante.idsolicitante')
+                .innerJoin('paciente', 'amostra.idPaciente', 'paciente.idPaciente')
+                .innerJoin('solicitante', 'amostra.idSolicitante', 'solicitante.idSolicitante')
             const diffTime = Math.abs(new Date() - amostra[0].dt_nasc);
             const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
 
@@ -63,8 +63,8 @@ class amostraDAO {
     //Adiciona um novo amostra ao banco de dados.
     async addAmostra(data) {
         //Verifica se o paciente e solicitante existem no banco de dados.   
-        const hasPaciente = await this.database.select().from('paciente').where('idpaciente', data.idpaciente)
-        const hasSolicitante = await this.database.select().from('solicitante').where('idsolicitante', data.idsolicitante)
+        const hasPaciente = await this.database.select().from('paciente').where('idPaciente', data.idPaciente)
+        const hasSolicitante = await this.database.select().from('solicitante').where('idSolicitante', data.idSolicitante)
 
         if (!hasPaciente.length)
             throw ({ status: 'error', message: 'O paciente informado não existe.' })
@@ -73,8 +73,8 @@ class amostraDAO {
 
         try {
             await this.database('amostra').insert({
-                idpaciente: data.idpaciente,
-                idsolicitante: data.idsolicitante,
+                idPaciente: data.idPaciente,
+                idSolicitante: data.idSolicitante,
                 gestante: data.gestante ? data.gestante : false,
                 semanas_gestacao: data.semanas_gestacao ? data.semanas_gestacao : 0,
                 transfusao: data.transfusao ? data.transfusao : false,
@@ -94,12 +94,12 @@ class amostraDAO {
             })
 
             //Cria resultados para exame.
-            let insert_id = await this.database('amostra').max('idamostra')
+            let insert_id = await this.database('amostra').max('idAmostra')
             const promises = data.exames.split(',').map(exame => {
                 return new Promise((resolve, reject) => {
                     this.database('amostra_contem_exames_aux').insert({
-                        idamostra: insert_id[0].max,
-                        idexame: parseInt(exame)
+                        idAmostra: insert_id[0].max,
+                        idExame: parseInt(exame)
                     }).then((data) => {
                         resolve(this.obj_success)
                     }).catch((error) => {
@@ -119,9 +119,9 @@ class amostraDAO {
 
     //Atualiza uma amostra no banco de dados.
     async updateAmostra(data) {
-        const id = data.idamostra
+        const id = data.idAmostra
         try {
-            await this.database('amostra').where('idamostra', id).update({
+            await this.database('amostra').where('idAmostra', id).update({
                 solicitacao: data.solicitacao ? data.solicitacao : null,
                 gestante: data.gestante ? data.gestante : null,
                 semanas_gestacao: data.semanas_gestacao ? data.semanas_gestacao : null,
@@ -145,14 +145,14 @@ class amostraDAO {
     //Remove uma amostra do banco de dados.
     async removeAmostra(id) {
         try {
-            let ids = await this.database('amostra_contem_exames_aux').distinct('idamostraexame')
-                .innerJoin('amostra', 'amostra.idamostra', 'amostra_contem_exames_aux.idamostra')
-                .where('amostra.idamostra', id).select()
+            let ids = await this.database('amostra_contem_exames_aux').distinct('idAmostraExame')
+                .innerJoin('amostra', 'amostra.idAmostra', 'amostra_contem_exames_aux.idAmostra')
+                .where('amostra.idAmostra', id).select()
 
-            ids = Array.from(ids).map(amostra => amostra.idamostraexame)
-            await this.database('resultados').whereIn('idamostraexame', ids).del()
-            await this.database('amostra_contem_exames_aux').whereIn('idamostraexame', ids).del()
-            await this.database('amostra').where('idamostra', id).del()
+            ids = Array.from(ids).map(amostra => amostra.idAmostraExame)
+            await this.database('resultados').whereIn('idAmostraExame', ids).del()
+            await this.database('amostra_contem_exames_aux').whereIn('idAmostraExame', ids).del()
+            await this.database('amostra').where('idAmostra', id).del()
             return this.obj_success
         } catch (error) {
             console.log(error)

@@ -1,12 +1,11 @@
 //Cria a conexão com o banco de dados
 var database = require('knex')({
-    client: 'pg',
-    version: '7.2',
+    client: 'mysql',
     connection: {
-        host: 'biomol.postgres.uhserver.com',
-        user: 'bio_lab',
-        password: 'projeto@ufms2021',
-        database: 'biomol'
+        host: 'isp3.ufms.br',
+        user: 'c54belini_junior',
+        password: '4fMttFNYq!z',
+        database: 'c54biomol'
     }
 })
 

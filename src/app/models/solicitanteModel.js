@@ -25,7 +25,7 @@ class solicitanteModel {
 
     static removeValidations() {
         return [
-            check('idsolicitante').trim().not().isEmpty().withMessage('O ID precisa ser informado.').bail()
+            check('idSolicitante').trim().not().isEmpty().withMessage('O ID precisa ser informado.').bail()
             .isInt().withMessage('O ID precisa ser um número inteiro')
         ]
 

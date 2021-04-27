@@ -6,7 +6,7 @@ function unique(value, index, self) {
 /* Pega o valor de um exame já selecionado para a amostra */
 function fetchCurrentExams() {
     const xhr = new XMLHttpRequest()
-    xhr.open('GET', `/amostra-exames?id=${$('#idamostra').val()}`, false)
+    xhr.open('GET', `/amostra-exames?id=${$('#idAmostra').val()}`, false)
     xhr.send()
 
     if (xhr.status == 200) {
@@ -41,20 +41,20 @@ function fetchExame() {
 
             /* Pega a lista atual dos exames selecionados */
             let listaExamesSelecionados = fetchCurrentExams()
-            listaExamesSelecionados = listaExamesSelecionados.map(exame => exame.idexame)
+            listaExamesSelecionados = listaExamesSelecionados.map(exame => exame.idExame)
 
             query = ''
             exames.forEach((exame) => {
                 query += `<div><h4> ${exame.tipo} </h3>`
                 exame.valor.forEach((valor_exame) => {
-                    if (valor_exame.idexame in listaExamesSelecionados) {
+                    if (valor_exame.idExame in listaExamesSelecionados) {
                         query += `<div class="form-check">
-                        <input class="form-check-input" data-id="${valor_exame.idexame}" type="checkbox" name="exames-escolhidos" id="exame-${valor_exame.idexame}" checked>
-                        <label class="form-check-label" for="exame-${valor_exame.idexame}">${valor_exame.nome}</label></div>`
+                        <input class="form-check-input" data-id="${valor_exame.idExame}" type="checkbox" name="exames-escolhidos" id="exame-${valor_exame.idExame}" checked>
+                        <label class="form-check-label" for="exame-${valor_exame.idExame}">${valor_exame.nome}</label></div>`
                     } else {
                         query += `<div class="form-check">
-                        <input class="form-check-input" data-id="${valor_exame.idexame}" type="checkbox" name="exames-escolhidos" id="exame-${valor_exame.idexame}">
-                        <label class="form-check-label" for="exame-${valor_exame.idexame}">${valor_exame.nome}</label></div>`
+                        <input class="form-check-input" data-id="${valor_exame.idExame}" type="checkbox" name="exames-escolhidos" id="exame-${valor_exame.idExame}">
+                        <label class="form-check-label" for="exame-${valor_exame.idExame}">${valor_exame.nome}</label></div>`
                     }
                 })
                 query += '<hr></div>'
@@ -86,7 +86,7 @@ function putData() {
 }
 
 function deleteData() {
-    let id = $('#idamostra').val()
+    let id = $('#idAmostra').val()
 
     const xhr = new XMLHttpRequest()
     xhr.open('DELETE', `/amostra?id=${id}`, true)

@@ -13,14 +13,14 @@
         {{>_pesquisa}}
         {{#if data}}
         <div class="border row mb-4 p-2">
-            <a href="/editar-exame/{{data.idexame}}" class="col-md-4">[Editar Exame]</a>
-            <a href="javascript:deleteData({{data.idexame}})" class="col-md-4">[Remover Exame]</a>
+            <a href="/editar-exame/{{data.idExame}}" class="col-md-4">[Editar Exame]</a>
+            <a href="javascript:deleteData({{data.idExame}})" class="col-md-4">[Remover Exame]</a>
         </div>
         <div class="warnings" id="warnings"> </div>
 
 
         <div>
-            <p class='m-0'><b>ID</b>: {{data.idexame}}</p>
+            <p class='m-0'><b>ID</b>: {{data.idExame}}</p>
             <p class='m-0'><b>Nome</b>: {{data.nome}}</p>
             <p class='m-0'><b>Tipo</b>: {{data.tipo_analise}}</p>
             <p class='m-0'><b>Método</b>: {{data.metodo}}</p>

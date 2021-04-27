@@ -28,8 +28,8 @@ function updateTable(data, offset) {
         table.innerHTML = '<h3> Não há pacientes cadastrados </h3>'
     } else {
         data.slice(currentOffset, currentOffset + 10).forEach((paciente) => {
-            innerHTML += `<tr class='clickable-row' data-href='/pacientes/${paciente.idpaciente}'>
-                        <th scope="row">${paciente.idpaciente}</th>
+            innerHTML += `<tr class='clickable-row' data-href='/pacientes/${paciente.idPaciente}'>
+                        <th scope="row">${paciente.idPaciente}</th>
                         <td>${paciente.nome}</td>
                         <td>${paciente.naturalidade_cidade}-${paciente.naturalidade_estado}</td>
                         <td>${paciente.idade}a ${paciente.idade_meses}m</td>

@@ -10,7 +10,7 @@ class pacienteDAO {
     async getPacientes(data) {
         try {
             let offset = data.offset ? data.offset : 0
-            let sort = data.sort ? data.sort : 'idpaciente'
+            let sort = data.sort ? data.sort : 'idPaciente'
             let pacientes = await this.database('paciente').select().offset(offset).orderBy(sort)
 
             pacientes.forEach((paciente) => {
@@ -29,7 +29,7 @@ class pacienteDAO {
     //Lista paciente por seu id (chave primária)
     async getPaciente(id) {
         try {
-            let paciente = await this.database('paciente').where('idpaciente', id).select()
+            let paciente = await this.database('paciente').where('idPaciente', id).select()
             const diffTime = Math.abs(new Date() - paciente.dt_nasc);
             const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
             paciente.idade = Math.floor(diffDays / 365)
@@ -63,9 +63,9 @@ class pacienteDAO {
 
     //Atualiza os dados de um paciente no BD
     async updatePaciente(data) {
-        const id = data.idpaciente
+        const id = data.idPaciente
         try {
-            await this.database('paciente').where('idpaciente', id).update({
+            await this.database('paciente').where('idPaciente', id).update({
                 nome: data.nome,
                 dt_nasc: data.dt_nasc,
                 recem_nascido: data.recem_nascido,
@@ -84,7 +84,7 @@ class pacienteDAO {
     //Remove um paciente do BD
     async deletePaciente(id) {
         try {
-            await this.database('paciente').where('idpaciente', id).del()
+            await this.database('paciente').where('idPaciente', id).del()
             return this.obj_success
         } catch (error) {
             throw this.obj_error

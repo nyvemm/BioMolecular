@@ -4,10 +4,10 @@ class amostraModel {
 
     static validations() {
         return [
-            check('idpaciente').trim().not().isEmpty().withMessage('O ID do paciente precisa ser informado.').bail()
+            check('idPaciente').trim().not().isEmpty().withMessage('O ID do paciente precisa ser informado.').bail()
             .isInt().withMessage('O ID do paciente precisa ser um número.'),
 
-            check('idsolicitante').trim().not().isEmpty().withMessage('O ID do solicitante precisa ser informado.').bail()
+            check('idSolicitante').trim().not().isEmpty().withMessage('O ID do solicitante precisa ser informado.').bail()
             .isInt().withMessage('O ID do solicitante precisa ser um número.'),
 
             check('material').trim().not().isEmpty().withMessage('O material da amostra precisa ser informado').bail()
@@ -20,7 +20,7 @@ class amostraModel {
 
     static removeValidations() {
         return [
-            check('idamostra').trim().not().isEmpty().withMessage('O ID da Amostra precisa ser informado.').bail()
+            check('idAmostra').trim().not().isEmpty().withMessage('O ID da Amostra precisa ser informado.').bail()
             .isInt().withMessage('O ID da Amostra precisa ser um número.')
         ]
     }

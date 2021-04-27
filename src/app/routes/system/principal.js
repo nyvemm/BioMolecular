@@ -23,7 +23,7 @@ async function getData() {
 
 async function getProximasAmostras() {
     let amostras = await database('amostra').whereIn('status_pedido', ['Não avaliado', 'Parcialmente avaliado'])
-        .innerJoin('solicitante', 'solicitante.idsolicitante', 'amostra.idsolicitante')
+        .innerJoin('solicitante', 'solicitante.idSolicitante', 'amostra.idSolicitante')
         .orderBy('amostra.cadastrado_em', 'desc').limit(5).select()
 
     amostras.map(x => x.em_analise = x.status_pedido == 'Parcialmente avaliado' ? true : false)

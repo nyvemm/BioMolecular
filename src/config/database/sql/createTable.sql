@@ -7,8 +7,7 @@ CREATE TABLE IF NOT EXISTS usuario(
 	foto VARCHAR(50),
 	token VARCHAR(50),
 
-	PRIMARY KEY(login),
-	CONSTRAINT CHK_email CHECK(email LIKE '%@%.___' OR email LIKE '%@%.___.__')
+	PRIMARY KEY(login)
 );
 
 CREATE TABLE IF NOT EXISTS paciente(
@@ -21,7 +20,7 @@ CREATE TABLE IF NOT EXISTS paciente(
 	naturalidade_cidade VARCHAR(45) NULL,
 	naturalidade_estado VARCHAR(2) NULL,
 	observacao TEXT,
-	cadastrado_em DATE DEFAULT NOW(),
+	cadastrado_em DATE,
 	cadastrado_por VARCHAR(100),
 	
 	CONSTRAINT pk_paciente PRIMARY KEY (idPaciente)
@@ -36,7 +35,7 @@ CREATE TABLE IF NOT EXISTS exame(
 	preco DECIMAL(10,2) NULL,
 	valor_ref VARCHAR(45) NOT NULL,
 	tipo_valor_ref VARCHAR(45) NOT NULL,
-	cadastrado_em DATE DEFAULT NOW(),
+	cadastrado_em DATE,
 	cadastrado_por VARCHAR(100),
 	observacao TEXT,
 	tabela_intervalo TEXT,
@@ -55,7 +54,7 @@ CREATE TABLE IF NOT EXISTS solicitante(
 	contato_referencia VARCHAR(45) NULL,
 	codigo_barra_solicitante VARCHAR(45) NULL,
 	observacao TEXT NULL,
-	cadastrado_em DATE DEFAULT NOW(),
+	cadastrado_em DATE,
 	cadastrado_por VARCHAR(100),
 
 	CONSTRAINT pk_solicitante PRIMARY KEY (idSolicitante)
@@ -63,8 +62,8 @@ CREATE TABLE IF NOT EXISTS solicitante(
 
 CREATE TABLE IF NOT EXISTS amostra(
 	idAmostra SERIAL,
-	idPaciente INT NOT NULL,
-	idSolicitante INT NOT NULL,
+	idPaciente INT NOT NULL REFERENCES paciente(idPaciente),
+	idSolicitante INT NOT NULL REFERENCES solicitante(idSolicitante),
 	material VARCHAR(45) NOT NULL,
 	dt_coleta DATE  NOT NULL,
 	dt_recebimento DATE NULL,
@@ -84,33 +83,28 @@ CREATE TABLE IF NOT EXISTS amostra(
 	observacao TEXT,
 	solicitacao VARCHAR(100),
 	resultado TEXT,
-	cadastrado_em DATE DEFAULT NOW(),
+	cadastrado_em DATE,
 	cadastrado_por VARCHAR(100),
 	
-	CONSTRAINT pk_amostra PRIMARY KEY (idAmostra),
-	CONSTRAINT fk_idPaciente FOREIGN KEY (idPaciente) REFERENCES paciente(idPaciente),
-	CONSTRAINT fk_idSolicitante FOREIGN KEY (idSolicitante) REFERENCES solicitante(idSolicitante)
+	CONSTRAINT pk_amostra PRIMARY KEY (idAmostra)
 );
 
 CREATE TABLE IF NOT EXISTS amostra_contem_exames_aux(
 	idAmostraExame SERIAL,
-	idAmostra INT NOT NULL,
-	idExame INT NOT NULL,
+	idAmostra INT NOT NULL  REFERENCES amostra(idAmostra),
+	idExame INT NOT NULL REFERENCES exame(idExame),
 	status BOOLEAN DEFAULT FALSE,
 	liberado_em DATE NULL,
 	cadastrado_por VARCHAR(100) NULL,
 	
-	CONSTRAINT pk_amostra_exame PRIMARY KEY (idAmostraExame),
-	CONSTRAINT fk_idAmostra FOREIGN KEY (idAmostra) REFERENCES amostra(idAmostra),
-	CONSTRAINT fk_idExame FOREIGN KEY (idExame) REFERENCES exame(idExame)
+	CONSTRAINT pk_amostra_exame PRIMARY KEY (idAmostraExame)
 );
 
 CREATE TABLE IF NOT EXISTS resultados(
 	idResultado SERIAL NOT NULL,
-	idAmostraExame INT NOT NULL,
+	idAmostraExame INT NOT NULL REFERENCES amostra_contem_exames_aux(idAmostraExame),
 	valor_resultado TEXT,
 	observacao_resultado TEXT,
 	
-	CONSTRAINT pk_resultado PRIMARY KEY (idResultado),
-	CONSTRAINT fk_idAmostraExame FOREIGN KEY (idAmostraExame) REFERENCES amostra_contem_exames_aux(idAmostraExame)
+	CONSTRAINT pk_resultado PRIMARY KEY (idResultado)
 );

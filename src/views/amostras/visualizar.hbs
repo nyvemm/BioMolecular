@@ -13,10 +13,10 @@
         {{>_pesquisa}}
         {{#if data}}
         <div class="border row mb-4 p-2">
-            <a href="/editar-amostra/{{data.idamostra}}" class="col-md-3">[Editar amostra]</a>
-            <a href="javascript:deleteData({{data.idamostra}})" class="col-md-3">[Remover amostra]</a>
-            <a href="/pacientes/{{data.idpaciente}}" class="col-md-3">[Ver Paciente Associado]</a>
-            <a href="/solicitantes/{{data.idsolicitante}}" class="col-md-3">[Ver Solicitante Associado]</a>
+            <a href="/editar-amostra/{{data.idAmostra}}" class="col-md-3">[Editar amostra]</a>
+            <a href="javascript:deleteData({{data.idAmostra}})" class="col-md-3">[Remover amostra]</a>
+            <a href="/pacientes/{{data.idPaciente}}" class="col-md-3">[Ver Paciente Associado]</a>
+            <a href="/solicitantes/{{data.idSolicitante}}" class="col-md-3">[Ver Solicitante Associado]</a>
         </div>
         <div class="warnings" id="warnings"> </div>
 
@@ -44,7 +44,7 @@
                 {{/if}}
 
                 <hr>
-                <a href="/cadastrar-resultado/{{data.idamostra}}" class="btn active mt-2">
+                <a href="/cadastrar-resultado/{{data.idAmostra}}" class="btn active mt-2">
                     {{#if data.finalizado}} Visualizar resultados{{else}}Avaliar exames{{/if}}
                 </a>
             </div>
@@ -53,7 +53,7 @@
         <div class="card mt-4">
             <h5 class="card-header w-100">Paciente</h5>
             <div class="card-body">
-                <p class='m-0'><b>ID</b>: {{data.idpaciente}}</p>
+                <p class='m-0'><b>ID</b>: {{data.idPaciente}}</p>
                 <p class='m-0'><b>Nome</b>: {{data.paciente_nome}}</p>
                 <p class='m-0'><b>Idade</b>: {{data.idade}}</p>
                 <hr>
@@ -81,7 +81,7 @@
         <div class="card mt-4">
             <h5 class="card-header">Solicitante</h5>
             <div class="card-body">
-                <p class='m-0'><b>ID</b>: {{data.idsolicitante}}</p>
+                <p class='m-0'><b>ID</b>: {{data.idSolicitante}}</p>
                 <p class='m-0'><b>Nome</b>: {{data.solicitante_nome}}</p>
                 <p class='m-0'><b>Cidade</b>: {{data.cidade}} - {{data.estado}}</p>
             </div>
@@ -112,7 +112,7 @@
                 <ul class="m-0 p-0">
                     {{#each exame}}
                     <li class="list-group-item paciente-item"><a class='text-dark' target='_blank'
-                            href="/exames/{{this.idexame}}">{{this.nome}}</a></li>
+                            href="/exames/{{this.idExame}}">{{this.nome}}</a></li>
                     {{/each}}
                 </ul>
             </div>

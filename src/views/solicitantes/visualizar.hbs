@@ -13,13 +13,13 @@
         {{>_pesquisa}}
         {{#if data}}
         <div class="border row mb-4 p-2">
-            <a href="/editar-solicitante/{{data.idsolicitante}}" class="col-md-4">[Editar Solicitante]</a>
-            <a href="javascript:deleteData({{data.idsolicitante}})" class="col-md-4">[Remover Solicitante]</a>
+            <a href="/editar-solicitante/{{data.idSolicitante}}" class="col-md-4">[Editar Solicitante]</a>
+            <a href="javascript:deleteData({{data.idSolicitante}})" class="col-md-4">[Remover Solicitante]</a>
         </div>
         <div class="warnings" id="warnings"> </div>
 
 
-        <p class='m-0'><b>ID</b>: {{data.idsolicitante}}</p>
+        <p class='m-0'><b>ID</b>: {{data.idSolicitante}}</p>
         <p class='m-0'><b>Nome</b>: {{data.nome}}</p>
         <p class='m-0'><b>Email</b>: {{data.e_mail}}</p>
         <p class='m-0'><b>Contato de Referência</b>: {{data.contato_referencia}}</p>

@@ -1,22 +1,22 @@
 function atualizaResultados() {
     const xhr = new XMLHttpRequest()
 
-    xhr.open('GET', `/resultados/${$('#idamostra').val()}`, true)
+    xhr.open('GET', `/resultados/${$('#idAmostra').val()}`, true)
     xhr.onload = (e) => {
         if (xhr.status == 200) {
             let response = JSON.parse(xhr.responseText)
             $('.resultado-exame-block').each((index, val) => val.innerHTML = '')
             response.forEach((resultado) => {
                 let xButton = ` <div class="col-md-1">
-                <span style="cursor:pointer;" aria-hidden="true" onclick='deleteResultado(${resultado.idresultado})'>&times;</span>
+                <span style="cursor:pointer;" aria-hidden="true" onclick='deleteResultado(${resultado.idResultado})'>&times;</span>
                 </div>`
                 // xButton = !resultado.status ? xButton : ''
 
-                $(`#amostraexame-${resultado.idamostraexame}`).append(`
+                $(`#amostraexame-${resultado.idAmostraExame}`).append(`
                     <div class="row">
                         <div class="col-md-11">
                         <p class="m-0"> <b>Resultado</b>: ${resultado.valor_resultado} </p>
-                        <p class="m-0"> <b>Observação</b>: ${resultado.observacao_resultado == '' ? 'Sem observações.' : resultado.observacao_resultado} </p>
+                        <p class="m-0"> <b>Observação</b>: ${resultado.observacao_resultado == '' || !resultado.observacao_resultado ? 'Sem observações.' : resultado.observacao_resultado} </p>
                         </div>
                        ${xButton}
                     </div>
@@ -68,7 +68,7 @@ function setWarning(text, color) {
 function putAmostra() {
 
     const formData = new FormData()
-    formData.append('idamostra', $('#idamostra').val())
+    formData.append('idAmostra', $('#idAmostra').val())
     formData.append('interpretacao_resultados', $('#interpretacao_resultados').val())
     formData.append('resultado', $('#resultado').val())
 

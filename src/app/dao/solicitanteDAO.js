@@ -12,7 +12,7 @@ class solicitanteDAO {
     async getSolicitantes(data) {
         try {
             let offset = data.offset ? data.offset : 0
-            let sort = data.sort ? data.sort : 'idsolicitante'
+            let sort = data.sort ? data.sort : 'idSolicitante'
             return await this.database('solicitante').select().offset(offset).orderBy(sort)
         } catch (error) {
             throw this.obj_error
@@ -22,7 +22,7 @@ class solicitanteDAO {
     // Lista o solicitante pela sua chave primária.
     async getSolicitante(id) {
         try {
-            return await this.database('solicitante').where('idsolicitante', id).select()
+            return await this.database('solicitante').where('idSolicitante', id).select()
         } catch (error) {
             throw this.obj_error
         }
@@ -49,9 +49,9 @@ class solicitanteDAO {
 
     // Atualiza um usuário no banco de dados.
     async updateSolicitante(data) {
-        const id = data.idsolicitante
+        const id = data.idSolicitante
         try {
-            await this.database('solicitante').where('idsolicitante', id).update({
+            await this.database('solicitante').where('idSolicitante', id).update({
                 nome: data.nome,
                 estado: data.estado,
                 cidade: data.cidade,
@@ -70,7 +70,7 @@ class solicitanteDAO {
     //Remove um solicitante do banco de dados.
     async removeSolicitante(id) {
         try {
-            await this.database('solicitante').where('idsolicitante', id).del()
+            await this.database('solicitante').where('idSolicitante', id).del()
             return this.obj_success
         } catch (error) {
             throw this.obj_error

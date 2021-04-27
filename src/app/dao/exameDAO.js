@@ -10,7 +10,7 @@ class exameDAO {
     async getExames(data) {
         try {
             let offset = data.offset ? data.offset : 0
-            let sort = data.sort ? data.sort : 'idexame'
+            let sort = data.sort ? data.sort : 'idExame'
             return await this.database('exame').select().offset(offset).orderBy(sort)
         } catch (error) {
             throw this.obj_error
@@ -20,7 +20,7 @@ class exameDAO {
     //Lista exame por seu id (chave primária)
     async getExame(id) {
         try {
-            return await this.database('exame').where('idexame', id).select()
+            return await this.database('exame').where('idExame', id).select()
         } catch (error) {
             throw this.obj_error
         }
@@ -52,9 +52,9 @@ class exameDAO {
 
     //Atualiza os dados de um exame no BD
     async updateExame(data) {
-        const id = data.idexame
+        const id = data.idExame
         try {
-            await this.database('exame').where('idexame', id).update({
+            await this.database('exame').where('idExame', id).update({
                 nome: data.nome,
                 sigla: data.sigla,
                 tipo_analise: data.tipo_analise,
@@ -75,7 +75,7 @@ class exameDAO {
     //Remove um exame do BD
     async deleteExame(id) {
         try {
-            await this.database('exame').where('idexame', id).del()
+            await this.database('exame').where('idExame', id).del()
             return this.obj_success
         } catch (error) {
             throw this.obj_error

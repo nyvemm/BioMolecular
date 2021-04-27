@@ -43,9 +43,9 @@
                 </thead>
                 <tbody>
                     {{#each pacientes}}
-                    <tr onclick="javascript:window.location.href='/pacientes/{{this.idpaciente}}'"
+                    <tr onclick="javascript:window.location.href='/pacientes/{{this.idPaciente}}'"
                         class="clickable-row">
-                        <th scope="row">{{this.idpaciente}}</th>
+                        <th scope="row">{{this.idPaciente}}</th>
                         <td>{{this.nome}}</td>
                         <td>{{this.sexo}}</td>
                         <td>{{this.etnia}}</td>
@@ -79,9 +79,9 @@
                 </thead>
                 <tbody>
                     {{#each solicitantes}}
-                    <tr onclick="javascript:window.location.href='/solicitantes/{{this.idsolicitante}}'"
+                    <tr onclick="javascript:window.location.href='/solicitantes/{{this.idSolicitante}}'"
                         class="clickable-row">
-                        <th scope="row">{{this.idsolicitante}}</th>
+                        <th scope="row">{{this.idSolicitante}}</th>
                         <td>{{this.nome}}</td>
                         <td>{{this.cidade}}</td>
                         <td>{{this.estado}}</td>
@@ -115,8 +115,8 @@
                 </thead>
                 <tbody>
                     {{#each exames}}
-                    <tr onclick="javascript:window.location.href='/exames/{{this.idexame}}'" class="clickable-row">
-                        <th scope="row">{{this.idexame}}</th>
+                    <tr onclick="javascript:window.location.href='/exames/{{this.idExame}}'" class="clickable-row">
+                        <th scope="row">{{this.idExame}}</th>
                         <td>{{this.nome}}</td>
                         <td>{{#if this.sigla}} {{this.sigla}} {{else}} N/A {{/if}}</td>
                         <td>{{#if this.tipo_analise}} {{this.tipo_analise}} {{else}} N/A {{/if}}</td>
@@ -153,8 +153,8 @@
                 </thead>
                 <tbody>
                     {{#each amostras}}
-                    <tr onclick="javascript:window.location.href='/amostras/{{this.idamostra}}'" class="clickable-row">
-                        <th scope="row">{{this.idamostra}}</th>
+                    <tr onclick="javascript:window.location.href='/amostras/{{this.idAmostra}}'" class="clickable-row">
+                        <th scope="row">{{this.idAmostra}}</th>
                         <td>{{this.nome}}</td>
                         <td>{{#if this.material}} {{this.material}} {{else}} N/A {{/if}}</td>
                         <td>{{#if this.dt_solicitacao}} {{this.dt_solicitacao}} {{else}} N/A {{/if}}</td>

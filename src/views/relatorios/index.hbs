@@ -41,8 +41,8 @@
                 <tr {{#if this.em_analise}} class="table-warning clickable-row" {{else}} {{#if this.cadastrado}}
                     class="table-danger clickable-row" {{else}} {{#if this.finalizado}}
                     class="table-success clickable-row" {{else}} class="clickable-row" {{/if}} {{/if}} {{/if}}
-                    onclick=javascript:window.location.href='/amostras/{{this.idamostra}}'>
-                    <th scope="row">{{this.idamostra}}</th>
+                    onclick=javascript:window.location.href='/amostras/{{this.idAmostra}}'>
+                    <th scope="row">{{this.idAmostra}}</th>
                     <td>{{this.paciente_nome}}</td>
                     <td>{{this.solicitante_nome}}</td>
                     <td>{{this.material}}</td>

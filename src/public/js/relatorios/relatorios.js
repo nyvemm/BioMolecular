@@ -81,7 +81,7 @@ function gerar_amostras_situacao() {
             }
 
             let subquery = response.map(amostra => {
-                return `<tr onclick="javascript:window.location.href='/amostras/${amostra.idamostra}'" class="clickable-row">
+                return `<tr onclick="javascript:window.location.href='/amostras/${amostra.idAmostra}'" class="clickable-row">
                         <td>${amostra.paciente_nome}</td>
                         <td>${amostra.solicitante_nome}</td>
                         <td>${amostra.material}</td>
@@ -128,7 +128,7 @@ function gerar_amostras_material() {
             }
 
             let subquery = response.map(amostra => {
-                return `<tr onclick="javascript:window.location.href='/amostras/${amostra.idamostra}'" class="clickable-row">
+                return `<tr onclick="javascript:window.location.href='/amostras/${amostra.idAmostra}'" class="clickable-row">
                         <td>${amostra.paciente_nome}</td>
                         <td>${amostra.solicitante_nome}</td>
                         <td>${amostra.material}</td>
@@ -175,7 +175,7 @@ function gerar_amostras_tipo_analise() {
             }
 
             let subquery = response.map(amostra => {
-                return `<tr onclick="javascript:window.location.href='/amostras/${amostra.idamostra}'" class="clickable-row">
+                return `<tr onclick="javascript:window.location.href='/amostras/${amostra.idAmostra}'" class="clickable-row">
                         <td>${amostra.paciente_nome}</td>
                         <td>${amostra.solicitante_nome}</td>
                         <td>${amostra.material}</td>

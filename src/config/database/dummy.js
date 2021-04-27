@@ -6,7 +6,8 @@ module.exports = async() => {
     const sql = fs.readFileSync('src/config/database/sql/createTable.sql').toString()
 
     //Executa o script de criação de tabelas.
-    let result = await database.raw(sql)
+    result = null
+   // let result = await database.raw(sql)
 
     return result
 }

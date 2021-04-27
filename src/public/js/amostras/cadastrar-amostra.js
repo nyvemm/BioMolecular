@@ -58,7 +58,7 @@ function fetchPaciente(query = '') {
                 if (paciente.nome.toLowerCase().includes(query.toLowerCase())) {
                     $('#modal-paciente-content').append(function () {
                         return $(`<li class="list-group-item paciente-item">${paciente.nome}</li>`).click(() => {
-                            $('#idpaciente').val(paciente.idpaciente)
+                            $('#idPaciente').val(paciente.idPaciente)
                             $('#nomepaciente').val(paciente.nome)
                             $('#idade').val(paciente.idade)
                             $('#modalPaciente').modal('hide');
@@ -82,7 +82,7 @@ function fetchSolicitante(query = '') {
                 if (solicitante.nome.toLowerCase().includes(query.toLowerCase())) {
                     $('#modal-solicitante-content').append(function () {
                         return $(`<li class="list-group-item solicitante-item">${solicitante.nome}</li>`).click(() => {
-                            $('#idsolicitante').val(solicitante.idsolicitante)
+                            $('#idSolicitante').val(solicitante.idSolicitante)
                             $('#nomesolicitante').val(solicitante.nome)
                             $('#cidadeestado').val(`${solicitante.cidade}-${solicitante.estado}`)
                             $('#modalSolicitante').modal('hide');
@@ -127,8 +127,8 @@ function fetchExame() {
                 query += `<div><h4> ${exame.tipo} </h3>`
                 exame.valor.forEach((valor_exame) => {
                     query += `<div class="form-check">
-                    <input class="form-check-input" data-id="${valor_exame.idexame}" type="checkbox" name="exames-escolhidos" id="exame-${valor_exame.idexame}">
-                    <label class="form-check-label" for="exame-${valor_exame.idexame}">${valor_exame.nome}</label></div>`
+                    <input class="form-check-input" data-id="${valor_exame.idExame}" type="checkbox" name="exames-escolhidos" id="exame-${valor_exame.idExame}">
+                    <label class="form-check-label" for="exame-${valor_exame.idExame}">${valor_exame.nome}</label></div>`
                 })
                 query += '<hr></div>'
             })

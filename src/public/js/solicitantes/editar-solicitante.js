@@ -34,7 +34,7 @@ function postData() {
 }
 
 function deleteData() {
-    let id = $('#idsolicitante').val()
+    let id = $('#idSolicitante').val()
 
     const xhr = new XMLHttpRequest()
     xhr.open('DELETE', `/solicitante?id=${id}`, true)

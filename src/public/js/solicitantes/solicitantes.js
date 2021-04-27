@@ -28,8 +28,8 @@ function updateTable(data, offset) {
         table.innerHTML = '<h3> Não há solicitantes cadastrados </h3>'
     } else {
         data.slice(currentOffset, currentOffset + 10).forEach((solicitante) => {
-            innerHTML += `<tr class='clickable-row' data-href='/solicitantes/${solicitante.idsolicitante}'>
-                        <th scope="row">${solicitante.idsolicitante}</th>
+            innerHTML += `<tr class='clickable-row' data-href='/solicitantes/${solicitante.idSolicitante}'>
+                        <th scope="row">${solicitante.idSolicitante}</th>
                         <td>${solicitante.nome}</td>
                         <td>${solicitante.cidade}</td>
                         <td>${solicitante.estado}</td>

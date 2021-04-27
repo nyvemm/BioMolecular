@@ -16,7 +16,7 @@ module.exports = (app) => {
             data[0].cadastrado_em = utilsDate.inputDateFormat(data[0].cadastrado_em)
 
             intervalo = null
-            if (data[0].tabela_intervalo != null) {
+            if (data[0].tabela_intervalo != null && data[0].tabela_intervalo != '') {
                 intervalo = JSON.parse(data[0].tabela_intervalo)
             }
             res.render('exames/editar', { data: data[0], intervalo: intervalo })
@@ -28,7 +28,7 @@ module.exports = (app) => {
             data[0].cadastrado_em = utilsDate.viewDateFormat(data[0].cadastrado_em)
 
             intervalo = null
-            if (data[0].tabela_intervalo != null) {
+            if (data[0].tabela_intervalo != null && data[0].tabela_intervalo != '') {
                 intervalo = JSON.parse(data[0].tabela_intervalo)
             }
 

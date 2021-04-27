@@ -19,7 +19,7 @@
             <h5 class="card-header">Amostra</h5>
             <div class="card-body">
                 <form action="/" method="POST">
-                    <p class="m-0">ID da Amostra: {{data.idamostra}}</p>
+                    <p class="m-0">ID da Amostra: {{data.idAmostra}}</p>
                     <p class="m-0">Foram avaliados <b>{{data.exames_realizados}}</b> exames de
                         <b>{{data.total_exames}}</b> exames.
                     </p>
@@ -27,7 +27,7 @@
 
                     <hr>
 
-                    <input type="hidden" class="form-control" id="idamostra" name="idamostra" value={{data.idamostra}}>
+                    <input type="hidden" class="form-control" id="idAmostra" name="idAmostra" value={{data.idAmostra}}>
                     <div class="form-group">
                         <label for="interpretacao_resultados">Interpretação dos Resultados</label>
                         <textarea class="form-control" id="interpretacao_resultados"
@@ -46,7 +46,7 @@
                         </div>
 
                         <div class="col pr-0">
-                            <a class="btn btn-primary w-100" href="/amostras/{{data.idamostra}}">Visualizar Amostra</a>
+                            <a class="btn btn-primary w-100" href="/amostras/{{data.idAmostra}}">Visualizar Amostra</a>
                         </div>
                     </div>
                 </form>
@@ -82,12 +82,12 @@
                                 </p>
                                 {{/if}}
                                 <hr>
-                                <form method="POST" id='formulario-{{this.idamostraexame}}'>
-                                    <input type="hidden" name="idamostraexame" value="{{this.idamostraexame}}">
+                                <form method="POST" id='formulario-{{this.idAmostraExame}}'>
+                                    <input type="hidden" name="idAmostraExame" value="{{this.idAmostraExame}}">
                                     <div class="form-group">
                                         <label for="valor_resultado">Resultado do Exame</label>
                                         <input type="text" class="form-control"
-                                            id="valor_resultado_{{this.idamostraexame}}" name="valor_resultado">
+                                            id="valor_resultado_{{this.idAmostraExame}}" name="valor_resultado">
                                     </div>
                                     <div class="form-group">
                                         <label for="observacao_resultado">Observações (caso necessário)</label>
@@ -96,13 +96,13 @@
                                     </div>
 
                                     <button type="button" class="btn active w-100"
-                                        onclick='postResultados({{this.idamostraexame}})'> Adicionar Resultado</button>
+                                        onclick='postResultados({{this.idAmostraExame}})'> Adicionar Resultado</button>
                                     <button type="button" class="btn btn-info w-100 mt-2"
-                                        onclick='submeterResultado({{this.idamostraexame}})'> Submeter
+                                        onclick='submeterResultado({{this.idAmostraExame}})'> Submeter
                                         Resultado</button>
                                 </form>
                                 <hr>
-                                <div id="amostraexame-{{this.idamostraexame}}" class='resultado-exame-block'></div>
+                                <div id="amostraexame-{{this.idAmostraExame}}" class='resultado-exame-block'></div>
                             </div>
                         </div>
                         {{/each}}

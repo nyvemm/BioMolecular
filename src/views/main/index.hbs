@@ -67,8 +67,8 @@
             <div class="row m-0 mt-2 mb-4">
                 {{#each amostras}}
                 <div class="unit bg-{{#if this.em_analise}}warning{{else}}danger{{/if}} {{#if this.em_analise}} text-dark {{/if}}  unit-amostra col mr-2"
-                    onclick="javascript:window.location.href='/amostras/{{this.idamostra}}'">
-                    <p class="unit-text m-0">Amostra-{{this.idamostra}}</p>
+                    onclick="javascript:window.location.href='/amostras/{{this.idAmostra}}'">
+                    <p class="unit-text m-0">Amostra-{{this.idAmostra}}</p>
                     <h4 class="unit-value m-0">{{this.nome}}</h4>
                     {{#if this.f_cadastrado_em}} <p class="unit-text m-0">{{this.f_cadastrado_em}}</p>{{/if}}
                 </div>

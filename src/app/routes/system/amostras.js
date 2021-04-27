@@ -11,17 +11,17 @@ module.exports = (app) => {
 
     /* Resultados */
     app.get('/resultados/:id', (req, res) => {
-        database('resultados').select().where('amostra_contem_exames_aux.idamostra', req.params.id)
-            .innerJoin('amostra_contem_exames_aux', 'amostra_contem_exames_aux.idamostraexame', 'resultados.idamostraexame').then((data) => {
+        database('resultados').select().where('amostra_contem_exames_aux.idAmostra', req.params.id)
+            .innerJoin('amostra_contem_exames_aux', 'amostra_contem_exames_aux.idAmostraExame', 'resultados.idAmostraExame').then((data) => {
                 res.json(data)
             })
     })
 
     /*Atualizar Resultados de uma amostra */
     app.put('/amostra-resultados', (req, res) => {
-        const id = req.body.idamostra
+        const id = req.body.idAmostra
 
-        database('amostra').where('idamostra', id).update({
+        database('amostra').where('idAmostra', id).update({
             interpretacao_resultados: req.body.interpretacao_resultados ? req.body.interpretacao_resultados : null,
             resultado: req.body.resultado ? req.body.resultado : null,
         }).then((data) => {
@@ -34,7 +34,7 @@ module.exports = (app) => {
 
     app.delete('/resultados/:id', (req, res) => {
         const id = req.params.id
-        database('resultados').where('idresultado', id).del().then((data) => {
+        database('resultados').where('idResultado', id).del().then((data) => {
             res.json({ status: 'success' })
         }).catch((err) => {
             res.json({ status: 'error' })
@@ -43,16 +43,16 @@ module.exports = (app) => {
 
     app.get('/submeter-resultado/:id', (req, res) => {
         const id = req.params.id
-        database('amostra_contem_exames_aux').where('idamostraexame', id).update({
+        database('amostra_contem_exames_aux').where('idAmostraExame', id).update({
             status: true,
             liberado_em: new Date()
         }).then(() => {
             /* Pega o ID da Amostra */
-            database('amostra_contem_exames_aux').where('idamostraexame', id)
-                .select('idamostra').then(idamostra => {
+            database('amostra_contem_exames_aux').where('idAmostraExame', id)
+                .select('idAmostra').then(idAmostra => {
 
                     /* Pega a lista de todos os exames */
-                    database('amostra_contem_exames_aux').where('idamostra', idamostra[0].idamostra)
+                    database('amostra_contem_exames_aux').where('idAmostra', idAmostra[0].idAmostra)
                         .select().then(amostras => {
 
                             /* Pega a lista de amostras finalizadas */
@@ -69,7 +69,7 @@ module.exports = (app) => {
 
                             /* Seta o resultado na amostra */
                             database('amostra').update({ status_pedido: final_status, dt_liberacao: new Date() })
-                                .where('idamostra', idamostra[0].idamostra)
+                                .where('idAmostra', idAmostra[0].idAmostra)
                                 .then(() => {
                                     res.json({ status: 'success' })
                                 })
@@ -83,7 +83,7 @@ module.exports = (app) => {
     app.post('/resultados/', (req, res) => {
         const data = req.body
         database('resultados').insert({
-            idamostraexame: data.idamostraexame,
+            idAmostraExame: data.idAmostraExame,
             valor_resultado: data.valor_resultado,
             observacao_resultado: data.observacao_resultado
         }).then(() => {
@@ -115,8 +115,8 @@ module.exports = (app) => {
                 data[0].idade_coleta_meses = Math.floor((diffDays % 365) / 30)
             }
 
-            database('amostra_contem_exames_aux').select().where('idamostra', req.params.id)
-                .innerJoin('exame', 'amostra_contem_exames_aux.idexame', 'exame.idexame').then(exame => {
+            database('amostra_contem_exames_aux').select().where('idAmostra', req.params.id)
+                .innerJoin('exame', 'amostra_contem_exames_aux.idExame', 'exame.idExame').then(exame => {
                     let cont = 0;
                     exame.forEach((currentExame) => {
                         if (currentExame.status) cont++
@@ -138,8 +138,8 @@ module.exports = (app) => {
             data[0].dt_ult_transfusao = utilsDate.inputDateFormat(data[0].dt_ult_transfusao)
             data[0].medicamentos = JSON.parse(data[0].medicamentos).length > 0 ? JSON.parse(data[0].medicamentos).split(',') : null
 
-            database('amostra_contem_exames_aux').select().where('idamostra', req.params.id)
-                .innerJoin('exame', 'amostra_contem_exames_aux.idexame', 'exame.idexame').then(exame => {
+            database('amostra_contem_exames_aux').select().where('idAmostra', req.params.id)
+                .innerJoin('exame', 'amostra_contem_exames_aux.idExame', 'exame.idExame').then(exame => {
                     let cont = 0;
                     exame.forEach((currentExame) => {
                         if (currentExame.status) cont++
@@ -154,10 +154,10 @@ module.exports = (app) => {
 
     app.get('/cadastrar-resultado/:id', loggedIn, (req, res) => {
         database('amostra_contem_exames_aux').select(database.raw(`*, exame.nome as exame_nome, paciente.nome as paciente_nome, amostra.observacao as observacao`))
-            .where('amostra.idamostra', req.params.id)
-            .innerJoin('exame', 'amostra_contem_exames_aux.idexame', 'exame.idexame')
-            .innerJoin('amostra', 'amostra.idamostra', 'amostra_contem_exames_aux.idamostra')
-            .innerJoin('paciente', 'paciente.idpaciente', 'amostra.idpaciente')
+            .where('amostra.idAmostra', req.params.id)
+            .innerJoin('exame', 'amostra_contem_exames_aux.idExame', 'exame.idExame')
+            .innerJoin('amostra', 'amostra.idAmostra', 'amostra_contem_exames_aux.idAmostra')
+            .innerJoin('paciente', 'paciente.idPaciente', 'amostra.idPaciente')
             .then(exames => {
                 let cont = 0;
                 let data = {}
@@ -166,11 +166,11 @@ module.exports = (app) => {
 
                 data.total_exames = exames.length
                 data.exames_realizados = cont
-                data.idamostra = req.params.id
+                data.idAmostra = req.params.id
                 data.status_pedido = exames[0].status_pedido
 
-                database('amostra_contem_exames_aux').select('tipo_analise').distinct().where('idamostra', req.params.id)
-                    .innerJoin('exame', 'amostra_contem_exames_aux.idexame', 'exame.idexame').then((tipos_exame) => {
+                database('amostra_contem_exames_aux').select('tipo_analise').distinct().where('idAmostra', req.params.id)
+                    .innerJoin('exame', 'amostra_contem_exames_aux.idExame', 'exame.idExame').then((tipos_exame) => {
                         data.exames = []
 
                         let lista_exames = tipos_exame.map(t => t.tipo_analise)
@@ -180,7 +180,7 @@ module.exports = (app) => {
 
                         exames.forEach((exame) => {
                             exame.liberado_em = utilsDate.viewDateFormat(exame.liberado_em)
-                            let intervalo_valor = JSON.parse(exame.tabela_intervalo)
+                            let intervalo_valor = exame.tabela_intervalo && exame.tabela_intervalo != '' ? JSON.parse(exame.tabela_intervalo) : null
 
                             const diffTime = Math.abs(exame.dt_coleta - exame.dt_nasc);
                             const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
@@ -238,7 +238,7 @@ module.exports = (app) => {
 
     app.get('/amostra-exames', loggedIn, (req, res) => {
         const id = req.query.id
-        database('amostra_contem_exames_aux').where('idamostra', id).then(data => {
+        database('amostra_contem_exames_aux').where('idAmostra', id).then(data => {
             res.json(data)
         }).catch(error => {
             res.json({ status: error })

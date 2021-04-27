@@ -28,8 +28,8 @@ function updateTable(data, offset) {
         table.innerHTML = '<h3> Não há amostras cadastradas </h3>'
     } else {
         data.slice(currentOffset, currentOffset + 10).forEach((amostra) => {
-            innerHTML += `<tr class='clickable-row' data-href='/amostras/${amostra.idamostra}'>
-                        <th scope="row">${amostra.idamostra}</th>
+            innerHTML += `<tr class='clickable-row' data-href='/amostras/${amostra.idAmostra}'>
+                        <th scope="row">${amostra.idAmostra}</th>
                         <td>${amostra.paciente_nome}</td>
                         <td>${amostra.solicitante_nome}</td>
                         <td>${amostra.material}</td>

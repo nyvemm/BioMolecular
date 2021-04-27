@@ -26,7 +26,7 @@ class pacienteModel {
 
     static removeValidations() {
         return [
-            check('idpaciente').trim().not().isEmpty().withMessage('O ID do Paciente precisa ser informado.').bail()
+            check('idPaciente').trim().not().isEmpty().withMessage('O ID do Paciente precisa ser informado.').bail()
             .isInt().withMessage('O ID precisa ser um número inteiro')
         ]
     }

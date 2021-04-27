@@ -26,7 +26,7 @@ class exameModel {
 
     static removeValidations() {
         return [
-            check('idexame').trim().not().isEmpty().withMessage('É necessário informar o ID.').bail()
+            check('idExame').trim().not().isEmpty().withMessage('É necessário informar o ID.').bail()
             .isInt().withMessage('O ID precisa ser um número inteiro.')
         ]
     }
