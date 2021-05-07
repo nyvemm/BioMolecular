@@ -1,12 +1,14 @@
-//Cria a conexão com o banco de dados
-var database = require('knex')({
-    client: 'mysql',
-    connection: {
-        host: 'isp3.ufms.br',
-        user: 'c54belini_junior',
-        password: '4fMttFNYq!z',
-        database: 'c54biomol'
-    }
-})
+import knex from 'knex';
 
-module.exports = database
+// Cria a conexão com o banco de dados
+const database = knex({
+  client: 'mysql',
+  connection: {
+    host: 'isp3.ufms.br',
+    user: 'c54belini_junior',
+    password: '4fMttFNYq!z',
+    database: 'c54biomol',
+  },
+});
+
+export default database;

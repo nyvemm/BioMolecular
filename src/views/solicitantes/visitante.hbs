@@ -1,0 +1,186 @@
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/bootstrap/css/bootstrap.css">
+    <link rel="stylesheet" href="/css/solicitantes/visitante.css">
+    <link rel="icon" href="/img/icon.png">
+    <title>LGBM UFMS/CPTL</title>
+</head>
+
+<body>
+    <nav class="navbar navbar-light" style="background-color: #48B499;">
+        <div class="row w-100">
+            <a class="navbar-brand col-9" href="/visitante">
+                <h5 class="text-light
+            ">Laboratório de Genética e Biologia Molecular - CPTL/UFMS</h5>
+            </a>
+            <a href="/logout" class="col-2 navbar-brand text-light d-flex justify-content-end">Sair</a>
+        </div>
+    </nav>
+    <main>
+        <div class="container mt-4">
+            <div class="card">
+                <div class="card-body py-2 px-0">
+                    <div class="mx-2">
+                        <h5 class="card-title">Solicitante</h5>
+                        <p class="m-0"><b>Nome:</b> {{user.nome}}</p>
+                        <p class="m-0"><b>Email:</b> {{user.email}}</p>
+                    </div>
+                </div>
+            </div>
+            <div class="card mt-4">
+                <div class="card-body py-2 px-0">
+                    <h5 class="card-title mx-2">Amostras Disponíveis</h5>
+                    <h6 class="card-subtitle my-2 mx-2 text-muted">Encontramos {{qtdAmostras}} registros.</h6>
+
+                    {{#if amostras}}
+                    <table class="table table-striped mt-2">
+                        <thead>
+                            <tr>
+                                <th scope="col">Material</th>
+                                <th scope="col">Paciente</th>
+                                <th scope="col">Data de Recebimento</th>
+                                <th scope="col">Situação</th>
+                                <th scope="col">Laudo</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {{#each amostras}}
+                            <tr class="accordion-toggle collapsed" id="accordion{{idAmostra}}" data-toggle="collapse"
+                                data-parent="#accordion{{idAmostra}}" href="#collapse{{idAmostra}}">
+                                <th class="align-middle">{{material}}</th>
+                                <td class="align-middle">{{nome}}</td>
+                                <td class="align-middle">{{f_dt_coleta}}</td>
+                                <td class="align-middle status">{{status_pedido}}</td>
+                                <td class="align-middle">
+                                    <a href="relatorios/imprimir-laudo?id={{idAmostra}}&responsavel=Dr.+Édis+Belini+Júnior&crbio=113217%2F02-D&art=2019%2F01090&papel=on"
+                                        class="btn btn-info" target="_blank">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                            fill="currentColor" class="bi bi-cloud-arrow-down-fill" viewBox="0 0 16 16">
+                                            <path
+                                                d="M8 2a5.53 5.53 0 0 0-3.594 1.342c-.766.66-1.321 1.52-1.464 2.383C1.266 6.095 0 7.555 0 9.318 0 11.366 1.708 13 3.781 13h8.906C14.502 13 16 11.57 16 9.773c0-1.636-1.242-2.969-2.834-3.194C12.923 3.999 10.69 2 8 2zm2.354 6.854-2 2a.5.5 0 0 1-.708 0l-2-2a.5.5 0 1 1 .708-.708L7.5 9.293V5.5a.5.5 0 0 1 1 0v3.793l1.146-1.147a.5.5 0 0 1 .708.708z" />
+                                        </svg>
+                                    </a>
+                                </td>
+                            </tr>
+                            <tr class="hide-table-padding">
+                                <td colspan="5">
+                                    <div id="collapse{{idAmostra}}" class="collapse in p-3">
+                                        <div class="card">
+                                            <h5 class="card-header">Resultados</h5>
+                                            <div class="card-body">
+                                                <h5>Situação: <span class="text-status">{{status_pedido}}</span>
+                                                </h5>
+                                                <p class="m-0 mt-1">Foram avaliados
+                                                    <b>{{exames_realizados}}</b> exames de
+                                                    <b>{{total_exames}}</b> exames.
+                                                </p>
+                                                <hr>
+                                                {{#each exames}}
+                                                <p class="m-0"><b>{{this.nome}}</b>: {{#if this.status}} <span
+                                                        class="text-success">Submetido</span>
+                                                    {{else}} <span class="text-danger">Não Submetido</span>
+                                                    {{/if}}</p>
+                                                {{/each}}
+
+                                                {{#if finalizado}}
+                                                <hr>
+                                                <p class="m-0"><b>Resultado</b>: {{resultado}}</p>
+                                                <p class="m-0"><b>Data de Liberação</b>: {{dt_liberacao}}
+                                                </p>
+                                                <hr>
+                                                <p class="m-0"><b>Interpretação dos resultados</b>:
+                                                    {{#if interpretacao_resultados}}
+                                                    {{interpretacao_resultados}}
+                                                    {{else}} Não há interpretações para este resultado.{{/if}}
+                                                </p>
+                                                {{/if}}
+                                            </div>
+                                        </div>
+
+                                        <div class="card mt-4">
+                                            <h5 class="card-header w-100">Paciente</h5>
+                                            <div class="card-body">
+                                                <p class='m-0'><b>Nome</b>: {{paciente_nome}}</p>
+                                                <p class='m-0'><b>Sexo</b>: {{sexo}}</p>
+                                                <p class='m-0'><b>Idade</b>: {{idade}}</p>
+                                                <p class='m-0'><b>Naturalidade</b>: {{naturalidade_cidade}} -
+                                                    {{naturalidade_estado}}</p>
+                                                <hr>
+                                                <p class='m-0'><b>Gestante</b>: {{#if gestante}} Sim
+                                                    {{else}} Não {{/if}}</p>
+                                                {{#if gestante}} <p class='m-0'><b>Semanas de Gestação</b>:
+                                                    {{semanas_gestacao}}</p> {{/if}}
+                                                <p class='m-0'><b>Transfusão de Sangue</b>: {{#if
+                                                    transfusao}} Sim {{else}} Não {{/if}}</p>
+                                                {{#if transfusao}} <p class='m-0'><b>Data da Última
+                                                        Transfusão</b>: {{dt_ult_transfusao}}</p>
+                                                {{/if}}
+                                                <p class='m-0'><b>Uso de Hidroxiuréia</b>: {{#if
+                                                    uso_hidroxiureia}} Sim {{else}} Não {{/if}}</p>
+                                                <p class='m-0'><b>Uso de Medicamentos</b>: {{#if
+                                                    uso_medicamentos}} Sim {{else}} Não {{/if}}</p>
+
+                                                {{#if uso_medicamentos}}
+                                                <ul class="m-0">
+                                                    {{#each medicamentos}}
+                                                    <li>{{this}}</li>
+                                                    {{/each}}
+                                                </ul>
+                                                {{/if}}
+
+                                                <p class='m-0'><b>Suspeita de Diagnóstico</b>: {{#if
+                                                    suspeita_diagnostico}}
+                                                    {{suspeita_diagnostico}} {{else}} Não há suspeita de
+                                                    diagnóstico. {{/if}}</p>
+                                            </div>
+                                        </div>
+
+                                        <div class="card mt-4">
+                                            <h5 class="card-header">Amostra</h5>
+                                            <div class="card-body">
+                                                <p class='m-0'><b>Solicitação</b>: {{#if solicitacao}}
+                                                    {{solicitacao}} {{else}} N/A {{/if}}
+                                                </p>
+                                                <p class='m-0'><b>Data de Coleta</b>: {{#if f_dt_coleta}}
+                                                    {{f_dt_coleta}} {{else}} N/A {{/if}}
+                                                </p>
+                                                <hr>
+                                                <b>Idade do paciente durante a coleta</b>:
+                                                {{idade_coleta}}a {{idade_coleta_meses}}m.
+                                            </div>
+                                        </div>
+
+                                        <div class="card mt-4">
+                                            <h5 class="card-header">Exames</h5>
+                                            <div class="card-body">
+                                                <ul class="m-0 p-0">
+                                                    {{#each exames}}
+                                                    <li class="list-group-item paciente-item"><span
+                                                            class='text-dark'>{{this.nome}} -
+                                                            {{this.metodo}}</span></li>
+                                                    {{/each}}
+                                                </ul>
+                                            </div>
+                                        </div>
+                                        </p>
+                                    </div>
+                                </td>
+                            </tr>
+
+                            {{/each}}
+                        </tbody>
+                    </table>
+                    {{else}}
+                    <div class="alert alert-warning mt-4" role="alert">
+                        Nenhuma amostra encontrada.
+                    </div>
+                    {{/if}}
+                </div>
+            </div>
+    </main>
+</body>
+
+<script type="module" src="/js/libs/jquery-3.5.1.min.js"></script>
+<script type="module" src="/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script type="module" src="/bootstrap/js/bootstrap.min.js"></script>

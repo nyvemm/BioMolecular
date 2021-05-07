@@ -1,324 +1,427 @@
-const database = require("../../../config/database/connection")
+/* eslint-disable import/extensions */
 
-//Bibliotecas internas
-const utilsDate = require('../../../utils/date')
-const { loggedIn } = require("../../helpers/login")
+// Bibliotecas internas
+import dateUtils from '../../../utils/date.js';
+import { loggedIn } from '../../helpers/login.js';
 
-module.exports = (app) => {
-    app.get('/relatorios', loggedIn, (req, res) => {
-        database('amostra').select(database.raw(`*, paciente.nome as paciente_nome, solicitante.nome as solicitante_nome`))
-            .innerJoin('paciente', 'amostra.idPaciente', 'paciente.idPaciente')
-            .innerJoin('solicitante', 'amostra.idSolicitante', 'solicitante.idSolicitante')
-            .orderBy('dt_coleta', 'desc').then(amostra => {
-                amostra.forEach(amostra => {
-                    amostra.f_dt_recebimento = utilsDate.viewDateFormat(amostra.dt_recebimento)
-                    amostra.f_dt_coleta = utilsDate.viewDateFormat(amostra.dt_coleta)
-                    amostra.f_dt_solicitacao = utilsDate.viewDateFormat(amostra.dt_solicitacao)
-                    amostra.finalizado = amostra.status_pedido == 'Finalizado'
-                    amostra.em_analise = amostra.status_pedido == 'Parcialmente avaliado'
-                    amostra.cadastrado = amostra.status_pedido == 'Não avaliado'
-                })
+const { viewDateFormat } = dateUtils;
 
-                res.render('relatorios', { amostra: amostra })
-            }).catch(error => {
-                console.log(error)
-                res.redirect('/')
+const objError = { status: 'error' };
+
+export default (app, database) => {
+  app.get('/relatorios', loggedIn, (req, res) => {
+    database('amostra').select(database.raw('*, paciente.nome as paciente_nome, solicitante.nome as solicitante_nome'))
+      .innerJoin('paciente', 'amostra.idPaciente', 'paciente.idPaciente')
+      .innerJoin('solicitante', 'amostra.idSolicitante', 'solicitante.idSolicitante')
+      .orderBy('dt_coleta', 'desc')
+      .then((amostra) => {
+        try {
+          const amostraAtual = amostra;
+          for (let i = 0; i < amostra.length; i += 1) {
+            amostraAtual[i].f_dt_recebimento = viewDateFormat(amostraAtual[i].dt_recebimento);
+            amostraAtual[i].f_dt_coleta = viewDateFormat(amostraAtual[i].dt_coleta);
+            amostraAtual[i].f_dt_solicitacao = viewDateFormat(amostraAtual[i].dt_solicitacao);
+            amostraAtual[i].finalizado = amostraAtual[i].status_pedido === 'Finalizado';
+            amostraAtual[i].em_analise = amostraAtual[i].status_pedido === 'Parcialmente avaliado';
+            amostraAtual[i].cadastrado = amostraAtual[i].status_pedido === 'Não avaliado';
+          }
+          res.render('relatorios', { amostra });
+        } catch (error) {
+          res.render('layouts/fatal_error', { error });
+        }
+      })
+      .catch((error) => {
+        res.render('layouts/fatal_error', { error });
+      });
+  });
+
+  /* Geração de Relatórios */
+  app.get('/relatorios/laudo', loggedIn, (req, res) => {
+    database('amostra').select(database.raw('*, paciente.nome as paciente_nome, solicitante.nome as solicitante_nome'))
+      .innerJoin('paciente', 'amostra.idPaciente', 'paciente.idPaciente')
+      .innerJoin('solicitante', 'amostra.idSolicitante', 'solicitante.idSolicitante')
+      .orderBy('dt_coleta', 'desc')
+      .then((amostra) => {
+        try {
+          const amostraAtual = amostra;
+          for (let i = 0; i < amostra.length; i += 1) {
+            amostraAtual[i].f_dt_recebimento = viewDateFormat(amostraAtual[i].dt_recebimento);
+            amostraAtual[i].f_dt_coleta = viewDateFormat(amostraAtual[i].dt_coleta);
+            amostraAtual[i].f_dt_solicitacao = viewDateFormat(amostraAtual[i].dt_solicitacao);
+            amostraAtual[i].finalizado = amostraAtual[i].status_pedido === 'Finalizado';
+            amostraAtual[i].em_analise = amostraAtual[i].status_pedido === 'Parcialmente avaliado';
+            amostraAtual[i].cadastrado = amostraAtual[i].status_pedido === 'Não avaliado';
+          }
+          res.render('relatorios/laudo', { amostra });
+        } catch (error) {
+          res.render('layouts/fatal_error', { error });
+        }
+      })
+      .catch((error) => {
+        res.render('layouts/fatal_error', { error });
+      });
+  });
+
+  app.get('/relatorios/amostras-situacao', loggedIn, (req, res) => {
+    database('amostra').select('status_pedido').distinct().then((situacoes) => {
+      try {
+        res.render('relatorios/relatorio-situacao', { situacoes: situacoes.map((x) => x.status_pedido) });
+      } catch (error) {
+        res.render('layouts/fatal_error', { error });
+      }
+    })
+      .catch((error) => {
+        res.render('layouts/fatal_error', { error });
+      });
+  });
+
+  app.get('/relatorios/amostras-material', loggedIn, (req, res) => {
+    database('amostra').select('material').distinct().then((materiais) => {
+      try {
+        res.render('relatorios/relatorio-material', { materiais: materiais.map((x) => x.material) });
+      } catch (error) {
+        res.render('layouts/fatal_error', { error });
+      }
+    })
+      .catch((error) => {
+        res.render('layouts/fatal_error', { error });
+      });
+  });
+
+  app.get('/relatorios/amostras-tipo-exame', loggedIn, (req, res) => {
+    database('amostra').innerJoin('amostra_contem_exames_aux', 'amostra_contem_exames_aux.idAmostra', 'amostra.idAmostra')
+      .innerJoin('exame', 'exame.idExame', 'amostra_contem_exames_aux.idExame')
+      .select('tipo_analise')
+      .distinct()
+      .then((tipoAnalises) => {
+        try {
+          res.render('relatorios/relatorio-tipo-exame', { tipoAnalises: tipoAnalises.map((x) => x.tipo_analise) });
+        } catch (error) {
+          res.render('layouts/fatal_error', { error });
+        }
+      })
+      .catch((error) => {
+        res.render('layouts/fatal_error', { error });
+      });
+  });
+
+  /* Geração de Laudo */
+  app.get('/relatorios/imprimir-laudo', (req, res) => {
+    const { id } = req.query;
+    database('amostra_contem_exames_aux').where('amostra_contem_exames_aux.idAmostra', id)
+      .innerJoin('amostra', 'amostra.idAmostra', 'amostra_contem_exames_aux.idAmostra')
+      .innerJoin('exame', 'exame.idExame', 'amostra_contem_exames_aux.idExame')
+      .innerJoin('paciente', 'amostra.idPaciente', 'paciente.idPaciente')
+      .innerJoin('solicitante', 'amostra.idSolicitante', 'solicitante.idSolicitante')
+      .leftJoin('resultados', 'resultados.idAmostraExame', 'amostra_contem_exames_aux.idAmostraExame')
+      .select(database.raw('*, paciente.nome as paciente_nome, solicitante.nome as solicitante_nome, exame.nome as exame_nome, exame.observacao as exame_observacao'))
+      .then((amostra) => {
+        try {
+          const amostraData = amostra;
+          for (let i = 0; i < amostraData.length; i += 1) {
+            amostraData[i].f_dt_recebimento = viewDateFormat(amostraData[i].dt_recebimento);
+            amostraData[i].f_dt_coleta = viewDateFormat(amostraData[i].dt_coleta);
+            amostraData[i].f_dt_solicitacao = viewDateFormat(amostraData[i].dt_solicitacao);
+            amostraData[i].f_dt_nasc = viewDateFormat(amostraData[i].dt_nasc);
+            amostraData[i].f_dt_liberacao = viewDateFormat(amostraData[i].dt_liberacao);
+
+            const diffTime = Math.abs(new Date() - amostraData.dt_nasc);
+            const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+            amostraData.idade = Math.floor(diffDays / 365);
+            amostraData.idade_meses = Math.floor((diffDays % 365) / 30);
+            amostraData.cod = req.query.cod;
+          }
+
+          database('amostra_contem_exames_aux').select('tipo_analise').distinct().where('idAmostra', id)
+            .innerJoin('exame', 'amostra_contem_exames_aux.idExame', 'exame.idExame')
+            .then((tiposExames) => {
+              try {
+                const resultadosExames = [];
+                const listaExames = tiposExames.map((t) => t.tipo_analise);
+                listaExames.forEach((tipoExame) => {
+                  resultadosExames.push({ tipo: tipoExame, valor: [] });
+                });
+
+                for (let i = 0; i < amostraData.length; i += 1) {
+                  amostraData[i].liberado_em = viewDateFormat(amostraData[i].liberado_em);
+                  const tipo = amostraData[i].tipo_analise;
+                  resultadosExames[listaExames.findIndex((elem) => elem === tipo)].valor
+                    .push(amostraData[i]);
+                }
+
+                const novosExames = [];
+                const tipos = ['Análise Citológica', 'Análise Eletroforética', 'Análise Cromatográfica', 'Análise Molecular'];
+
+                let tiposIndex = 0;
+                let lastIndex = tiposIndex;
+                while (resultadosExames.length !== 0) {
+                  for (let i = 0; i < resultadosExames.length; i += 1) {
+                    if (resultadosExames[i].tipo === tipos[tiposIndex]) {
+                      lastIndex = tiposIndex;
+                      tiposIndex += 1;
+                      novosExames.push(resultadosExames[i]);
+                      resultadosExames.splice(i, 1);
+                      break;
+                    }
+                  }
+                  /* Não encontrou o resultado */
+                  if (lastIndex === tiposIndex) {
+                    tiposIndex += 1;
+                    lastIndex = tiposIndex;
+                  }
+                }
+                res.render('relatorios/a4', {
+                  amostra: amostra[0],
+                  exames: novosExames,
+                  codigo: amostra[0].cod,
+                  responsavel: req.query.responsavel,
+                  crbio: req.query.crbio,
+                  art: req.query.art,
+                });
+              } catch (error) {
+                res.render('layouts/fatal_error', { error });
+              }
             })
-    })
+            .catch((error) => {
+              res.render('layouts/fatal_error', { error });
+            });
+        } catch (error) {
+          res.render('layouts/fatal_error', { error });
+        }
+      })
+      .catch((error) => {
+        res.render('layouts/fatal_error', { error });
+      });
+  });
 
-    /* Geração de Relatórios */
-    app.get('/relatorios/laudo', loggedIn, (req, res) => {
-        res.render('relatorios/laudo')
-    })
+  /* CRUD */
+  app.get('/relatorios/gerar-laudo', loggedIn, (req, res) => {
+    const { id } = req.query;
+    database('amostra_contem_exames_aux').where('amostra_contem_exames_aux.idAmostra', id)
+      .innerJoin('amostra', 'amostra.idAmostra', 'amostra_contem_exames_aux.idAmostra')
+      .innerJoin('exame', 'exame.idExame', 'amostra_contem_exames_aux.idExame')
+      .leftJoin('resultados', 'resultados.idAmostraExame', 'amostra_contem_exames_aux.idAmostraExame')
+      .select()
+      .then((data) => {
+        const amostraAtual = data;
+        database('amostra_contem_exames_aux').select('tipo_analise').distinct().where('idAmostra', id)
+          .innerJoin('exame', 'amostra_contem_exames_aux.idExame', 'exame.idExame')
+          .then((tiposExames) => {
+            try {
+              const resultadosExames = [];
 
-    app.get('/relatorios/amostras-situacao', loggedIn, (req, res) => {
-        database('amostra').select('status_pedido').distinct().then(situacoes => {
-            res.render('relatorios/relatorio-situacao', { situacoes: situacoes.map(x => x.status_pedido) })
-        })
-    })
+              const listaExames = tiposExames.map((t) => t.tipo_analise);
+              listaExames.forEach((tipoExame) => {
+                resultadosExames.push({ tipo: tipoExame, valor: [] });
+              });
 
-    app.get('/relatorios/amostras-material', loggedIn, (req, res) => {
-        database('amostra').select('material').distinct().then(materiais => {
-            res.render('relatorios/relatorio-material', { materiais: materiais.map(x => x.material) })
-        })
-    })
+              for (let i = 0; i < amostraAtual.length; i += 1) {
+                amostraAtual[i].liberado_em = viewDateFormat(amostraAtual[i].liberado_em);
+                const tipo = amostraAtual[i].tipo_analise;
+                resultadosExames[listaExames.findIndex((elem) => elem === tipo)].valor
+                  .push(amostraAtual[i]);
+              }
+              res.json(resultadosExames);
+            } catch (error) {
+              res.json(objError);
+            }
+          })
+          .catch(() => {
+            res.json(objError);
+          });
+      })
+      .catch(() => {
+        res.json(objError);
+      });
+  });
 
-    app.get('/relatorios/amostras-tipo-exame', loggedIn, (req, res) => {
-        database('amostra').innerJoin('amostra_contem_exames_aux', 'amostra_contem_exames_aux.idAmostra', 'amostra.idAmostra')
-            .innerJoin('exame', 'exame.idExame', 'amostra_contem_exames_aux.idExame')
-            .select('tipo_analise').distinct().then(tipo_analises => {
-                res.render('relatorios/relatorio-tipo-exame', { tipo_analises: tipo_analises.map(x => x.tipo_analise) })
-            })
+  /* CRUD */
+  app.get('/relatorios/gerar-amostras-situacao', loggedIn, (req, res) => {
+    const { situacao } = req.query;
+    database('amostra').select(database.raw('*, paciente.nome as paciente_nome, solicitante.nome as solicitante_nome'))
+      .innerJoin('paciente', 'amostra.idPaciente', 'paciente.idPaciente')
+      .innerJoin('solicitante', 'amostra.idSolicitante', 'solicitante.idSolicitante')
+      .where('status_pedido', situacao)
+      .then((data) => {
+        try {
+          const amostraAtual = data;
+          for (let i = 0; i < amostraAtual.length; i += 1) {
+            amostraAtual[i].f_dt_coleta = viewDateFormat(amostraAtual[i].dt_coleta);
+          }
+          res.json(amostraAtual);
+        } catch (error) {
+          res.json(objError);
+        }
+      })
+      .catch(() => {
+        res.json(objError);
+      });
+  });
 
-    })
+  /* CRUD */
+  app.get('/relatorios/gerar-amostras-material', loggedIn, (req, res) => {
+    const { material } = req.query;
+    database('amostra').select(database.raw('*, paciente.nome as paciente_nome, solicitante.nome as solicitante_nome'))
+      .innerJoin('paciente', 'amostra.idPaciente', 'paciente.idPaciente')
+      .innerJoin('solicitante', 'amostra.idSolicitante', 'solicitante.idSolicitante')
+      .where('material', material)
+      .then((data) => {
+        try {
+          const amostraAtual = data;
+          for (let i = 0; i < amostraAtual.length; i += 1) {
+            amostraAtual[i].f_dt_coleta = viewDateFormat(amostraAtual[i].dt_coleta);
+          }
+          res.json(amostraAtual);
+        } catch (error) {
+          res.json(objError);
+        }
+      })
+      .catch(() => {
+        res.json(objError);
+      });
+  });
 
-    /* Geração de Laudo */
+  /* CRUD */
+  app.get('/relatorios/gerar-amostras-tipo-exame', loggedIn, (req, res) => {
+    // eslint-disable-next-line camelcase
+    const { tipo_analise } = req.query;
+    database('amostra').distinct().select(database.raw('amostra.idAmostra, material, dt_coleta, paciente.nome as paciente_nome, solicitante.nome as solicitante_nome'))
+      .innerJoin('paciente', 'amostra.idPaciente', 'paciente.idPaciente')
+      .innerJoin('solicitante', 'amostra.idSolicitante', 'solicitante.idSolicitante')
+      .innerJoin('amostra_contem_exames_aux', 'amostra_contem_exames_aux.idAmostra', 'amostra.idAmostra')
+      .innerJoin('exame', 'exame.idExame', 'amostra_contem_exames_aux.idExame')
+      .where('tipo_analise', tipo_analise)
+      .then((data) => {
+        try {
+          const amostraAtual = data;
+          for (let i = 0; i < amostraAtual.length; i += 1) {
+            amostraAtual[i].f_dt_coleta = viewDateFormat(amostraAtual[i].dt_coleta);
+          }
+          res.json(amostraAtual);
+        } catch (error) {
+          res.json(objError);
+        }
+      })
+      .catch(() => {
+        res.json(objError);
+      })
+      .catch(() => {
+        res.json(objError);
+      });
+  });
 
-    app.get('/relatorios/imprimir-laudo', (req, res) => {
-        const id = req.query.id
-        database('amostra_contem_exames_aux').where('amostra_contem_exames_aux.idAmostra', id)
-            .innerJoin('amostra', 'amostra.idAmostra', 'amostra_contem_exames_aux.idAmostra')
-            .innerJoin('exame', 'exame.idExame', 'amostra_contem_exames_aux.idExame')
-            .innerJoin('paciente', 'amostra.idPaciente', 'paciente.idPaciente')
-            .innerJoin('solicitante', 'amostra.idSolicitante', 'solicitante.idSolicitante')
-            .leftJoin('resultados', 'resultados.idAmostraExame', 'amostra_contem_exames_aux.idAmostraExame')
-            .select(database.raw(`*, paciente.nome as paciente_nome, solicitante.nome as solicitante_nome, exame.nome as exame_nome, exame.observacao as exame_observacao`))
-            .then(data => {
+  app.get('/buscar', loggedIn, (req, res) => {
+    const query = req.query.query ? req.query.query : '';
+    database('paciente').select().then((pacientes) => {
+      database('solicitante').select().then((solicitantes) => {
+        database('exame').select().then((exames) => {
+          database('amostra').select().then((amostras) => {
+            try {
+              const novosPacientes = pacientes
+                .filter((paciente) => (paciente.idPaciente === parseInt(query, 10))
+                  || (paciente.nome.includes(query))
+                  || (paciente.etnia ? paciente.etnia.includes(query) : false)
+                  || (paciente.naturalidade_cidade ? paciente.naturalidade_cidade
+                    .includes(query) : false)
+                  || (paciente.naturalidade_estado ? paciente.naturalidade_estado
+                    .includes(query) : false)
+                  || (paciente.observacao ? paciente.observacao
+                    .includes(query) : false)
+                  || (paciente.cadastrado_por ? paciente.cadastrado_por
+                    .includes(query) : false));
 
-                let amostra = data
-                amostra.forEach((data) => {
-                    data.f_dt_recebimento = utilsDate.viewDateFormat(data.dt_recebimento)
-                    data.f_dt_coleta = utilsDate.viewDateFormat(data.dt_coleta)
-                    data.f_dt_solicitacao = utilsDate.viewDateFormat(data.dt_solicitacao)
-                    data.f_dt_nasc = utilsDate.viewDateFormat(data.dt_nasc)
-                    data.f_dt_liberacao = utilsDate.viewDateFormat(data.dt_liberacao)
+              const novosSolicitantes = solicitantes
+                .filter((solicitante) => solicitante.idSolicitante === parseInt(query, 10)
+                  || (solicitante.nome.includes(query))
+                  || (solicitante.estado ? solicitante.estado.includes(query) : false)
+                  || (solicitante.cidade ? solicitante.cidade.includes(query) : false)
+                  || (solicitante.endereco ? solicitante.endereco.includes(query) : false)
+                  || (solicitante.e_mail ? solicitante.e_mail.includes(query) : false)
+                  || (solicitante.contato_referencia ? solicitante.contato_referencia
+                    .includes(query) : false)
+                  || (solicitante.observacao ? solicitante.observacao
+                    .includes(query) : false)
+                  || (solicitante.cadastrado_por ? solicitante.cadastrado_por
+                    .includes(query) : false));
 
-                    const diffTime = Math.abs(new Date() - amostra.dt_nasc);
-                    const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
-                    amostra.idade = Math.floor(diffDays / 365)
-                    amostra.idade_meses = Math.floor((diffDays % 365) / 30)
-                    amostra.cod = req.query.cod
-                })
+              const novosExames = exames.filter((exame) => exame.idExame === parseInt(query, 10)
+                || (exame.nome.includes(query))
+                || (exame.sigla ? exame.sigla === parseInt(query, 10) : false)
+                || (exame.tipo_analise ? exame.tipo_analise.includes(query) : false)
+                || (exame.metodo ? exame.metodo.includes(query) : false)
+                || (exame.preco ? exame.preco.includes(query) : false)
+                || (exame.valor_ref ? exame.valor_ref.includes(query) : false)
+                || (exame.tipo_valor_ref ? exame.tipo_valor_ref.includes(query) : false)
+                || (exame.observacao ? exame.observacao.includes(query) : false)
+                || (exame.cadastrado_por ? exame.cadastrado_por.includes(query) : false));
 
-                database('amostra_contem_exames_aux').select('tipo_analise').distinct().where('idAmostra', id)
-                    .innerJoin('exame', 'amostra_contem_exames_aux.idExame', 'exame.idExame')
-                    .then((tipos_exame) => {
-                        let resultados_exames = []
+              const novasAmostras = amostras
+                .filter((amostra) => amostra.idAmostra === parseInt(query, 10)
+                  || (amostra.cod ? amostra.cod.includes(query) : false)
+                  || (amostra.idPaciente === parseInt(query, 10))
+                  || (amostra.idSolicitante === parseInt(query, 10))
+                  || (amostra.material ? amostra.material.includes(query) : false)
+                  || (amostra.codigo_barra ? amostra.codigo_barra.includes(query) : false)
+                  || (amostra.suspeita_diagnostico ? amostra.suspeita_diagnostico
+                    .includes(query) : false)
+                  || (amostra.medicamentos ? amostra.medicamentos
+                    .includes(query) : false)
+                  || (amostra.interpretacao_resultados ? amostra.interpretacao_resultados
+                    .includes(query) : false)
+                  || (amostra.status_pedido ? amostra.status_pedido
+                    .includes(query) : false)
+                  || (amostra.contato_referencia ? amostra.contato_referencia
+                    .includes(query) : false)
+                  || (amostra.observacao ? amostra.observacao
+                    .includes(query) : false)
+                  || (amostra.cadastrado_por ? amostra.cadastrado_por
+                    .includes(query) : false));
 
-                        let lista_exames = tipos_exame.map(t => t.tipo_analise)
-                        lista_exames.forEach((tipo_exame) => {
-                            resultados_exames.push({ tipo: tipo_exame, valor: [] })
-                        })
+              for (let i = 0; i < novosPacientes.length; i += 1) {
+                novosPacientes[i].recem_nascido = novosPacientes[i].recem_nascido ? 'Sim' : 'Não';
+                novosPacientes[i].dt_nasc = viewDateFormat(novosPacientes[i].dt_nasc);
+                novosPacientes[i].cadastrado_em = viewDateFormat(novosPacientes[i].cadastrado_em);
+              }
 
+              for (let i = 0; i < novosSolicitantes.length; i += 1) {
+                novosSolicitantes[i]
+                  .cadastrado_em = viewDateFormat(novosSolicitantes[i].cadastrado_em);
+              }
 
-                        data.forEach((exame) => {
-                            exame.liberado_em = utilsDate.viewDateFormat(exame.liberado_em)
-                            let tipo = exame.tipo_analise
-                            resultados_exames[lista_exames.findIndex((elem) => elem == tipo)].valor.push(exame)
-                        })
+              for (let i = 0; i < novosExames.length; i += 1) {
+                novosExames[i].cadastrado_em = viewDateFormat(novosExames[i].cadastrado_em);
+              }
 
-                        novos_exames = []
-                        tipos = ['Análise Citológica', 'Análise Eletroforética', 'Análise Cromatográfica', 'Análise Molecular']
-
-                        tipos_index = 0
-                        last_index = tipos_index
-                        while(resultados_exames.length != 0) {
-                            for(let i = 0; i < resultados_exames.length; i++) {
-                                if(resultados_exames[i].tipo == tipos[tipos_index]) {
-                                    last_index = tipos_index
-                                    tipos_index++
-                                    novos_exames.push(resultados_exames[i])
-                                    resultados_exames.splice(i, 1)
-                                    break
-                                }
-                            }
-
-                            /* Não encontrou o resultado */
-                            if(last_index == tipos_index) {
-                                tipos_index++
-                                last_index = tipos_index
-                            }
-                        }
-
-                        res.render('relatorios/a4', {
-                            amostra: amostra[0],
-                            exames: novos_exames,
-                            codigo: req.query.cod,
-                            responsavel: req.query.responsavel,
-                            crbio: req.query.crbio,
-                            art: req.query.art
-                        })
-                    })
-            })
-
-        .catch(error => {
-            console.log(error)
-            res.json({ status: 'error' })
-        })
-    })
-
-    /* CRUD */
-    app.get('/relatorios/gerar-laudo', loggedIn, (req, res) => {
-        const id = req.query.id
-        database('amostra_contem_exames_aux').where('amostra_contem_exames_aux.idAmostra', id)
-            .innerJoin('amostra', 'amostra.idAmostra', 'amostra_contem_exames_aux.idAmostra')
-            .innerJoin('exame', 'exame.idExame', 'amostra_contem_exames_aux.idExame')
-            .leftJoin('resultados', 'resultados.idAmostraExame', 'amostra_contem_exames_aux.idAmostraExame')
-            .then(data => {
-
-                database('amostra_contem_exames_aux').select('tipo_analise').distinct().where('idAmostra', id)
-                    .innerJoin('exame', 'amostra_contem_exames_aux.idExame', 'exame.idExame').then((tipos_exame) => {
-                        let resultados_exames = []
-
-                        let lista_exames = tipos_exame.map(t => t.tipo_analise)
-                        lista_exames.forEach((tipo_exame) => {
-                            resultados_exames.push({ tipo: tipo_exame, valor: [] })
-                        })
-
-
-                        data.forEach((exame) => {
-                            exame.liberado_em = utilsDate.viewDateFormat(exame.liberado_em)
-                            let tipo = exame.tipo_analise
-                            resultados_exames[lista_exames.findIndex((elem) => elem == tipo)].valor.push(exame)
-                        })
-
-                        res.json(resultados_exames)
-                    })
-            })
-            .catch(error => {
-                console.log(error)
-                res.json({ status: 'error' })
-            })
-    })
-
-    /* CRUD */
-    app.get('/relatorios/gerar-amostras-situacao', (req, res) => {
-        const situacao = req.query.situacao
-        database('amostra').select(database.raw(`*, paciente.nome as paciente_nome, solicitante.nome as solicitante_nome`))
-            .innerJoin('paciente', 'amostra.idPaciente', 'paciente.idPaciente')
-            .innerJoin('solicitante', 'amostra.idSolicitante', 'solicitante.idSolicitante')
-            .where('status_pedido', situacao)
-            .then(data => {
-                data.map(x => x.f_dt_coleta = utilsDate.viewDateFormat(x.dt_coleta))
-                res.json(data)
-            }).catch(error => {
-                console.log(error)
-                res.json({ status: 'error' })
-            })
-    })
-
-    /* CRUD */
-    app.get('/relatorios/gerar-amostras-material', (req, res) => {
-        const material = req.query.material
-        database('amostra').select(database.raw(`*, paciente.nome as paciente_nome, solicitante.nome as solicitante_nome`))
-            .innerJoin('paciente', 'amostra.idPaciente', 'paciente.idPaciente')
-            .innerJoin('solicitante', 'amostra.idSolicitante', 'solicitante.idSolicitante')
-            .where('material', material)
-            .then(data => {
-                data.map(x => x.f_dt_coleta = utilsDate.viewDateFormat(x.dt_coleta))
-                res.json(data)
-            }).catch(error => {
-                console.log(error)
-                res.json({ status: 'error' })
-            })
-    })
-
-    /* CRUD */
-    app.get('/relatorios/gerar-amostras-tipo-exame', (req, res) => {
-        const tipo_analise = req.query.tipo_analise
-        database('amostra').distinct().select(database.raw(`amostra.idAmostra, material, dt_coleta, paciente.nome as paciente_nome, solicitante.nome as solicitante_nome`))
-            .innerJoin('paciente', 'amostra.idPaciente', 'paciente.idPaciente')
-            .innerJoin('solicitante', 'amostra.idSolicitante', 'solicitante.idSolicitante')
-            .innerJoin('amostra_contem_exames_aux', 'amostra_contem_exames_aux.idAmostra', 'amostra.idAmostra')
-            .innerJoin('exame', 'exame.idExame', 'amostra_contem_exames_aux.idExame')
-            .where('tipo_analise', tipo_analise)
-            .then(data => {
-                data.map(x => x.f_dt_coleta = utilsDate.viewDateFormat(x.dt_coleta))
-                res.json(data)
-            }).catch(error => {
-                console.log(error)
-                res.json({ status: 'error' })
-            })
-    })
-
-    app.get('/buscar', (req, res) => {
-        let query = req.query.query ? req.query.query : ''
-        database('paciente').select().then(pacientes => {
-            database('solicitante').select().then(solicitantes => {
-                database('exame').select().then(exames => {
-                    database('amostra').select().then(amostras => {
-
-                        // console.log(pacientes)
-                        // console.log(solicitantes)
-                        // console.log(exames)
-                        // console.log(amostras)
-
-                        pacientes = pacientes.filter(paciente => {
-                            return (paciente.idPaciente == parseInt(query)) ||
-                                (paciente.nome.includes(query)) ||
-                                (paciente.etnia ? paciente.etnia.includes(query) : false) ||
-                                (paciente.naturalidade_cidade ? paciente.naturalidade_cidade.includes(query) : false) ||
-                                (paciente.naturalidade_estado ? paciente.naturalidade_estado.includes(query) : false) ||
-                                (paciente.observacao ? paciente.observacao.includes(query) : false) ||
-                                (paciente.cadastrado_por ? paciente.cadastrado_por.includes(query) : false)
-                        })
-
-                        solicitantes = solicitantes.filter(solicitante => {
-                            return solicitante.idSolicitante == parseInt(query) ||
-                                (solicitante.nome.includes(query)) ||
-                                (solicitante.estado ? solicitante.estado.includes(query) : false) ||
-                                (solicitante.cidade ? solicitante.cidade.includes(query) : false) ||
-                                (solicitante.e_mail ? solicitante.e_mail.includes(query) : false) ||
-                                (solicitante.contato_referencia ? solicitante.contato_referencia.includes(query) : false) ||
-                                (solicitante.observacao ? solicitante.observacao.includes(query) : false) ||
-                                (solicitante.cadastrado_por ? solicitante.cadastrado_por.includes(query) : false)
-                        })
-
-                        exames = exames.filter(exame => {
-                            return exame.idExame == parseInt(query) ||
-                                (exame.nome.includes(query)) ||
-                                (exame.sigla ? exame.sigla == parseInt(query) : false) ||
-                                (exame.tipo_analise ? exame.tipo_analise.includes(query) : false) ||
-                                (exame.metodo ? exame.metodo.includes(query) : false) ||
-                                (exame.preco ? exame.preco.includes(query) : false) ||
-                                (exame.valor_ref ? exame.valor_ref.includes(query) : false) ||
-                                (exame.tipo_valor_ref ? exame.tipo_valor_ref.includes(query) : false) ||
-                                (exame.observacao ? exame.observacao.includes(query) : false) ||
-                                (exame.cadastrado_por ? exame.cadastrado_por.includes(query) : false)
-                        })
-
-                        amostras = amostras.filter(amostra => {
-                            return amostra.idAmostra == parseInt(query) ||
-                                (amostra.idPaciente == parseInt(query)) ||
-                                (amostra.idSolicitante == parseInt(query)) ||
-                                (amostra.material ? amostra.material.includes(query) : false) ||
-                                (amostra.codigo_barra ? amostra.codigo_barra.includes(query) : false) ||
-                                (amostra.suspeita_diagnostico ? amostra.suspeita_diagnostico.includes(query) : false) ||
-                                (amostra.medicamentos ? amostra.medicamentos.includes(query) : false) ||
-                                (amostra.interpretacao_resultados ? amostra.interpretacao_resultados.includes(query) : false) ||
-                                (amostra.status_pedido ? amostra.status_pedido.includes(query) : false) ||
-                                (amostra.contato_referencia ? amostra.contato_referencia.includes(query) : false) ||
-                                (amostra.observacao ? amostra.observacao.includes(query) : false) ||
-                                (amostra.cadastrado_por ? amostra.cadastrado_por.includes(query) : false)
-                        })
-
-                        pacientes.forEach(paciente => {
-                            paciente.recem_nascido = paciente.recem_nascido ? 'Sim' : 'Não'
-                            paciente.dt_nasc = utilsDate.viewDateFormat(paciente.dt_nasc)
-                            paciente.cadastrado_em = utilsDate.viewDateFormat(paciente.cadastrado_em)
-                        })
-
-                        solicitantes.forEach(solicitante => {
-                            solicitante.cadastrado_em = utilsDate.viewDateFormat(solicitante.cadastrado_em)
-                        })
-
-                        exames.forEach(exame => {
-                            exame.cadastrado_em = utilsDate.viewDateFormat(exame.cadastrado_em)
-                        })
-
-                        amostras.forEach(amostra => {
-                            amostra.cadastrado_em = utilsDate.viewDateFormat(amostra.cadastrado_em)
-                            amostra.dt_solicitacao = utilsDate.viewDateFormat(amostra.dt_solicitacao)
-                            amostra.dt_recebimento = utilsDate.viewDateFormat(amostra.dt_recebimento)
-                            amostra.dt_coleta = utilsDate.viewDateFormat(amostra.dt_coleta)
-                            amostra.dt_liberacao = utilsDate.viewDateFormat(amostra.dt_liberacao)
-                            amostra.transfusao = amostra.transfusao ? 'Sim' : 'Não'
-                            amostra.gestante = amostra.gestante ? 'Sim' : 'Não'
-                            amostra.uso_medicamentos = amostra.uso_medicamentos ? 'Sim' : 'Não'
-                        })
-
-                        res.render('relatorios/buscar', {
-                            pacientes: pacientes,
-                            solicitantes: solicitantes,
-                            exames: exames,
-                            amostras: amostras
-                        })
-                    })
-                })
-            })
-        })
-
-
-    })
-
-}
+              for (let i = 0; i < novasAmostras.length; i += 1) {
+                novasAmostras[i].cadastrado_em = viewDateFormat(novasAmostras[i].cadastrado_em);
+                novasAmostras[i].dt_solicitacao = viewDateFormat(novasAmostras[i].dt_solicitacao);
+                novasAmostras[i].dt_recebimento = viewDateFormat(novasAmostras[i].dt_recebimento);
+                novasAmostras[i].dt_coleta = viewDateFormat(novasAmostras[i].dt_coleta);
+                novasAmostras[i].dt_liberacao = viewDateFormat(novasAmostras[i].dt_liberacao);
+                novasAmostras[i].transfusao = novasAmostras[i].transfusao ? 'Sim' : 'Não';
+                novasAmostras[i].gestante = novasAmostras[i].gestante ? 'Sim' : 'Não';
+                novasAmostras[i].uso_medicamentos = novasAmostras[i].uso_medicamentos ? 'Sim' : 'Não';
+              }
+              res.render('relatorios/buscar', {
+                pacientes: novosPacientes,
+                solicitantes: novosSolicitantes,
+                exames: novosExames,
+                amostras: novasAmostras,
+              });
+            } catch (error) {
+              res.render('layouts/fatal_error', { error });
+            }
+          }).catch((error) => {
+            res.render('layouts/fatal_error', { error });
+          });
+        }).catch((error) => {
+          res.render('layouts/fatal_error', { error });
+        });
+      }).catch((error) => {
+        res.render('layouts/fatal_error', { error });
+      });
+    }).catch((error) => {
+      res.render('layouts/fatal_error', { error });
+    });
+  });
+};

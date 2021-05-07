@@ -1,27 +1,33 @@
-const database = require("../../../config/database/connection")
-const usuarioDAO = require('../../dao/usuarioDAO')
-DAOUsuario = new usuarioDAO(database)
+/* eslint-disable import/extensions */
+import UsuarioDAO from '../../dao/usuarioDAO.js';
+import { loggedIn } from '../../helpers/login.js';
 
-const { loggedIn } = require("../../helpers/login")
-const usuario = require("../database/usuario")
+export default (app, database) => {
+  const DAOUsuario = new UsuarioDAO(database);
+  app.get('/meu-perfil', loggedIn, (req, res) => {
+    try {
+      req.user.foto = req.user.foto ? req.user.foto : '/img/sem-foto.png';
+      res.render('usuarios/meu-perfil', { usuario: req.user });
+    } catch (error) {
+      res.render('layouts/fatal_error', { error });
+    }
+  });
 
-module.exports = (app) => {
-    app.get('/meu-perfil', loggedIn, (req, res) => {
-        req.user.foto = req.user.foto ? req.user.foto : '/img/sem-foto.png'
-        res.render('usuarios/meu-perfil', { usuario: req.user })
-    })
+  app.get('/administrador', loggedIn, (req, res) => {
+    try {
+      DAOUsuario.getUsuarios().then((usuarios) => {
+        const usuariosData = usuarios;
+        for (let i = 0; i < usuariosData.length; i += 1) {
+          usuariosData[i].foto = usuariosData[i].foto ? usuariosData[i].foto : '/img/sem-foto.png';
+        }
+        res.render('usuarios/administrador', { data: usuariosData });
+      });
+    } catch (error) {
+      res.render('layouts/fatal_error', { error });
+    }
+  });
 
-    app.get('/administrador', loggedIn, (req, res) => {
-        DAOUsuario.getUsuarios().then((usuarios) => {
-            usuarios.forEach((usuario) => {
-                usuario.foto = usuario.foto ? usuario.foto : '/img/sem-foto.png'
-            })
-
-            res.render('usuarios/administrador', { data: usuarios })
-        })
-    })
-
-    app.get('/administrador/cadastrar-usuario', loggedIn, (req, res) => {
-        res.render('usuarios/cadastrar')
-    })
-}
+  app.get('/administrador/cadastrar-usuario', loggedIn, (req, res) => {
+    res.render('usuarios/cadastrar');
+  });
+};

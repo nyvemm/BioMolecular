@@ -1,48 +1,52 @@
-function addOffset(data, limit) {
-    currentOffset += limit
-    updateTable(data, currentOffset)
+// eslint-disable-next-line no-unused-vars
+function addOffset(data, limit, currentOffset, updateTable) {
+  updateTable(data, currentOffset + limit);
 }
 
-function removeOffset(data, limit) {
-    currentOffset -= limit
-    updateTable(data, currentOffset)
+// eslint-disable-next-line no-unused-vars
+function removeOffset(data, limit, currentOffset, updateTable) {
+  updateTable(data, currentOffset - limit);
 }
 
-function setOffset(data, n, limit) {
-    currentOffset = ((n - 1) * limit)
-    updateTable(data, currentOffset)
+// eslint-disable-next-line no-unused-vars
+function setOffset(data, n, limit, updateTable) {
+  updateTable(data, ((n - 1) * limit));
 }
 
+// eslint-disable-next-line no-unused-vars
+function updatePagination(data, tableRowsLen, limit, currentOffset, updateTable) {
+  const pagination = document.getElementById('pagination');
 
-function updatePagination(data, tableRowsLen, limit) {
-    let pagination = document.getElementById('pagination')
+  const totalPagination = Math.ceil(tableRowsLen / limit);
+  const currentPagination = Math.floor(currentOffset / limit);
+  $(pagination).html('');
 
-    let totalPagination = Math.ceil(tableRowsLen / limit)
-    let currentPagination = Math.floor(currentOffset / limit)
-    let innerHTML = ''
+  /* Anterior */
+  const previewElement = $("<li class='page-item'></li>").append("<p class='page-link'>Anterior</p>");
+  if (currentOffset === 0) {
+    previewElement.addClass('disabled');
+  } else {
+    previewElement.on('click', () => removeOffset(data, limit, currentOffset, updateTable));
+  }
+  $(pagination).append(previewElement);
 
-    /* Anterior */
-    if (currentOffset == 0) {
-        innerHTML += `<li class="page-item disabled"><a class="page-link" href="javascript:removeOffset(data, ${limit})">Anterior</a></li>`
-    } else {
-        innerHTML += `<li class="page-item"><a class="page-link" href="javascript:removeOffset(data, ${limit})">Anterior</a></li>`
+  for (let i = 0; i < totalPagination; i += 1) {
+    const currentElement = $("<li class='page-item'></li>").append(`<p class='page-link'>${i + 1}</p>`);
+    currentElement.on('click', () => setOffset(data, i + 1, limit, updateTable));
+    if (i === currentPagination) {
+      currentElement.addClass('active');
     }
+    $(pagination).append(currentElement);
+  }
 
-    for (let i = 0; i < totalPagination; i++) {
-        if (i == currentPagination) {
-            innerHTML += `<li class="page-item active"><a class="page-link" href="javascript:setOffset(data, ${i + 1}, ${limit})">${i + 1}</a></li>`
-        } else {
-            innerHTML += `<li class="page-item"><a class="page-link" href="javascript:setOffset(data, ${i + 1}, ${limit})">${i + 1}</a></li>`
-        }
-    }
-
-    /* Próximo */
-    if (totalPagination - 1 < 0 || currentPagination == totalPagination - 1 ) {
-        innerHTML += `<li class="page-item disabled"><a class="page-link" href="javascript:addOffset(data, ${limit})">Próximo</a></li>`
-    } else {
-        innerHTML += `<li class="page-item"><a class="page-link" href="javascript:addOffset(data, ${limit})">Próximo</a></li>`
-    }
-
-    pagination.innerHTML = innerHTML
-
+  /* Próximo */
+  const nextElement = $("<li class='page-item'></li>").append("<p class='page-link'>Próximo</p>");
+  if (totalPagination - 1 < 0 || currentPagination === totalPagination - 1) {
+    nextElement.addClass('disabled');
+  } else {
+    nextElement.on('click', () => addOffset(data, limit, currentOffset, updateTable));
+  }
+  $(pagination).append(nextElement);
 }
+
+export default updatePagination;

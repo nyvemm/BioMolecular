@@ -84,8 +84,8 @@
 
                         <div class="form-group col-md-6">
                             <label for="dt_ult_transfusao">Data da última transfusão (opcional)</label>
-                            <input type="date" class="form-control" id="dt_ult_transfusao" name="dt_ult_transfusao"
-                                placeholder="N/A"  disabled>
+                            <input type="text" class="form-control" id="dt_ult_transfusao" name="dt_ult_transfusao"
+                                placeholder="N/A" onfocus="this.type='date'" disabled>
                         </div>
                     </div>
 
@@ -191,7 +191,7 @@
                     <div class="row">
                         <div class="form-group col-md-4">
                             <label for="dt_solicitacao">Data de Solicitação (opcional)</label>
-                            <input type="date" class="form-control" id="dt_solicitacao" name="dt_solicitacao">
+                            <input type="text" class="form-control" id="dt_solicitacao" name="dt_solicitacao" onfocus="this.type='date'" placeholder="N/A">
                         </div>
 
                         <div class="form-group col-md-4">
@@ -201,7 +201,7 @@
 
                         <div class="form-group col-md-4">
                             <label for="dt_recebimento">Data de Recebimento (opcional)</label>
-                            <input type="date" class="form-control" id="dt_recebimento" name="dt_recebimento">
+                            <input type="text" class="form-control" id="dt_recebimento" name="dt_recebimento" onfocus="this.type='date'" placeholder="N/A">
                         </div>
                     </div>
 
@@ -282,8 +282,8 @@
     </div>
 </div>
 
-<script src="/js/libs/jquery-3.5.1.min.js"></script>
-<script src="/bootstrap/js/bootstrap.bundle.min.js"></script>
-<script src="/bootstrap/js/bootstrap.min.js"></script>
-<script src="/js/utils/global.js"></script>
-<script src="/js/amostras/cadastrar-amostra.js"></script>
+<script type="module" src="/js/libs/jquery-3.5.1.min.js"></script>
+<script type="module" src="/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script type="module" src="/bootstrap/js/bootstrap.min.js"></script>
+
+<script type="module" src="/js/amostras/cadastrar-amostra.js"></script>

@@ -1,55 +1,62 @@
-var currentOffset = 0
+// eslint-disable-next-line import/extensions
+import updatePagination from '../utils/pagination.js';
+
+let currentOffset = 0;
 
 function ajaxSolicitante() {
-    let listarPor = document.getElementById('listarpor')
-    const option = listarPor.options[listarPor.selectedIndex].value;
+  const listarPor = document.getElementById('listarpor');
+  const option = listarPor.options[listarPor.selectedIndex].value;
 
-    const xhr = new XMLHttpRequest()
-    xhr.open('GET', `/solicitante?sort=${option}`, false)
-    xhr.send()
+  const xhr = new XMLHttpRequest();
+  xhr.open('GET', `/solicitante?sort=${option}`, false);
+  xhr.send();
 
-    if (xhr.status == 200 && xhr.readyState === 4) {
-        let response = JSON.parse(xhr.responseText)
-        return response
-    }
+  if (xhr.status === 200 && xhr.readyState === 4) {
+    const response = JSON.parse(xhr.responseText);
+    return response;
+  }
+  return null;
 }
 
 function updateTable(data, offset) {
-    let tableBody = document.getElementById('table-body')
-    let table = document.getElementById('table')
+  if (data) {
+    currentOffset = offset;
+    const tableBody = document.getElementById('table-body');
+    const table = document.getElementById('table');
 
-    let tableRowsLen = data.length
-    let limit = 10
+    const tableRowsLen = data.length;
+    const limit = 10;
 
-    let innerHTML = ''
-    updatePagination(data, tableRowsLen, limit)
+    let innerHTML = '';
+    updatePagination(data, tableRowsLen, limit, offset, updateTable);
 
-    if (data.length == 0) {
-        table.innerHTML = '<h3> Não há solicitantes cadastrados </h3>'
+    if (data.length === 0) {
+      table.innerHTML = '<h3> Não há solicitantes cadastrados </h3>';
     } else {
-        data.slice(currentOffset, currentOffset + 10).forEach((solicitante) => {
-            innerHTML += `<tr class='clickable-row' data-href='/solicitantes/${solicitante.idSolicitante}'>
-                        <th scope="row">${solicitante.idSolicitante}</th>
+      data.slice(currentOffset, currentOffset + 10).forEach((solicitante) => {
+        innerHTML += `<tr class='clickable-row' data-href='/solicitantes/${solicitante.idSolicitante}'>
+                        <th scope='row'>${solicitante.idSolicitante}</th>
                         <td>${solicitante.nome}</td>
                         <td>${solicitante.cidade}</td>
                         <td>${solicitante.estado}</td>
-                    </tr>`
-        })
+                    </tr>`;
+      });
     }
 
-    tableBody.innerHTML = innerHTML
-    $(".clickable-row").click(function() {
-        window.location = $(this).data("href");
-    })
+    tableBody.innerHTML = innerHTML;
+    $('.clickable-row').click(function clickRow() {
+      window.location = $(this).data('href');
+    });
+  }
 }
 
 $(document).ready(() => {
-    $('#menu-link-solicitantes').addClass('active')
-    data = ajaxSolicitante()
-    updateTable(data, 0)
-})
+  $('#menu-link-solicitantes').addClass('active');
+  const data = ajaxSolicitante();
+  updateTable(data, 0);
+});
 
 $('#listarpor').change(() => {
-    data = ajaxSolicitante()
-    updateTable(data, 0)
-})
+  const data = ajaxSolicitante();
+  updateTable(data, 0);
+});

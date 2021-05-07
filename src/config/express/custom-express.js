@@ -1,102 +1,111 @@
-const express = require('express')
-const bodyParser = require('body-parser')
-const path = require('path')
-const handlebars = require('express-handlebars')
+/* eslint-disable import/extensions */
+import express from 'express';
+import path from 'path';
+import handlebars from 'express-handlebars';
 
-//Bibliotecas internas
-const utilsDate = require('../../utils/date')
+// Bibliotecas internas
+import flash from 'connect-flash';
+import passport from 'passport';
 
-//Tratamento de exceção
-const flash = require("connect-flash")
+// Sessão
+import session from 'express-session';
 
-//Autenticação
-const passport = require('passport')
-require('./auth')(passport)
-
-//Sessão
-const session = require("express-session")
-
+// Geração de Hash
+import crypto from 'crypto';
+import uuid from 'uuid';
 
 //------------------------------------------------------------
-const routes = require('../../app/routes/routes')
-const routesViews = require('../../app/routes/routesViews')
-const multer = require('./file-upload')
+import routes from '../../app/routes/routes.js';
+import routesViews from '../../app/routes/routesViews.js';
 
-const app = express()
+// Autenticação
+import auth from './auth.js';
 
-//Configuração da Sessão
+auth(passport);
+const app = express();
+
+// Configuração da Sessão
 app.use(session({
-    secret: "biomol",
-    resave: true,
-    saveUnitialized: true
-}))
+  secret: 'biomol',
+  resave: true,
+  saveUninitialized: true,
+  cookie: {
+    maxAge: 7200000, // 2 horas
+  },
+  genid() {
+    return crypto.createHash('sha256').update(uuid.v1()).update(crypto.randomBytes(256)).digest('hex');
+  },
+}));
 
-app.use(passport.initialize())
-app.use(passport.session())
+app.use(passport.initialize());
+app.use(passport.session());
 
-//Configuração do Flash-express
-app.use(flash())
+// Configuração do Flash-express
+app.use(flash());
 
-//Define a engine como sendo os handlebars com arquivos .hbs.
+// Define a engine como sendo os handlebars com arquivos .hbs.
 const hbs = handlebars.create({
-    extname: 'hbs',
+  extname: 'hbs',
 
-    helpers: {
-        select: function(selected, options) {
-            return options.fn(this).replace(
-                new RegExp(' value=\"' + selected + '\"'),
-                '$& selected="selected"');
-        }
-    }
-})
+  helpers: {
+    select(selected, options) {
+      return options.fn(this).replace(
+        // eslint-disable-next-line no-useless-escape
+        new RegExp(`value=\"${selected}\"`),
+        '$& selected="selected"',
+      );
+    },
+  },
+});
 
-app.engine('hbs', handlebars(hbs))
-app.set('views', path.join(__dirname, '/../../views'))
+app.engine('hbs', handlebars(hbs));
+app.set('views', path.join(process.cwd(), '/src/views'));
 app.set('view engine', 'hbs');
 
 // Arquivos estáticos
-app.use(express.static(path.join(__dirname, '/../../public')))
+app.use(express.static(path.join(process.cwd(), '/src/public')));
 
-//Privilégios de Acesso
-const { loggedIn } = require("../../app/helpers/login")
-const { resolveCname } = require('dns')
-const dateUtils = require('../../utils/date')
+// Privilégios de Acesso
+// const { loggedIn } = require('../../app/helpers/login');
+// const dateUtils = require('../../utils/date');
 
 //------------------------------------------------------------
 
-//Middlewares
+// Middlewares
 app.use((req, res, next) => {
+  try {
     // Mensagem de erro e sucesso
-    res.locals.success_msg = req.flash("success_msg")
-    res.locals.error_msg = req.flash("error_msg")
-    res.locals.error = req.flash("error")
-    res.locals.message = req.flash("message")
-        // Verifica se o usuário está logado 
-    res.locals.user = req.user || null
-        // Verifica os privilégios do usuário
-    res.locals.admin = role
-    next()
-})
+    res.locals.success_msg = req.flash('success_msg');
+    res.locals.error_msg = req.flash('error_msg');
+    res.locals.error = req.flash('error');
+    res.locals.message = req.flash('message');
+    // Verifica se o usuário está logado
+    res.locals.user = req.user || null;
+    // Verifica os privilégios do usuário
+    res.locals.admin = req.user ? req.user.administrador : false;
+    res.locals.solicitante = req.user ? req.user.solicitante : false;
+    next();
+  } catch (error) {
+    next();
+  }
+});
 
-//Body-parser como middleware para desencapsular as requisições.
-app.use(express.urlencoded({ extended: true }))
-app.use(express.json())
+// Body-parser como middleware para desencapsular as requisições.
+app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
 
-var role = null
+// Definição das rotas do back-end.
+routes(app);
+routesViews(app);
 
-//Definição das rotas do back-end.
-routes(app)
-routesViews(app)
+// Caso a página requisitada não exista, retorna uma mensagem.
+app.use((req, res) => {
+  res.status(404).render('layouts/not_found');
+});
 
-//Caso a página requisitada não exista, retorna uma mensagem.
-app.use((req, res, next) => {
-    res.status(404).render('layouts/not_found')
-})
+// Caso ocorra um erro interno no servidor, retorna uma mensagem.
+app.use((error, req, res) => {
+  res.status(500).render('layouts/fatal_error', { error });
+});
 
-//Caso ocorra um erro interno no servidor, retorna uma mensagem.
-app.use(function(error, req, res, next) {
-    res.status(500).render('layouts/fatal_error', {error: error})
-    console.log(error)
-})
-
-module.exports = app
+export default app;

@@ -1,34 +1,53 @@
-const database = require("../../../config/database/connection")
-const pacienteDAO = require('../../dao/pacienteDAO')
-DAOPaciente = new pacienteDAO(database)
+/* eslint-disable import/extensions */
+import PacienteDAO from '../../dao/pacienteDAO.js';
 
-//Bibliotecas internas
-const utilsDate = require('../../../utils/date')
-const { loggedIn } = require("../../helpers/login")
+// Bibliotecas internas
+import dateUtils from '../../../utils/date.js';
+import { loggedIn } from '../../helpers/login.js';
 
-module.exports = (app) => {
-    app.get('/pacientes', loggedIn, (req, res) => {
-        res.render('pacientes/')
-    })
+const { viewDateFormat } = dateUtils;
+const { inputDateFormat } = dateUtils;
 
-    app.get('/pacientes/:id', loggedIn, (req, res) => {
-        DAOPaciente.getPaciente(req.params.id).then((data) => {
-            data[0].dt_nasc = utilsDate.viewDateFormat(data[0].dt_nasc)
-            data[0].cadastrado_em = utilsDate.viewDateFormat(data[0].cadastrado_em)
-            data[0].sexo = data[0].sexo == 'M' ? 'Masculino' : 'Feminino'
-            res.render('pacientes/visualizar', { data: data[0] })
-        })
-    })
+export default (app, database) => {
+  const DAOPaciente = new PacienteDAO(database);
 
-    app.get('/editar-paciente/:id', loggedIn, (req, res) => {
-        DAOPaciente.getPaciente(req.params.id).then((data) => {
-            data[0].dt_nasc = utilsDate.inputDateFormat(data[0].dt_nasc)
-            data[0].cadastrado_em = utilsDate.inputDateFormat(data[0].cadastrado_em)
-            res.render('pacientes/editar', { data: data[0] })
-        })
-    })
+  app.get('/pacientes', loggedIn, (req, res) => {
+    res.render('pacientes/');
+  });
 
-    app.get('/cadastrar-paciente', loggedIn, (req, res) => {
-        res.render('pacientes/cadastrar')
-    })
-}
+  app.get('/pacientes/:id', loggedIn, (req, res) => {
+    DAOPaciente.getPaciente(req.params.id).then((data) => {
+      try {
+        const pacienteAtual = data[0];
+
+        pacienteAtual.dt_nasc = viewDateFormat(pacienteAtual.dt_nasc);
+        pacienteAtual.cadastrado_em = viewDateFormat(pacienteAtual.cadastrado_em);
+        pacienteAtual.sexo = pacienteAtual.sexo === 'M' ? 'Masculino' : 'Feminino';
+        res.render('pacientes/visualizar', { data: pacienteAtual });
+      } catch (error) {
+        res.render('layouts/fatal_error', { error });
+      }
+    }).catch((error) => {
+      res.render('layouts/fatal_error', { error });
+    });
+  });
+
+  app.get('/editar-paciente/:id', loggedIn, (req, res) => {
+    DAOPaciente.getPaciente(req.params.id).then((data) => {
+      try {
+        const pacienteAtual = data[0];
+        pacienteAtual.dt_nasc = inputDateFormat(pacienteAtual.dt_nasc);
+        pacienteAtual.cadastrado_em = inputDateFormat(pacienteAtual.cadastrado_em);
+        res.render('pacientes/editar', { data: pacienteAtual });
+      } catch (error) {
+        res.render('layouts/fatal_error', { error });
+      }
+    }).catch((error) => {
+      res.render('layouts/fatal_error', { error });
+    });
+  });
+
+  app.get('/cadastrar-paciente', loggedIn, (req, res) => {
+    res.render('pacientes/cadastrar');
+  });
+};

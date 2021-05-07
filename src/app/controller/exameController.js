@@ -1,73 +1,80 @@
-const { validationResult } = require('express-validator')
+import { validationResult } from 'express-validator';
 
 class exameController {
+  constructor(DAOExame) {
+    this.DAOExame = DAOExame;
+  }
 
-    routes() {
-        return {
-            base: '/exame/',
-            getId: '/exame/:id'
-        }
-    }
+  static routes() {
+    return {
+      base: '/exame/',
+      getId: '/exame/:id',
+    };
+  }
 
-    all() {
-        return async function(req, res) {
-            const data = req.query
-            await DAOExame.getExames(data)
-                .then(data => res.json(data))
-                .catch(error => res.json(error))
-        }
-    }
+  all() {
+    const { DAOExame } = this;
+    return async function getAllExame(req, res) {
+      const queryData = req.query;
+      await DAOExame.getExames(queryData)
+        .then((data) => res.json(data))
+        .catch((error) => res.json(error));
+    };
+  }
 
-    get() {
-        return async function(req, res) {
-            const id = req.params.id
-            await DAOExame.getExame(id)
-                .then(data => res.json(data))
-                .catch(error => res.json(error))
-        }
-    }
+  get() {
+    const { DAOExame } = this;
+    return async function getIDExame(req, res) {
+      const { id } = req.params;
+      await DAOExame.getExame(id)
+        .then((data) => res.json(data))
+        .catch((error) => res.json(error));
+    };
+  }
 
-    insert() {
-        return async function(req, res) {
-            //Recebe os erros de validação da requisição.
-            const validation = validationResult(req)
+  insert() {
+    const { DAOExame } = this;
+    return async function InsertExame(req, res) {
+      // Recebe os erros de validação da requisição.
+      const validation = validationResult(req);
 
-            if (validation.array().length != 0) {
-                res.json({ status: 'error', message: validation['errors'] })
-            } else {
-                const data = req.body
-                await DAOExame.addExame(data)
-                    .then(data => res.json(data))
-                    .catch(error => res.json(error))
-            }
-        }
-    }
+      if (validation.array().length !== 0) {
+        res.json({ status: 'error', message: validation.errors });
+      } else {
+        const bodyData = req.body;
+        await DAOExame.addExame(bodyData)
+          .then((data) => res.json(data))
+          .catch((error) => res.json(error));
+      }
+    };
+  }
 
-    update() {
-        return async function(req, res) {
-            //Recebe os erros de validação da requisição.
-            const validation = validationResult(req)
+  update() {
+    const { DAOExame } = this;
+    return async function updateExame(req, res) {
+      // Recebe os erros de validação da requisição.
+      const validation = validationResult(req);
 
-            if (validation.array().length != 0) {
-                res.json({ status: 'error', message: validation['errors'] })
-            } else {
-                const data = req.body
-                await DAOExame.updateExame(data)
-                    .then(data => res.json(data))
-                    .catch(error => res.json(error))
-            }
-        }
-    }
+      if (validation.array().length !== 0) {
+        res.json({ status: 'error', message: validation.errors });
+      } else {
+        const bodyData = req.body;
+        await DAOExame.updateExame(bodyData)
+          .then((data) => res.json(data))
+          .catch((error) => res.json(error));
+      }
+    };
+  }
 
-    delete() {
-        return async function(req, res) {
-            const id = req.query.id
-            await DAOExame.deleteExame(id)
-                .then(data => res.json(data))
-                .catch(error => res.json(error))
-        }
-    }
-
+  delete() {
+    const { DAOExame } = this;
+    return async function deleteExame(req, res) {
+      const { id } = req.query;
+      await DAOExame.deleteExame(id)
+        .then((data) => res.json(data))
+        .catch((error) => res.json(error));
+    };
+  }
 }
 
-module.exports = exameController
+export default exameController;

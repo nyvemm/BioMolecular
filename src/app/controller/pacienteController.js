@@ -1,71 +1,79 @@
-const { validationResult } = require('express-validator')
+import { validationResult } from 'express-validator';
 
 class pacienteController {
+  constructor(DAOPaciente) {
+    this.DAOPaciente = DAOPaciente;
+  }
 
-    routes() {
-        return {
-            base: '/paciente/',
-            getId: '/paciente/:id'
-        }
-    }
+  static routes() {
+    return {
+      base: '/paciente/',
+      getId: '/paciente/:id',
+    };
+  }
 
-    all() {
-        return async function (req, res) {
-            const data = req.query
-            await DAOPaciente.getPacientes(data)
-                .then(data => res.json(data))
-                .catch(error => res.json(error))
-        }
-    }
+  all() {
+    const { DAOPaciente } = this;
+    return async function getAllPaciente(req, res) {
+      const queryData = req.query;
+      await DAOPaciente.getPacientes(queryData)
+        .then((data) => res.json(data))
+        .catch((error) => res.json(error));
+    };
+  }
 
-    get() {
-        return async function (req, res) {
-            const id = req.params.id
-            await DAOPaciente.getPaciente(id)
-                .then(data => res.json(data))
-                .catch(error => res.json(error))
-        }
-    }
+  get() {
+    const { DAOPaciente } = this;
+    return async function getIDPaciente(req, res) {
+      const { id } = req.params;
+      await DAOPaciente.getPaciente(id)
+        .then((data) => res.json(data))
+        .catch((error) => res.json(error));
+    };
+  }
 
-    insert() {
-        return async function (req, res) {
-            //Recebe os erros de validação da requisição.
-            const validation = validationResult(req)
-            if (validation.array().length != 0) {
-                res.json({ status: 'error', message: validation['errors'] })
-            } else {
-                const data = req.body
-                await DAOPaciente.addPaciente(data)
-                    .then(data => res.json(data))
-                    .catch(error => res.json(error))
-            }
-        }
-    }
+  insert() {
+    const { DAOPaciente } = this;
+    return async function insertPaciente(req, res) {
+      // Recebe os erros de validação da requisição.
+      const validation = validationResult(req);
+      if (validation.array().length !== 0) {
+        res.json({ status: 'error', message: validation.errors });
+      } else {
+        const bodyData = req.body;
+        await DAOPaciente.addPaciente(bodyData)
+          .then((data) => res.json(data))
+          .catch((error) => res.json(error));
+      }
+    };
+  }
 
-    update() {
-        return async function (req, res) {
-            //Recebe os erros de validação da requisição.
-            const validation = validationResult(req)
+  update() {
+    const { DAOPaciente } = this;
+    return async function updatePaciente(req, res) {
+      // Recebe os erros de validação da requisição.
+      const validation = validationResult(req);
 
-            if (validation.array().length != 0) {
-                res.json({ status: 'error', message: validation['errors'] })
-            } else {
-                const data = req.body
-                await DAOPaciente.updatePaciente(data)
-                    .then(data => res.json(data))
-                    .catch(error => res.json(error))
-            }
-        }
-    }
+      if (validation.array().length !== 0) {
+        res.json({ status: 'error', message: validation.errors });
+      } else {
+        const bodyData = req.body;
+        await DAOPaciente.updatePaciente(bodyData)
+          .then((data) => res.json(data))
+          .catch((error) => res.json(error));
+      }
+    };
+  }
 
-    delete() {
-        return async function (req, res) {
-            const id = req.query.id
-            await DAOPaciente.deletePaciente(id)
-                .then(data => res.json(data))
-                .catch(error => res.json(error))
-        }
-    }
+  delete() {
+    const { DAOPaciente } = this;
+    return async function deletePaciente(req, res) {
+      const { id } = req.query;
+      await DAOPaciente.deletePaciente(id)
+        .then((data) => res.json(data))
+        .catch((error) => res.json(error));
+    };
+  }
 }
 
-module.exports = pacienteController
+export default pacienteController;

@@ -1,17 +1,18 @@
-const exameDAO = require('../../dao/exameDAO')
-const exameController = require('../../controller/exameController')
-const exameModel = require('../../models/exameModel')
+/* eslint-disable import/extensions */
+import ExameDAO from '../../dao/exameDAO.js';
+import ExameController from '../../controller/exameController.js';
+import ExameModel from '../../models/exameModel.js';
 
-DAOExame = new exameDAO(database)
-controllerExame = new exameController()
-routesExame = controllerExame.routes()
+export default (app, database) => {
+  const DAOExame = new ExameDAO(database);
+  const controllerExame = new ExameController(DAOExame);
+  const routesExame = ExameController.routes();
 
-module.exports = (app) => {
-    app.route(routesExame.base)
-        .get(controllerExame.all())
-        .post(exameModel.validations(), controllerExame.insert())
-        .put(exameModel.updateValidations(), controllerExame.update())
-        .delete(controllerExame.delete())
+  app.route(routesExame.base)
+    .get(controllerExame.all())
+    .post(ExameModel.validations(), controllerExame.insert())
+    .put(ExameModel.updateValidations(), controllerExame.update())
+    .delete(controllerExame.delete());
 
-    app.get(routesExame.getId, controllerExame.get())
-}
+  app.get(routesExame.getId, controllerExame.get());
+};

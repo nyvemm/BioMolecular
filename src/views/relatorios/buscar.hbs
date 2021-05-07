@@ -45,7 +45,7 @@
                     {{#each pacientes}}
                     <tr onclick="javascript:window.location.href='/pacientes/{{this.idPaciente}}'"
                         class="clickable-row">
-                        <th scope="row">{{this.idPaciente}}</th>
+                        <th scope='row'>{{this.idPaciente}}</th>
                         <td>{{this.nome}}</td>
                         <td>{{this.sexo}}</td>
                         <td>{{this.etnia}}</td>
@@ -81,7 +81,7 @@
                     {{#each solicitantes}}
                     <tr onclick="javascript:window.location.href='/solicitantes/{{this.idSolicitante}}'"
                         class="clickable-row">
-                        <th scope="row">{{this.idSolicitante}}</th>
+                        <th scope='row'>{{this.idSolicitante}}</th>
                         <td>{{this.nome}}</td>
                         <td>{{this.cidade}}</td>
                         <td>{{this.estado}}</td>
@@ -116,7 +116,7 @@
                 <tbody>
                     {{#each exames}}
                     <tr onclick="javascript:window.location.href='/exames/{{this.idExame}}'" class="clickable-row">
-                        <th scope="row">{{this.idExame}}</th>
+                        <th scope='row'>{{this.idExame}}</th>
                         <td>{{this.nome}}</td>
                         <td>{{#if this.sigla}} {{this.sigla}} {{else}} N/A {{/if}}</td>
                         <td>{{#if this.tipo_analise}} {{this.tipo_analise}} {{else}} N/A {{/if}}</td>
@@ -139,13 +139,9 @@
                 <thead>
                     <tr class="bg-secondary text-white">
                         <th scope="col">#</th>
+                        <th scope="col">Código</th>
                         <th scope="col">Material</th>
-                        <th scope="col">Data de Solicitação</th>
-                        <th scope="col">Data de Recebimento</th>
                         <th scope="col">Data de Coleta</th>
-                        <th scope="col">Gestante</th>
-                        <th scope="col">Transfusão de Sangue</th>
-                        <th scope="col">Uso de Medicamentos</th>
                         <th scope="col">Status</th>
                         <th scope="col">Data de Liberação</th>
                         <th scope="col">Cadastrado em</th>
@@ -154,16 +150,12 @@
                 <tbody>
                     {{#each amostras}}
                     <tr onclick="javascript:window.location.href='/amostras/{{this.idAmostra}}'" class="clickable-row">
-                        <th scope="row">{{this.idAmostra}}</th>
-                        <td>{{this.nome}}</td>
+                        <th scope='row'>{{this.idAmostra}}</th>
+                        <td>{{#if this.cod}} {{this.cod}} {{else}} N/A {{/if}}</td>
                         <td>{{#if this.material}} {{this.material}} {{else}} N/A {{/if}}</td>
-                        <td>{{#if this.dt_solicitacao}} {{this.dt_solicitacao}} {{else}} N/A {{/if}}</td>
-                        <td>{{#if this.dt_recebimento}} {{this.dt_recebimento}} {{else}} N/A {{/if}}</td>
                         <td>{{#if this.dt_coleta}} {{this.dt_coleta}} {{else}} N/A {{/if}}</td>
-                        <td>{{#if this.gestante}} {{this.gestante}} {{else}} N/A {{/if}}</td>
-                        <td>{{#if this.transfusao}} {{this.transfusao}} {{else}} N/A {{/if}}</td>
                         <td>{{#if this.status_pedido}} {{this.status_pedido}} {{else}} N/A {{/if}}</td>
-                        <td>{{#if this.dt_liberacao}} {{this.dt_liberacao}} {{else}} N/A {{/if}}</td>
+                        <td>{{#if this.dt_liberacao}} {{this.dt_liberacao}} {{else}} Ainda não liberado {{/if}}</td>
                         <td>{{this.cadastrado_em}}</td>
                     </tr>
                     {{/each}}
@@ -174,7 +166,7 @@
     </main>
 </body>
 
-<script src="/js/libs/jquery-3.5.1.min.js"></script>
-<script src="/bootstrap/js/bootstrap.bundle.min.js"></script>
-<script src="/bootstrap/js/bootstrap.min.js"></script>
-<script src="/js/relatorios/buscar.js"></script>
+<script type="module" src="/js/libs/jquery-3.5.1.min.js"></script>
+<script type="module" src="/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script type="module" src="/bootstrap/js/bootstrap.min.js"></script>
+<script type="module" src="/js/relatorios/buscar.js"></script>

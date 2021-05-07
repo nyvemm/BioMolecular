@@ -47,13 +47,17 @@
                 <a href="/cadastrar-resultado/{{data.idAmostra}}" class="btn active mt-2">
                     {{#if data.finalizado}} Visualizar resultados{{else}}Avaliar exames{{/if}}
                 </a>
+                <a target="_blank"
+                    href="/relatorios/imprimir-laudo?id={{data.idAmostra}}&responsavel=Dr.+%C3%89dis+Belini+J%C3%BAnior&crbio=113217%2F02-D&art=2019%2F01090&papel=on"
+                    class="btn active mt-2">
+                    Gerar Laudo
+                </a>
             </div>
         </div>
 
         <div class="card mt-4">
             <h5 class="card-header w-100">Paciente</h5>
             <div class="card-body">
-                <p class='m-0'><b>ID</b>: {{data.idPaciente}}</p>
                 <p class='m-0'><b>Nome</b>: {{data.paciente_nome}}</p>
                 <p class='m-0'><b>Idade</b>: {{data.idade}}</p>
                 <hr>
@@ -81,15 +85,18 @@
         <div class="card mt-4">
             <h5 class="card-header">Solicitante</h5>
             <div class="card-body">
-                <p class='m-0'><b>ID</b>: {{data.idSolicitante}}</p>
                 <p class='m-0'><b>Nome</b>: {{data.solicitante_nome}}</p>
                 <p class='m-0'><b>Cidade</b>: {{data.cidade}} - {{data.estado}}</p>
+                <p class='m-0'><b>Contato</b>: {{data.contato_referencia}}</p>
+                <p class='m-0'><b>E-mail</b>: {{data.e_mail}}</p>
             </div>
         </div>
 
         <div class="card mt-4">
             <h5 class="card-header">Amostra</h5>
             <div class="card-body">
+                <p class='m-0'><b>Código</b>: {{#if data.cod}} {{data.cod}} {{else}} N/A {{/if}}
+                </p>
                 <p class='m-0'><b>Solicitação</b>: {{#if data.solicitacao}} {{data.solicitacao}} {{else}} N/A {{/if}}
                 </p>
                 <p class='m-0'><b>Código de Barras</b>: {{#if data.codigo_barra}} {{data.codigo_barra}} {{else}} N/A
@@ -112,7 +119,7 @@
                 <ul class="m-0 p-0">
                     {{#each exame}}
                     <li class="list-group-item paciente-item"><a class='text-dark' target='_blank'
-                            href="/exames/{{this.idExame}}">{{this.nome}}</a></li>
+                            href="/exames/{{this.idExame}}">{{this.nome}} - {{this.metodo}}</a></li>
                     {{/each}}
                 </ul>
             </div>
@@ -132,8 +139,8 @@
     </main>
 </body>
 
-<script src="/js/libs/jquery-3.5.1.min.js"></script>
-<script src="/bootstrap/js/bootstrap.bundle.min.js"></script>
-<script src="/bootstrap/js/bootstrap.min.js"></script>
-<script src="/js/utils/global.js"></script>
-<script src="/js/amostras/visualizar-amostra.js"></script>
+<script type="module" src="/js/libs/jquery-3.5.1.min.js"></script>
+<script type="module" src="/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script type="module" src="/bootstrap/js/bootstrap.min.js"></script>
+
+<script type="module" src="/js/amostras/visualizar-amostra.js"></script>

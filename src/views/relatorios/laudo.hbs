@@ -23,11 +23,6 @@
                         <label for="id">ID da Amostra</label>
                         <input type="number" class="form-control" id="id" name="id" placeholder="Ex: 1, 2, 3...">
                     </div>
-
-                    <div class="form-group col-md-4 m-0 d-block mt-4">
-                        <label for="cod">Código da Amostra</label>
-                        <input type="text" class="form-control" id="cod" name="cod" placeholder="Ex: 149/21">
-                    </div>
                 </div>
                 <div class="row">
                     <div class="form-group col-md-4 m-0 d-block mt-4">
@@ -49,19 +44,58 @@
 
                 <div class="form-check mt-4 m-0">
                     <input type="checkbox" class="form-check-input" id="papel" name="papel" checked>
-                    <label class="form-check-label" for="papel">Imprimir com papel do laborátório</label>
+                    <label class="form-check-label" for="papel">Imprimir com papel do laboratório</label>
                 </div>
 
-                <button type="button" class="btn active ml-1 mt-4" onclick="gerar_laudo()">Gerar Laudo</button>
+                <button type="button" class="btn active ml-1 mt-4" onclick="gerarLaudo()">Gerar Laudo</button>
             </form>
         </div>
         <div id="tabela">
         </div>
+        <div>
+            <hr>
+            {{#if amostra}}
+            <table class="table table-sm mt-4 border">
+                <thead>
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Paciente</th>
+                        <th scope="col">Solicitante</th>
+                        <th scope="col">Material</th>
+                        <th scope="col">Data de Recebimento</th>
+                        <th scope="col">Suspeita de Diagnóstico</th>
+                        <th scope="col">Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {{#each amostra}}
+                    <tr {{#if this.em_analise}} class="table-warning clickable-row" {{else}} {{#if this.cadastrado}}
+                        class="table-danger clickable-row" {{else}} {{#if this.finalizado}}
+                        class="table-success clickable-row" {{else}} class="clickable-row" {{/if}} {{/if}} {{/if}}
+                        onclick=javascript:window.open('/amostras/{{this.idAmostra}}','_blank')>
+                        <th scope='row'>{{this.idAmostra}}</th>
+                        <td>{{this.paciente_nome}}</td>
+                        <td>{{this.solicitante_nome}}</td>
+                        <td>{{this.material}}</td>
+                        <td>{{#if this.f_dt_coleta}} {{this.f_dt_coleta}}{{/if}}</td>
+                        <td>{{#if this.suspeita_diagnostico }} {{this.suspeita_diagnostico}} {{else}} N/A {{/if}}</td>
+                        <td>{{this.status_pedido}}</td>
+                    </tr>
+                    {{/each}}
+                </tbody>
+            </table>
+            {{else}}
+            <div>
+                <hr>
+                <h4>Não há amostras cadastradas.</h4>
+            </div>
+            {{/if}}
+        </div>
     </main>
 </body>
 
-<script src="/js/libs/jquery-3.5.1.min.js"></script>
-<script src="/bootstrap/js/bootstrap.bundle.min.js"></script>
-<script src="/bootstrap/js/bootstrap.min.js"></script>
-<script src="/js/utils/global.js"></script>
-<script src="/js/relatorios/relatorios.js"></script>
+<script type="module" src="/js/libs/jquery-3.5.1.min.js"></script>
+<script type="module" src="/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script type="module" src="/bootstrap/js/bootstrap.min.js"></script>
+
+<script type="module" src="/js/relatorios/relatorios.js"></script>

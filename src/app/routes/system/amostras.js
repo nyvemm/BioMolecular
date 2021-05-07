@@ -1,248 +1,288 @@
-const database = require("../../../config/database/connection")
-const amostraDAO = require('../../dao/amostraDAO')
-DAOAmostra = new amostraDAO(database)
+/* eslint-disable import/extensions */
+import AmostraDAO from '../../dao/amostraDAO.js';
 
-//Bibliotecas internas
-const utilsDate = require('../../../utils/date')
-const { loggedIn } = require("../../helpers/login")
-const exames = require("./exames")
+// Bibliotecas internas
+import dateUtils from '../../../utils/date.js';
+import { loggedIn } from '../../helpers/login.js';
 
-module.exports = (app) => {
+const { viewDateFormat } = dateUtils;
+const { inputDateFormat } = dateUtils;
 
-    /* Resultados */
-    app.get('/resultados/:id', (req, res) => {
-        database('resultados').select().where('amostra_contem_exames_aux.idAmostra', req.params.id)
-            .innerJoin('amostra_contem_exames_aux', 'amostra_contem_exames_aux.idAmostraExame', 'resultados.idAmostraExame').then((data) => {
-                res.json(data)
-            })
+const objError = { status: 'error' };
+const objSuccess = { status: 'success' };
+
+export default (app, database) => {
+  const DAOAmostra = new AmostraDAO(database);
+
+  /* Resultados */
+  app.get('/resultados/:id', (req, res) => {
+    database('resultados').select().where('amostra_contem_exames_aux.idAmostra', req.params.id)
+      .innerJoin('amostra_contem_exames_aux', 'amostra_contem_exames_aux.idAmostraExame', 'resultados.idAmostraExame')
+      .then((data) => {
+        res.json(data);
+      })
+      .catch(() => {
+        res.json(objError);
+      });
+  });
+
+  /* Atualizar Resultados de uma amostra */
+  app.put('/amostra-resultados', (req, res) => {
+    const id = req.body ? req.body.idAmostra : null;
+
+    database('amostra').where('idAmostra', id).update({
+      interpretacao_resultados:
+        req.body.interpretacao_resultados ? req.body.interpretacao_resultados : null,
+      resultado: req.body.resultado ? req.body.resultado : null,
+    }).then(() => {
+      res.json(objSuccess);
     })
+      .catch(() => {
+        res.json(objError);
+      });
+  });
 
-    /*Atualizar Resultados de uma amostra */
-    app.put('/amostra-resultados', (req, res) => {
-        const id = req.body.idAmostra
-
-        database('amostra').where('idAmostra', id).update({
-            interpretacao_resultados: req.body.interpretacao_resultados ? req.body.interpretacao_resultados : null,
-            resultado: req.body.resultado ? req.body.resultado : null,
-        }).then((data) => {
-            res.json({ status: 'success' })
-        }).catch((data) => {
-            res.json({ status: 'error' })
-        })
+  app.delete('/resultados/:id', (req, res) => {
+    const { id } = req.params;
+    database('resultados').where('idResultado', id).del().then(() => {
+      res.json(objSuccess);
     })
+      .catch(() => {
+        res.json(objError);
+      });
+  });
 
+  app.get('/submeter-resultado/:id', (req, res) => {
+    const { id } = req.params;
+    database('resultados').where('idAmostraExame', id).select().then((resultados) => {
+      database('amostra_contem_exames_aux').where('idAmostraExame', id).update({
+        status: resultados.length > 0,
+        liberado_em: resultados.length ? new Date() : null,
+      }).then(() => {
+        /* Pega o ID da Amostra */
+        database('amostra_contem_exames_aux').where('idAmostraExame', id)
+          .select('idAmostra').then((idAmostra) => {
+            /* Pega a lista de todos os exames */
+            database('amostra_contem_exames_aux').where('idAmostra', idAmostra[0].idAmostra)
+              .select().then((amostras) => {
+                /* Pega a lista de amostras finalizadas */
+                try {
+                  const finalizadas = amostras.filter((amEx) => amEx.status);
+                  let FinalStatus = '';
 
-    app.delete('/resultados/:id', (req, res) => {
-        const id = req.params.id
-        database('resultados').where('idResultado', id).del().then((data) => {
-            res.json({ status: 'success' })
-        }).catch((err) => {
-            res.json({ status: 'error' })
-        })
+                  if (finalizadas.length === amostras.length) {
+                    FinalStatus = 'Finalizado';
+                  } else if (finalizadas.length >= 1) {
+                    FinalStatus = 'Parcialmente avaliado';
+                  } else {
+                    FinalStatus = 'Não avaliado';
+                  }
+                  /* Seta o resultado na amostra */
+                  database('amostra').update({ status_pedido: FinalStatus, dt_liberacao: new Date() })
+                    .where('idAmostra', idAmostra[0].idAmostra)
+                    .then(() => {
+                      res.json(objSuccess);
+                    })
+                    .catch(() => {
+                      res.json(objError);
+                    });
+                } catch (error) {
+                  res.json(objError);
+                }
+              })
+              .catch(() => {
+                res.json(objError);
+              });
+          })
+          .catch(() => {
+            res.json(objError);
+          });
+      })
+        .catch(() => {
+          res.json(objError);
+        });
     })
+      .catch(() => {
+        res.json(objError);
+      });
+  });
 
-    app.get('/submeter-resultado/:id', (req, res) => {
-        const id = req.params.id
-        database('amostra_contem_exames_aux').where('idAmostraExame', id).update({
-            status: true,
-            liberado_em: new Date()
-        }).then(() => {
-            /* Pega o ID da Amostra */
-            database('amostra_contem_exames_aux').where('idAmostraExame', id)
-                .select('idAmostra').then(idAmostra => {
+  app.post('/resultados/', (req, res) => {
+    const data = req.body;
+    database('resultados').insert({
+      idAmostraExame: data.idAmostraExame,
+      valor_resultado: data.valor_resultado,
+      observacao_resultado: data.observacao_resultado,
+    }).then(() => {
+      res.json(objSuccess);
+    }).catch(() => {
+      res.json(objError);
+    });
+  });
 
-                    /* Pega a lista de todos os exames */
-                    database('amostra_contem_exames_aux').where('idAmostra', idAmostra[0].idAmostra)
-                        .select().then(amostras => {
+  app.get('/amostras', loggedIn, (req, res) => {
+    res.render('amostras/');
+  });
 
-                            /* Pega a lista de amostras finalizadas */
-                            let finalizadas = amostras.filter(am_ex => am_ex.status)
-                            let final_status = ''
+  app.get('/amostras/:id', loggedIn, (req, res) => {
+    DAOAmostra.getAmostra(req.params.id).then((data) => {
+      try {
+        const amostraAtual = data[0];
+        amostraAtual.cadastrado_em = viewDateFormat(amostraAtual.cadastrado_em);
+        amostraAtual.f_dt_recebimento = viewDateFormat(amostraAtual.dt_recebimento);
+        amostraAtual.f_dt_solicitacao = viewDateFormat(amostraAtual.dt_solicitacao);
+        amostraAtual.f_dt_coleta = viewDateFormat(amostraAtual.dt_coleta);
+        amostraAtual.f_dt_ult_transfusao = viewDateFormat(amostraAtual.dt_ult_transfusao);
+        amostraAtual.finalizado = amostraAtual.status_pedido === 'Finalizado';
 
-                            if (finalizadas.length == amostras.length) {
-                                final_status = 'Finalizado'
-                            } else if (finalizadas.length >= 1) {
-                                final_status = 'Parcialmente avaliado'
-                            } else {
-                                final_status = 'Não avaliado'
-                            }
+        /* Idade do Paciente */
+        if (amostraAtual.dt_coleta) {
+          const diffTime = Math.abs(amostraAtual.dt_coleta - amostraAtual.dt_nasc);
+          const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+          amostraAtual.idade_coleta = Math.floor(diffDays / 365);
+          amostraAtual.idade_coleta_meses = Math.floor((diffDays % 365) / 30);
+        }
 
-                            /* Seta o resultado na amostra */
-                            database('amostra').update({ status_pedido: final_status, dt_liberacao: new Date() })
-                                .where('idAmostra', idAmostra[0].idAmostra)
-                                .then(() => {
-                                    res.json({ status: 'success' })
-                                })
-                        })
-                })
-        }).catch((err) => {
-            res.json({ status: 'error' })
-        })
-    })
+        database('amostra_contem_exames_aux').select().where('idAmostra', req.params.id)
+          .innerJoin('exame', 'amostra_contem_exames_aux.idExame', 'exame.idExame')
+          .then((exame) => {
+            let cont = 0;
+            const exameAtual = exame;
+            exameAtual.forEach((currentExame) => {
+              if (currentExame.status) cont += 1;
+            });
 
-    app.post('/resultados/', (req, res) => {
-        const data = req.body
-        database('resultados').insert({
-            idAmostraExame: data.idAmostraExame,
-            valor_resultado: data.valor_resultado,
-            observacao_resultado: data.observacao_resultado
-        }).then(() => {
-            res.json({ status: 'success' })
-        }).catch((err) => {
-            res.json({ status: 'error' })
-        })
-    })
+            exameAtual.total_exames = exame.length;
+            exameAtual.exames_realizados = cont;
+            res.render('amostras/visualizar', { data: amostraAtual, exame: exameAtual });
+          })
+          .catch((error) => {
+            res.render('layouts/fatal_error', { error });
+          });
+      } catch (error) {
+        res.render('layouts/fatal_error', { error });
+      }
+    }).catch((error) => {
+      res.render('layouts/fatal_error', { error });
+    });
+  });
 
-    app.get('/amostras', loggedIn, (req, res) => {
-        res.render('amostras/')
-    })
+  app.get('/editar-amostra/:id', loggedIn, (req, res) => {
+    DAOAmostra.getAmostra(req.params.id).then((data) => {
+      try {
+        const amostraAtual = data[0];
+        amostraAtual.cadastrado_em = inputDateFormat(amostraAtual.cadastrado_em);
+        amostraAtual.dt_recebimento = inputDateFormat(amostraAtual.dt_recebimento);
+        amostraAtual.dt_solicitacao = inputDateFormat(amostraAtual.dt_solicitacao);
+        amostraAtual.dt_coleta = inputDateFormat(amostraAtual.dt_coleta);
+        amostraAtual.dt_ult_transfusao = inputDateFormat(amostraAtual.dt_ult_transfusao);
+        amostraAtual.medicamentos = amostraAtual.medicamentos && JSON.parse(amostraAtual.medicamentos).length > 0 ? JSON.parse(amostraAtual.medicamentos).split(',') : null;
 
-    app.get('/amostras/:id', loggedIn, (req, res) => {
-        DAOAmostra.getAmostra(req.params.id).then((data) => {
-            data[0].cadastrado_em = utilsDate.viewDateFormat(data[0].cadastrado_em)
-            data[0].f_dt_recebimento = utilsDate.viewDateFormat(data[0].dt_recebimento)
-            data[0].f_dt_solicitacao = utilsDate.viewDateFormat(data[0].dt_solicitacao)
-            data[0].f_dt_coleta = utilsDate.viewDateFormat(data[0].dt_coleta)
-            data[0].f_dt_ult_transfusao = utilsDate.viewDateFormat(data[0].dt_ult_transfusao)
+        database('amostra_contem_exames_aux').select().where('idAmostra', req.params.id)
+          .innerJoin('exame', 'amostra_contem_exames_aux.idExame', 'exame.idExame')
+          .then((exame) => {
+            let cont = 0;
+            const exameAtual = exame;
+            exameAtual.forEach((currentExame) => {
+              if (currentExame.status) cont += 1;
+            });
+            exameAtual.total_exames = exame.length;
+            exameAtual.exames_realizados = cont;
 
-            data[0].finalizado = data[0].status_pedido == 'Finalizado'
+            res.render('amostras/editar', { data: amostraAtual, exame: exameAtual });
+          })
+          .catch((error) => {
+            res.render('layouts/fatal_error', { error });
+          });
+      } catch (error) {
+        res.render('layouts/fatal_error', { error });
+      }
+    });
+  });
 
-            /* Idade do Paciente */
-            if (data[0].dt_coleta) {
-                const diffTime = Math.abs(data[0].dt_coleta - data[0].dt_nasc);
+  app.get('/cadastrar-resultado/:id', loggedIn, (req, res) => {
+    database('amostra_contem_exames_aux').select(database.raw('*, exame.nome as exame_nome, paciente.nome as paciente_nome, amostra.observacao as observacao'))
+      .where('amostra.idAmostra', req.params.id)
+      .innerJoin('exame', 'amostra_contem_exames_aux.idExame', 'exame.idExame')
+      .innerJoin('amostra', 'amostra.idAmostra', 'amostra_contem_exames_aux.idAmostra')
+      .innerJoin('paciente', 'paciente.idPaciente', 'amostra.idPaciente')
+      .then((exames) => {
+        let cont = 0;
+        const data = {};
+
+        exames.forEach((currentExame) => { if (currentExame.status) cont += 1; });
+
+        data.total_exames = exames.length;
+        data.exames_realizados = cont;
+        data.idAmostra = req.params.id;
+        data.status_pedido = exames[0].status_pedido;
+
+        database('amostra_contem_exames_aux').select('tipo_analise').distinct().where('idAmostra', req.params.id)
+          .innerJoin('exame', 'amostra_contem_exames_aux.idExame', 'exame.idExame')
+          .then((tiposExames) => {
+            try {
+              data.exames = [];
+
+              const listaExames = tiposExames.map((t) => t.tipo_analise);
+              listaExames.forEach((tipoExame) => {
+                data.exames.push({ tipo: tipoExame, valor: [] });
+              });
+
+              exames.forEach((exame) => {
+                const exameAtual = exame;
+                exameAtual.liberado_em = viewDateFormat(exameAtual.liberado_em);
+                const intervaloValor = exameAtual.tabela_intervalo && exameAtual.tabela_intervalo !== '' ? JSON.parse(exameAtual.tabela_intervalo) : null;
+
+                const diffTime = Math.abs(exameAtual.dt_coleta - exameAtual.dt_nasc);
                 const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
-                data[0].idade_coleta = Math.floor(diffDays / 365)
-                data[0].idade_coleta_meses = Math.floor((diffDays % 365) / 30)
+                exameAtual.idade_coleta = Math.floor(diffDays / 365);
+                exameAtual.idade_coleta_meses = Math.floor((diffDays % 365) / 30);
+                exameAtual.intervalo_bool = exameAtual.tipo_valor_ref === 'Idade';
+                exameAtual.intervalo_certo = `Não há valor de referência cadastrado para essa idade ${exameAtual.idade_coleta}a ${exameAtual.idade_coleta_meses}m.`;
+
+                if (intervaloValor) {
+                  intervaloValor.forEach((it) => {
+                    if (it.idade.startsWith('>')) {
+                      if (exameAtual.idade_coleta > parseInt(it.idade.substring(1), 10)) {
+                        exameAtual.intervalo_certo = it.valor;
+                      }
+                    } else if (it.idade.startsWith('<')) {
+                      if (exameAtual.idade_coleta < parseInt(it.idade.substring(1), 10)) {
+                        exameAtual.intervalo_certo = it.valor;
+                      }
+                    } else if (it.idade.indexOf('-') !== -1) {
+                      if (parseInt(it.idade.substring(0, it.idade.indexOf('-')) <= exameAtual.idade_coleta && exameAtual.idade_coleta <= parseInt(it.idade.substring(it.idade.indexOf('-') + 1), 10), 10)) {
+                        exameAtual.intervalo_certo = it.valor;
+                      }
+                    } else if (parseInt(it.idade, 10) === exameAtual.idade_coleta) {
+                      exameAtual.intervalo_certo = it.valor;
+                    }
+                  });
+                }
+                const tipo = exameAtual.tipo_analise;
+                data.exames[listaExames.findIndex((elem) => elem === tipo)].valor.push(exameAtual);
+              });
+              res.render('amostras/resultados', { data, amostra: exames[0] });
+            } catch (error) {
+              res.render('layouts/fatal_error', { error });
             }
+          });
+      })
+      .catch((error) => {
+        res.render('layouts/fatal_error', { error });
+      });
+  });
 
-            database('amostra_contem_exames_aux').select().where('idAmostra', req.params.id)
-                .innerJoin('exame', 'amostra_contem_exames_aux.idExame', 'exame.idExame').then(exame => {
-                    let cont = 0;
-                    exame.forEach((currentExame) => {
-                        if (currentExame.status) cont++
-                    })
+  app.get('/cadastrar-amostra', loggedIn, (req, res) => {
+    res.render('amostras/cadastrar');
+  });
 
-                    exame.total_exames = exame.length
-                    exame.exames_realizados = cont
-                    res.render('amostras/visualizar', { data: data[0], exame: exame })
-                })
-        })
-    })
-
-    app.get('/editar-amostra/:id', loggedIn, (req, res) => {
-        DAOAmostra.getAmostra(req.params.id).then((data) => {
-            data[0].cadastrado_em = utilsDate.inputDateFormat(data[0].cadastrado_em)
-            data[0].dt_recebimento = utilsDate.inputDateFormat(data[0].dt_recebimento)
-            data[0].dt_solicitacao = utilsDate.inputDateFormat(data[0].dt_solicitacao)
-            data[0].dt_coleta = utilsDate.inputDateFormat(data[0].dt_coleta)
-            data[0].dt_ult_transfusao = utilsDate.inputDateFormat(data[0].dt_ult_transfusao)
-            data[0].medicamentos = JSON.parse(data[0].medicamentos).length > 0 ? JSON.parse(data[0].medicamentos).split(',') : null
-
-            database('amostra_contem_exames_aux').select().where('idAmostra', req.params.id)
-                .innerJoin('exame', 'amostra_contem_exames_aux.idExame', 'exame.idExame').then(exame => {
-                    let cont = 0;
-                    exame.forEach((currentExame) => {
-                        if (currentExame.status) cont++
-                    })
-                    exame.total_exames = exame.length
-                    exame.exames_realizados = cont
-
-                    res.render('amostras/editar', { data: data[0], exame: exame })
-                })
-        })
-    })
-
-    app.get('/cadastrar-resultado/:id', loggedIn, (req, res) => {
-        database('amostra_contem_exames_aux').select(database.raw(`*, exame.nome as exame_nome, paciente.nome as paciente_nome, amostra.observacao as observacao`))
-            .where('amostra.idAmostra', req.params.id)
-            .innerJoin('exame', 'amostra_contem_exames_aux.idExame', 'exame.idExame')
-            .innerJoin('amostra', 'amostra.idAmostra', 'amostra_contem_exames_aux.idAmostra')
-            .innerJoin('paciente', 'paciente.idPaciente', 'amostra.idPaciente')
-            .then(exames => {
-                let cont = 0;
-                let data = {}
-
-                exames.forEach((currentExame) => { if (currentExame.status) cont++ })
-
-                data.total_exames = exames.length
-                data.exames_realizados = cont
-                data.idAmostra = req.params.id
-                data.status_pedido = exames[0].status_pedido
-
-                database('amostra_contem_exames_aux').select('tipo_analise').distinct().where('idAmostra', req.params.id)
-                    .innerJoin('exame', 'amostra_contem_exames_aux.idExame', 'exame.idExame').then((tipos_exame) => {
-                        data.exames = []
-
-                        let lista_exames = tipos_exame.map(t => t.tipo_analise)
-                        lista_exames.forEach((tipo_exame) => {
-                            data.exames.push({ tipo: tipo_exame, valor: [] })
-                        })
-
-                        exames.forEach((exame) => {
-                            exame.liberado_em = utilsDate.viewDateFormat(exame.liberado_em)
-                            let intervalo_valor = exame.tabela_intervalo && exame.tabela_intervalo != '' ? JSON.parse(exame.tabela_intervalo) : null
-
-                            const diffTime = Math.abs(exame.dt_coleta - exame.dt_nasc);
-                            const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
-                            exame.idade_coleta = Math.floor(diffDays / 365)
-                            exame.idade_coleta_meses = Math.floor((diffDays % 365) / 30)
-                            exame.intervalo_bool = exame.tipo_valor_ref == 'Idade'
-                            exame.intervalo_certo = `Não há valor de referência cadastrado para essa idade ${exame.idade_coleta}a ${exame.idade_coleta_meses}m.`
-
-                            if (intervalo_valor) {
-                                intervalo_valor.forEach(it => {
-                                    if (it.idade.startsWith('>')) {
-                                        if (exame.idade_coleta > parseInt(it.idade.substring(1))) {
-                                            console.log('>')
-                                            exame.intervalo_certo = it.valor
-                                            return
-                                        }
-                                    } else if (it.idade.startsWith('<')) {
-                                        console.log('<')
-                                        if (exame.idade_coleta < parseInt(it.idade.substring(1))) {
-                                            exame.intervalo_certo = it.valor
-                                            return
-                                        }
-                                    } else {
-                                        if (it.idade.indexOf('-') != -1) {
-                                            console.log('range')
-                                            if (parseInt(it.idade.substring(0, it.idade.indexOf('-')) <= exame.idade_coleta && exame.idade_coleta <= parseInt(it.idade.substring(it.idade.indexOf('-') + 1)))) {
-                                                exame.intervalo_certo = it.valor
-                                                return
-                                            }
-                                        } else {
-                                            console.log('value')
-                                            if (parseInt(it.idade) == exame.idade_coleta) {
-                                                exame.intervalo_certo = it.valor
-                                                return
-                                            }
-                                        }
-                                    }
-                                })
-                            }
-
-                            let tipo = exame.tipo_analise
-                            data.exames[lista_exames.findIndex((elem) => elem == tipo)].valor.push(exame)
-                        })
-
-                        //console.log(data.exames[0].valor)
-                        res.render('amostras/resultados', { data: data, amostra: exames[0] })
-                    })
-
-            })
-    })
-
-    app.get('/cadastrar-amostra', loggedIn, (req, res) => {
-        res.render('amostras/cadastrar')
-    })
-
-    app.get('/amostra-exames', loggedIn, (req, res) => {
-        const id = req.query.id
-        database('amostra_contem_exames_aux').where('idAmostra', id).then(data => {
-            res.json(data)
-        }).catch(error => {
-            res.json({ status: error })
-            console.log(error)
-        })
-    })
-}
+  app.get('/amostra-exames', loggedIn, (req, res) => {
+    const { id } = req.query;
+    database('amostra_contem_exames_aux').where('idAmostra', id).then((data) => {
+      res.json(data);
+    }).catch(() => {
+      res.json(objError);
+    });
+  });
+};
