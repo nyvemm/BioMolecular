@@ -12,7 +12,7 @@ import session from 'express-session';
 
 // Geração de Hash
 import crypto from 'crypto';
-import uuid from 'uuid';
+import { v1 as uuidv1 } from 'uuid';
 
 //------------------------------------------------------------
 import routes from '../../app/routes/routes.js';
@@ -33,7 +33,7 @@ app.use(session({
     maxAge: 7200000, // 2 horas
   },
   genid() {
-    return crypto.createHash('sha256').update(uuid.v1()).update(crypto.randomBytes(256)).digest('hex');
+    return crypto.createHash('sha256').update(uuidv1()).update(crypto.randomBytes(256)).digest('hex');
   },
 }));
 
