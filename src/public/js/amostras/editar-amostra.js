@@ -1,6 +1,3 @@
-// eslint-disable-next-line import/extensions
-import warningMessage from '../utils/global.js';
-
 /* Pega o valor único de um array */
 function unique(value, index, self) {
   return self.indexOf(value) === index;
@@ -38,13 +35,17 @@ function fetchExame() {
       /* Mapeia os valores atuais pra lista de objetos */
       response.forEach((exame) => {
         const tipo = exame.tipo_analise;
-        exames[listaExames.findIndex((elem) => elem === tipo)].valor.push(exame);
+        exames[listaExames.findIndex((elem) => elem === tipo)].valor.push(
+          exame
+        );
       });
 
       /* Pega a lista atual dos exames selecionados */
       let listaExamesSelecionados = fetchCurrentExame();
       if (listaExamesSelecionados) {
-        listaExamesSelecionados = listaExamesSelecionados.map((exame) => exame.idExame);
+        listaExamesSelecionados = listaExamesSelecionados.map(
+          (exame) => exame.idExame
+        );
         let query = '';
         exames.forEach((exame) => {
           query += `<div><h4> ${exame.tipo} </h3>`;
@@ -73,17 +74,28 @@ function putData() {
   const formData = new FormData(document.getElementById('formulario'));
   xhr.open('PUT', '/amostra', true);
 
+  const exames = Array.from(document.getElementsByName('exames-escolhidos'))
+    .filter((ex) => $(ex).prop('checked'))
+    .map((ex) => $(ex).data('id'));
+  formData.append('exames', exames);
+
   xhr.onload = () => {
     if (xhr.status === 200) {
       const response = JSON.parse(xhr.responseText);
 
       if (response.status === 'success') {
-        $('#warnings').html(warningMessage('Amostra atualizada com sucesso', 'success'));
+        $('#warnings').html(
+          warningMessage('Amostra atualizada com sucesso', 'success')
+        );
       } else {
-        $('#warnings').html(warningMessage('Erro ao atualizar amostra', 'danger'));
+        $('#warnings').html(
+          warningMessage('Erro ao atualizar amostra', 'danger')
+        );
       }
-      window.scroll({ top: 0, left: 0, behavior: 'smooth' });
+    } else {
+      $('#warnings').html(warningMessage('Erro interno', 'danger'));
     }
+    window.scroll({ top: 0, left: 0, behavior: 'smooth' });
   };
   xhr.send(new URLSearchParams(formData));
 }
@@ -105,9 +117,11 @@ function deleteData() {
 
 /* Campos */
 $(document).ready(() => {
-  if ($('#gestante').prop('selectedIndex') !== 0) $('#semanas_gestacao').prop('readonly', false);
+  if ($('#gestante').prop('selectedIndex') !== 0)
+    $('#semanas_gestacao').prop('readonly', false);
 
-  if ($('#transfusao').prop('selectedIndex') !== 0) $('#dt_ult_transfusao').prop('readonly', false);
+  if ($('#transfusao').prop('selectedIndex') !== 0)
+    $('#dt_ult_transfusao').prop('readonly', false);
 
   $('#gestante').on('change', function changeGestante() {
     if (this.selectedIndex === 0) {
@@ -132,7 +146,8 @@ $(document).ready(() => {
 $(document).ready(() => {
   $('.text-status').each((index, value) => {
     if ($(value).text() === 'Não avaliado') $(value).addClass('text-danger');
-    else if ($(value).text() === 'Parcialmente avaliado') $(value).addClass('text-warning');
+    else if ($(value).text() === 'Parcialmente avaliado')
+      $(value).addClass('text-warning');
     else $(value).addClass('text-success');
   });
 

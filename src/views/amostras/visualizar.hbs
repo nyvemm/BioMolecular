@@ -35,12 +35,13 @@
 
                 {{#if data.finalizado}}
                 <hr>
-                <p class="m-0"><b>Resultado</b>: {{data.resultado}}</p>
+                <p class="m-0"><b>Resultado</b>: {{#if data.resultado}}{{data.resultado}}
+                {{else}}<span class="text-danger"> Sem resultados </span>{{/if}}</p>
                 <p class="m-0"><b>Data de Liberação</b>: {{data.dt_liberacao}}</p>
                 <hr>
                 <p class="m-0"><b>Interpretação dos resultados</b>:
                     {{#if data.interpretacao_resultados}} {{data.interpretacao_resultados}}
-                    {{else}} Não há interpretações para este resultado.{{/if}}</p>
+                    {{else}} <span class="text-danger">Não há interpretações para este resultado.</span>{{/if}}</p>
                 {{/if}}
 
                 <hr>
@@ -139,8 +140,10 @@
     </main>
 </body>
 
-<script type="module" src="/js/libs/jquery-3.5.1.min.js"></script>
-<script type="module" src="/bootstrap/js/bootstrap.bundle.min.js"></script>
-<script type="module" src="/bootstrap/js/bootstrap.min.js"></script>
+<script src="/js/libs/jquery-3.5.1.min.js"></script>
+<script src="/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="/bootstrap/js/bootstrap.min.js"></script>
+<script src="/js/utils/global.js"></script>
 
-<script type="module" src="/js/amostras/visualizar-amostra.js"></script>
+
+<script src="/js/amostras/visualizar-amostra.js"></script>

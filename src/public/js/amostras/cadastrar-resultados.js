@@ -1,6 +1,3 @@
-// eslint-disable-next-line import/extensions
-import warningMessage from '../utils/global.js';
-
 function deleteResultado(id, atualiza, idAmostraExame) {
   const xhr = new XMLHttpRequest();
 
@@ -14,7 +11,6 @@ function deleteResultado(id, atualiza, idAmostraExame) {
   xhr.send();
 }
 
-// eslint-disable-next-line no-unused-vars
 function submeterResultado(id) {
   const xhr = new XMLHttpRequest();
 
@@ -23,13 +19,19 @@ function submeterResultado(id) {
     if (xhr.status === 200) {
       const response = JSON.parse(xhr.responseText);
       if (response.status === 'success') {
-        $(`#warnings-${id}`).html(warningMessage('Resultados submetidos com sucesso', 'success'));
+        $(`#warnings-${id}`).html(
+          warningMessage('Resultados submetidos com sucesso', 'success')
+        );
         setTimeout(() => window.location.reload(), 1000);
       } else {
-        $(`#warnings-${id}`).html(warningMessage('Erro ao submeter resultados', 'danger'));
+        $(`#warnings-${id}`).html(
+          warningMessage('Erro ao submeter resultados', 'danger')
+        );
       }
     } else {
-      $(`#warnings-${id}`).html(warningMessage('Erro ao submeter resultados', 'danger'));
+      $(`#warnings-${id}`).html(
+        warningMessage('Erro ao submeter resultados', 'danger')
+      );
     }
   };
   xhr.send();
@@ -43,7 +45,9 @@ function atualizaResultados(idAmostraExame) {
     if (xhr.status === 200) {
       const response = JSON.parse(xhr.responseText);
       if ('status' in response) {
-        $(`#warnings-${idAmostraExame}`).html(warningMessage('Erro ao adicionar resultado na amostra', 'danger'));
+        $(`#warnings-${idAmostraExame}`).html(
+          warningMessage('Erro ao adicionar resultado na amostra', 'danger')
+        );
       } else {
         const resultadoExameBlock = $('.resultado-exame-block');
         for (let i = 0; i < resultadoExameBlock.length; i += 1) {
@@ -58,8 +62,15 @@ function atualizaResultados(idAmostraExame) {
           $(`#amostraexame-${resultado.idAmostraExame}`).append(`
             <div class="row mb-4">
               <div class="col-md-11">
-                <p class="m-0"> <b>Resultado</b>: ${resultado.valor_resultado} </p>
-                <p class="m-0"> <b>Observação</b>: ${resultado.observacao_resultado === '' || !resultado.observacao_resultado ? 'Sem observações.' : resultado.observacao_resultado} </p>
+                <p class="m-0"> <b>Resultado</b>: ${
+                  resultado.valor_resultado
+                } </p>
+                <p class="m-0"> <b>Observação</b>: ${
+                  resultado.observacao_resultado === '' ||
+                  !resultado.observacao_resultado
+                    ? 'Sem observações.'
+                    : resultado.observacao_resultado
+                } </p>
               </div>
               <div col-md-1>
                 ${xButton}
@@ -69,17 +80,21 @@ function atualizaResultados(idAmostraExame) {
         });
       }
     } else {
-      $(`#warnings-${idAmostraExame}`).html(warningMessage('Erro ao atualizar a amostra', 'danger'));
+      $(`#warnings-${idAmostraExame}`).html(
+        warningMessage('Erro ao atualizar a amostra', 'danger')
+      );
     }
   };
   xhr.send();
 }
 
-// eslint-disable-next-line no-unused-vars
 function putAmostra() {
   const formData = new FormData();
   formData.append('idAmostra', $('#idAmostra').val());
-  formData.append('interpretacao_resultados', $('#interpretacao_resultados').val());
+  formData.append(
+    'interpretacao_resultados',
+    $('#interpretacao_resultados').val()
+  );
   formData.append('resultado', $('#resultado').val());
 
   const xhr = new XMLHttpRequest();
@@ -90,22 +105,27 @@ function putAmostra() {
     if (xhr.status === 200) {
       const response = JSON.parse(xhr.responseText);
       if (response.status === 'success') {
-        $('#warnings').html(warningMessage('A amostra foi atualizada com sucesso.', 'success'));
+        $('#warnings').html(
+          warningMessage('A amostra foi atualizada com sucesso.', 'success')
+        );
       } else {
-        $('#warnings').html(warningMessage('Erro ao atualizar a amostra.', 'danger'));
+        $('#warnings').html(
+          warningMessage('Erro ao atualizar a amostra.', 'danger')
+        );
       }
     }
   };
   xhr.send(new URLSearchParams(formData));
 }
 
-// eslint-disable-next-line no-unused-vars
 function postResultados(id) {
   const xhr = new XMLHttpRequest();
   const formData = new FormData(document.getElementById(`formulario-${id}`));
 
   if ($(`#valor_resultado_${id}`).val() === '') {
-    $(`#warnings-${id}`).html(warningMessage('O campo de resultado não pode estar vazio.', 'danger'));
+    $(`#warnings-${id}`).html(
+      warningMessage('O campo de resultado não pode estar vazio.', 'danger')
+    );
     return;
   }
 
@@ -128,7 +148,8 @@ function postResultados(id) {
 $(document).ready(() => {
   $('.text-status').each((index, value) => {
     if ($(value).text() === 'Não avaliado') $(value).addClass('text-danger');
-    else if ($(value).text() === 'Parcialmente avaliado') $(value).addClass('text-warning');
+    else if ($(value).text() === 'Parcialmente avaliado')
+      $(value).addClass('text-warning');
     else $(value).addClass('text-success');
   });
 

@@ -10,4 +10,4 @@ class dateUtils {
   }
 }
 
-export default dateUtils;
+module.exports =  dateUtils;

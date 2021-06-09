@@ -1,9 +1,9 @@
-/* eslint-disable import/extensions */
-import AmostraDAO from '../../dao/amostraDAO.js';
-import AmostraController from '../../controller/amostraController.js';
-import AmostraModel from '../../models/amostraModel.js';
 
-export default (app, database) => {
+const AmostraDAO = require('../../dao/amostraDAO');
+const AmostraController = require('../../controller/amostraController');
+const AmostraModel = require('../../models/amostraModel');
+
+module.exports =  (app, database) => {
   const DAOAmostra = new AmostraDAO(database);
   const controllerAmostra = new AmostraController(DAOAmostra);
   const routesAmostra = AmostraController.routes();

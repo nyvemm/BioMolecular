@@ -1,4 +1,4 @@
-import { validationResult } from 'express-validator';
+const { validationResult } = require('express-validator');
 
 class pacienteController {
   constructor(DAOPaciente) {
@@ -76,4 +76,4 @@ class pacienteController {
   }
 }
 
-export default pacienteController;
+module.exports =  pacienteController;

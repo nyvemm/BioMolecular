@@ -1,6 +1,3 @@
-// eslint-disable-next-line import/extensions
-import warningMessage from '../utils/global.js';
-
 function validateIdade(text) {
   /* Operador principal */
   const operator = text.charAt(0) === '>' || text.charAt(0) === '<';
@@ -17,7 +14,11 @@ function validateIdade(text) {
       if (text.indexOf('-') !== -1) {
         const number1 = parseInt(text.substring(0, text.indexOf('-')), 10);
         const number2 = parseInt(text.substring(text.indexOf('-') + 1), 10);
-        return Number.isInteger(number1) && Number.isInteger(number2) && number1 < number2;
+        return (
+          Number.isInteger(number1) &&
+          Number.isInteger(number2) &&
+          number1 < number2
+        );
       }
       const number3 = parseInt(text, 10);
       return Number.isInteger(number3);
@@ -36,10 +37,8 @@ function mapTabletoJSON() {
 
   const jsonTable = [];
   table.children().each((i, tr) => {
-    const idade = $(tr).children().eq(0).find('input')
-      .val();
-    const valor = $(tr).children().eq(1).find('input')
-      .val();
+    const idade = $(tr).children().eq(0).find('input').val();
+    const valor = $(tr).children().eq(1).find('input').val();
 
     jsonTable.push({ idade, valor });
   });
@@ -49,7 +48,12 @@ function mapTabletoJSON() {
 
 function validateAll() {
   const validFields = Array.from($('th > input')).every((i) => i.value !== '');
-  return ($('.is-invalid').length === 0 && $('.is-valid').length >= 1 && validFields) || $('.tab-ref-idade').css('display') === 'none';
+  return (
+    ($('.is-invalid').length === 0 &&
+      $('.is-valid').length >= 1 &&
+      validFields) ||
+    $('.tab-ref-idade').css('display') === 'none'
+  );
 }
 
 function eventValidate(event) {
@@ -86,7 +90,12 @@ function postData() {
   xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
 
   if (!validateAll()) {
-    $(warnings).html(warningMessage('É necessário preencher todas as células da tabela de referências.', 'warning'));
+    $(warnings).html(
+      warningMessage(
+        'É necessário preencher todas as células da tabela de referências.',
+        'warning'
+      )
+    );
     window.scroll({ top: 0, left: 0, behavior: 'smooth' });
     return;
   }
@@ -96,6 +105,21 @@ function postData() {
     formData.append('tabela_intervalo', JSON.stringify(mapTabletoJSON()));
   } else {
     formData.append('tabela_intervalo', null);
+  }
+
+  /* Verifica se os possíveis resultados estão ocultos. */
+  if ($('.possiveis').css('display') !== 'none') {
+    formData.set(
+      'possiveis_resultados',
+      JSON.stringify(
+        $('#possiveis_resultados')
+          .val()
+          .split('\n')
+          .filter((charR) => charR !== '')
+      )
+    );
+  } else {
+    formData.set('possiveis_resultados', null);
   }
 
   xhr.onload = () => {
@@ -112,7 +136,10 @@ function postData() {
           innerHTML += warningMessage('Erro interno.', 'danger');
         }
       } else if (response.status === 'success') {
-        innerHTML += warningMessage('O exame foi editado com sucesso.', 'success');
+        innerHTML += warningMessage(
+          'O exame foi editado com sucesso.',
+          'success'
+        );
       }
 
       warnings.innerHTML = innerHTML;
@@ -164,6 +191,43 @@ $(document).ready(() => {
     btn.first().attr('onclick', 'addRow()');
     btn.first().text('Adicionar');
   }
+
+  /* Badges */
+  $('#possiveis_resultados').keyup((event) => {
+    const parseData = event.target.value.split('\n');
+
+    $('.possiveis_badges').html('');
+    parseData.forEach((value) => {
+      $('.possiveis_badges').append(
+        `<span class="badge badge-primary mx-1">${value}</span>`
+      );
+    });
+  });
+
+  $('.possiveis_badges').html('');
+  $('#possiveis_resultados')
+    .val()
+    .split('\n')
+    .forEach((value) => {
+      $('.possiveis_badges').append(
+        `<span class="badge badge-primary mx-1">${value}</span>`
+      );
+    });
+
+  /* Ao renderizar */
+  if ($('#tipo_resultado').val() !== 'Possíveis Valores') {
+    $('.possiveis').css('display', 'none');
+  } else {
+    $('.possiveis').css('display', 'block');
+  }
+
+  $('#tipo_resultado').change((event) => {
+    if (event.target.value !== 'Possíveis Valores') {
+      $('.possiveis').css('display', 'none');
+    } else {
+      $('.possiveis').css('display', 'block');
+    }
+  });
 });
 
 window.eventValidate = eventValidate;

@@ -1,6 +1,3 @@
-// eslint-disable-next-line import/extensions
-import warningMessage from '../utils/global.js';
-
 function postData() {
   const warnings = document.getElementById('warnings');
   const formData = new FormData(document.getElementById('formulario'));

@@ -1,7 +1,5 @@
-// eslint-disable-next-line import/extensions
-import warningMessage from '../utils/global.js';
+const warningMessage = require('../utils/global');
 
-// eslint-disable-next-line no-unused-vars
 function liberarSenha() {
   if ($('#senha').prop('readonly')) {
     $('#senha').attr('readonly', false);
@@ -10,7 +8,6 @@ function liberarSenha() {
   }
 }
 
-// eslint-disable-next-line no-unused-vars
 function liberarEmail() {
   if ($('#email').prop('readonly')) {
     $('#email').attr('readonly', false);
@@ -57,7 +54,6 @@ $(document).ready(() => {
   });
 });
 
-// eslint-disable-next-line no-unused-vars
 function previewFile() {
   const preview = document.querySelector('#foto-logo');
   const file = document.querySelector('input[type=file]').files[0];

@@ -1,97 +1,79 @@
 body {
-    background: rgb(204, 204, 204);
+  background: rgb(204, 204, 204);
 }
 
-page {
-    background: white;
-    display: block;
-    margin: 0 auto;
-    margin-bottom: 0.5cm;
-    box-shadow: 0 0 0.5cm rgba(0, 0, 0, 0.5);
-    background-image: url("../../img/background_a4.png");
-    background-size: 874px 1200px;
+.sheet {
+  background-image: url('../../img/background_a4.png');
+  background-size: 793px 1120px;
 }
-
-page[size="A4"] {
-    width: 210mm;
-    height: 297mm;
-}
-
-@media print {
-    body {
-        background: white;
-        margin: 0;
-        padding: 0;
-    }
-
-    page {
-        margin: 0;
-        box-shadow: none;
-    }
-}
-
 
 /* ----------------------- */
 
-page {
-    padding: 40px;
-}
-
 * {
-    margin: 0;
-    font-family: sans-serif;
-    font-size: 14px;
+  margin: 0;
+  font-family: sans-serif;
+  font-size: 12px;
 }
 
 .header-t {
-    color: white;
-    background-color: #0088b7;
-    padding-left: 5px;
-    font-family: sans-serif;
-    font-size: 12px;
-    border-bottom: 1px solid black;
+  color: white;
+  background-color: #0088b7;
+  padding-left: 5px;
+  font-family: sans-serif;
+  font-size: 12px;
+  border-bottom: 1px solid black;
 }
 
 .box {
-    border: 1px solid black;
+  border: 1px solid black;
+}
+
+.box-limited p {
+  display: -webkit-box;
+  -webkit-line-clamp: 7;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .field {
-    padding-left: 5px;
-    display: grid;
-    grid-template-columns: 33% 33% 33%;
-    grid-template-rows: auto;
+  padding-left: 5px;
+  display: grid;
+  grid-template-columns: 50% 50%;
+  grid-template-rows: auto;
+}
+
+.full {
+  display: inline;
 }
 
 .field p {
-    display: inline;
+  display: inline;
 }
 
 table {
-    width: 100%;
-    text-align: left;
-    border-collapse: collapse;
-    padding: 0;
+  width: 100%;
+  text-align: left;
+  border-collapse: collapse;
+  padding: 0;
 }
 
 thead {
-    background-color: #0088b7;
-    color: white;
+  background-color: #0088b7;
+  color: white;
 }
 
-
 table tr {
-    display: grid;
-    grid-template-rows: auto;
-    grid-template-columns: 40% 25% 20% 15%;
-    width: 100%;
-    gap: 0;
-    margin: 0;
-    padding-left:  5px;
+  display: grid;
+  grid-template-rows: auto;
+  grid-template-columns: 40% 15% 30% 15%;
+  width: 100%;
+  gap: 0;
+  margin: 0;
+  padding-left: 5px;
 }
 
 .sign {
-    display: flex;
-    justify-content: space-evenly;
-
+  display: flex;
+  justify-content: space-evenly;
 }

@@ -1,10 +1,9 @@
-/* eslint-disable import/extensions */
-import UsuarioDAO from '../../dao/usuarioDAO.js';
-import UsuarioController from '../../controller/usuarioController.js';
-import UsuarioModel from '../../models/usuarioModel.js';
-import multer from '../../../config/express/file-upload.js';
+const UsuarioDAO = require('../../dao/usuarioDAO');
+const UsuarioController = require('../../controller/usuarioController');
+const UsuarioModel = require('../../models/usuarioModel');
+const multer = require('../../../config/express/file-upload');
 
-export default (app, database) => {
+module.exports =  (app, database) => {
   const DAOUsuario = new UsuarioDAO(database);
   const controllerUsuario = new UsuarioController(DAOUsuario);
   const routesUsuario = UsuarioController.routes();

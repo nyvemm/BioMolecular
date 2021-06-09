@@ -1,7 +1,3 @@
-// eslint-disable-next-line no-unused-vars
-// eslint-disable-next-line import/extensions
-import warningMessage from '../utils/global.js';
-
 function alterAuth(id) {
   const xhr = new XMLHttpRequest();
 

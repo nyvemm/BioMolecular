@@ -1,6 +1,6 @@
-import passport from 'passport';
+const passport = require('passport');
 
-export default (app) => {
+module.exports =  (app) => {
   app.get('/login', (req, res) => {
     res.render('login/');
   });

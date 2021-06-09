@@ -41,7 +41,6 @@ class pacienteDAO {
   // Adiciona um novo paciente ao BD
   async addPaciente(data) {
     try {
-      // eslint-disable-next-line camelcase
       const cadastrado_por = data.cadastrado_por ? data.cadastrado_por : null;
       await this.database('paciente').insert({
         nome: data.nome,
@@ -91,4 +90,4 @@ class pacienteDAO {
   }
 }
 
-export default pacienteDAO;
+module.exports =  pacienteDAO;

@@ -12,7 +12,6 @@ function downloadString(text, fileType, fileName) {
   setTimeout(() => { URL.revokeObjectURL(a.href); }, 1500);
 }
 
-// eslint-disable-next-line no-unused-vars
 function downloadEvent() {
   const error = $('#error-log').val();
   downloadString(error, 'text-plain', `auditoria-${new Date().toJSON().replace('Z', '').replace('T', '-')}.txt`);

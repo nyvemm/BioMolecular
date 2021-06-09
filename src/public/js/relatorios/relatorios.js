@@ -1,7 +1,3 @@
-// eslint-disable-next-line import/extensions
-import warningMessage from '../utils/global.js';
-
-// eslint-disable-next-line no-unused-vars
 function gerarLaudo() {
   const xhr = new XMLHttpRequest();
   xhr.open('GET', `/relatorios/gerar-laudo?id=${$('#id').val()}`, true);

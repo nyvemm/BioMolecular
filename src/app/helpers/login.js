@@ -22,4 +22,4 @@ function visitanteLogin(req, res, next) {
   }
 }
 
-export { loggedIn, visitanteLogin };
+module.exports = { loggedIn, visitanteLogin };

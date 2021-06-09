@@ -1,19 +1,15 @@
-// eslint-disable-next-line no-unused-vars
 function addOffset(data, limit, currentOffset, updateTable) {
   updateTable(data, currentOffset + limit);
 }
 
-// eslint-disable-next-line no-unused-vars
 function removeOffset(data, limit, currentOffset, updateTable) {
   updateTable(data, currentOffset - limit);
 }
 
-// eslint-disable-next-line no-unused-vars
 function setOffset(data, n, limit, updateTable) {
   updateTable(data, ((n - 1) * limit));
 }
 
-// eslint-disable-next-line no-unused-vars
 function updatePagination(data, tableRowsLen, limit, currentOffset, updateTable) {
   const pagination = document.getElementById('pagination');
 
@@ -48,5 +44,3 @@ function updatePagination(data, tableRowsLen, limit, currentOffset, updateTable)
   }
   $(pagination).append(nextElement);
 }
-
-export default updatePagination;

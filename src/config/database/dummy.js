@@ -1,8 +1,7 @@
-import { readFileSync } from 'fs';
-// eslint-disable-next-line import/extensions
-import database from './connection.js';
+const { readFileSync } = require('fs');
+const database = require('./connection');
 
-export default async () => {
+module.exports =  async () => {
   // Importa o arquivo biomol.sql
   const sql = readFileSync('src/config/database/sql/createTable.sql').toString();
 

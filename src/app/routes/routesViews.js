@@ -1,17 +1,16 @@
-/* eslint-disable import/extensions */
-import database from '../../config/database/connection.js';
+const database = require('../../config/database/connection')
 
 /* Rotas do front-end */
-import routesLogin from './system/login.js';
-import routesPrincipal from './system/principal.js';
-import routesPacientes from './system/pacientes.js';
-import routesSolicitantes from './system/solicitantes.js';
-import routesExames from './system/exames.js';
-import routesAmostras from './system/amostras.js';
-import routesUsuarios from './system/usuarios.js';
-import routesRelatorios from './system/relatorios.js';
+const routesLogin = require('./system/login');
+const routesPrincipal = require('./system/principal');
+const routesPacientes = require('./system/pacientes');
+const routesSolicitantes = require('./system/solicitantes');
+const routesExames = require('./system/exames');
+const routesAmostras = require('./system/amostras');
+const routesUsuarios = require('./system/usuarios');
+const routesRelatorios = require('./system/relatorios');
 
-export default (app) => {
+module.exports =  (app) => {
   /* Rotas do front-end */
   routesLogin(app, database);
   routesPrincipal(app, database);

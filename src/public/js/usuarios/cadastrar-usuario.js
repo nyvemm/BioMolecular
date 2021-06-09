@@ -1,6 +1,3 @@
-// eslint-disable-next-line import/extensions
-import warningMessage from '../utils/global.js';
-
 function cadastrarUsuario() {
   const xhr = new XMLHttpRequest();
   const formData = new FormData(document.getElementById('formulario-usuario'));

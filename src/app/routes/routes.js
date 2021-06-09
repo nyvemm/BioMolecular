@@ -1,12 +1,11 @@
-/* eslint-disable import/extensions */
-import database from '../../config/database/connection.js';
+const database = require('../../config/database/connection.js');
 
 /* Rotas do back-end */
-import routesUsuario from './database/usuario.js';
-import routesPaciente from './database/paciente.js';
-import routesSolicitante from './database/solicitante.js';
-import routesExame from './database/exame.js';
-import routesAmostra from './database/amostra.js';
+const routesUsuario = require('./database/usuario');
+const routesPaciente = require('./database/paciente');
+const routesSolicitante = require('./database/solicitante');
+const routesExame = require('./database/exame');
+const routesAmostra = require('./database/amostra')
 
 // // Criação do banco de dados
 // dummy()
@@ -16,7 +15,7 @@ import routesAmostra from './database/amostra.js';
 //     console.log(error);
 //   });
 
-export default (app) => {
+module.exports = (app) => {
   /* Rotas do back-end */
   routesUsuario(app, database);
   routesPaciente(app, database);

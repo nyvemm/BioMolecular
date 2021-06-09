@@ -1,4 +1,4 @@
-import { check } from 'express-validator';
+const { check } = require('express-validator');
 
 class PacienteModel {
   static validations() {
@@ -56,4 +56,4 @@ class PacienteModel {
   }
 }
 
-export default PacienteModel;
+module.exports =  PacienteModel;

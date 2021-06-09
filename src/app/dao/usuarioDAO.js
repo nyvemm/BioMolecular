@@ -74,4 +74,4 @@ class usuarioDAO {
   }
 }
 
-export default usuarioDAO;
+module.exports =  usuarioDAO;

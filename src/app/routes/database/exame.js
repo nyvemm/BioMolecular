@@ -1,9 +1,8 @@
-/* eslint-disable import/extensions */
-import ExameDAO from '../../dao/exameDAO.js';
-import ExameController from '../../controller/exameController.js';
-import ExameModel from '../../models/exameModel.js';
+const ExameDAO = require('../../dao/exameDAO');
+const ExameController = require('../../controller/exameController');
+const ExameModel = require('../../models/exameModel');
 
-export default (app, database) => {
+module.exports =  (app, database) => {
   const DAOExame = new ExameDAO(database);
   const controllerExame = new ExameController(DAOExame);
   const routesExame = ExameController.routes();

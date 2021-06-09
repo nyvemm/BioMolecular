@@ -1,7 +1,7 @@
-import multer, { diskStorage } from 'multer';
+const multer = require('multer');
 
-export default multer({
-  storage: diskStorage({
+module.exports = multer({
+  storage: multer.diskStorage({
     destination(req, file, cb) {
       cb(null, 'src/public/uploads/image/');
     },

@@ -1,6 +1,3 @@
-// eslint-disable-next-line import/extensions
-import updatePagination from '../utils/pagination.js';
-
 let currentOffset = 0;
 
 function ajaxExame() {
@@ -28,7 +25,6 @@ function updateTable(data, offset) {
     const limit = 10;
 
     let innerHTML = '';
-    // eslint-disable-next-line no-undef
     updatePagination(data, tableRowsLen, limit, offset, updateTable);
 
     if (data.length === 0) {

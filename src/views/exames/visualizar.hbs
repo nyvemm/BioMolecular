@@ -30,6 +30,7 @@
             <hr>
             <p class='m-0'><b>Valor de Referência</b>: {{data.valor_ref}}</p>
             <p class='m-0'><b>Tipo do Valor de Referência</b>: {{data.tipo_valor_ref}} </p>
+            <p class='m-0'><b>Tipo do Valor do Resultado</b>: {{data.tipo_resultado}} </p>
         </div>
         {{#if intervalo}}
         <br>
@@ -53,6 +54,19 @@
             </table>
         </div>
         {{/if}}
+
+        <br>
+        <div>
+        {{#if data.valores}} 
+            <p class='m-0'><b>Possíveis Valores</b>:</p>
+            <ul>
+                {{#each data.valores}}
+                <li>{{this}}</li>
+                {{/each}}
+            </ul>
+        {{/if}}
+        </div>
+
         <div>
             <hr>
             <p class='m-0'><b>Observações</b>: {{#if data.observacao}} {{data.observacao}} {{else}} Sem observações
@@ -67,8 +81,10 @@
     </main>
 </body>
 
-<script type="module" src="/js/libs/jquery-3.5.1.min.js"></script>
-<script type="module" src="/bootstrap/js/bootstrap.bundle.min.js"></script>
-<script type="module" src="/bootstrap/js/bootstrap.min.js"></script>
+<script src="/js/libs/jquery-3.5.1.min.js"></script>
+<script src="/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="/bootstrap/js/bootstrap.min.js"></script>
+<script src="/js/utils/global.js"></script>
 
-<script type="module" src="/js/exames/visualizar-exame.js"></script>
+
+<script src="/js/exames/visualizar-exame.js"></script>

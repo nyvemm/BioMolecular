@@ -1,16 +1,18 @@
-/* eslint-disable import/extensions */
-import warningMessage from '../utils/global.js';
-import dateUtils from '../utils/date.js';
-
-function postData() {
+function postData(linkTo = false) {
   const warnings = document.getElementById('warnings');
   const formData = new FormData(document.getElementById('formulario'));
 
-  const medicamentos = Array.from(document.getElementsByName('medicamento-selecionado')).map((med) => med.innerHTML);
-  const exames = Array.from(document.getElementsByName('exames-escolhidos')).filter((ex) => $(ex).prop('checked')).map((ex) => $(ex).data('id'));
+  const medicamentos = Array.from(
+    document.getElementsByName('medicamento-selecionado')
+  ).map((med) => med.innerHTML);
+  const exames = Array.from(document.getElementsByName('exames-escolhidos'))
+    .filter((ex) => $(ex).prop('checked'))
+    .map((ex) => $(ex).data('id'));
 
   if (document.getElementsByName('exames-escolhidos').length === 0) {
-    $('#warnings').html(warningMessage('É preciso escolher pelo menos 1 exame.', 'danger'));
+    $('#warnings').html(
+      warningMessage('É preciso escolher pelo menos 1 exame.', 'danger')
+    );
     window.scroll({ top: 0, left: 0, behavior: 'smooth' });
     return;
   }
@@ -36,12 +38,23 @@ function postData() {
           innerHTML += warningMessage('Erro interno.', 'danger');
         }
       } else if (response.status === 'success') {
-        innerHTML += warningMessage('A amostra foi inserida com sucesso.', 'success');
+        if (linkTo) {
+          const amostraID = JSON.parse(xhr.responseText).id;
+          window.location.href = `/cadastrar-resultado/${amostraID}`;
+        } else {
+          innerHTML += warningMessage(
+            'A amostra foi inserida com sucesso.',
+            'success'
+          );
+        }
       }
 
       warnings.innerHTML = innerHTML;
     } else {
-      warnings.innerHTML = warningMessage('Falha ao alterar amostra.', 'danger');
+      warnings.innerHTML = warningMessage(
+        'Falha ao alterar amostra.',
+        'danger'
+      );
     }
   };
   xhr.send(new URLSearchParams(formData));
@@ -57,12 +70,16 @@ function fetchPaciente(query = '') {
       const response = JSON.parse(xhr.responseText);
       response.forEach((paciente) => {
         if (paciente.nome.toLowerCase().includes(query.toLowerCase())) {
-          $('#modal-paciente-content').append(() => $(`<li class="list-group-item paciente-item">${paciente.nome}</li>`).click(() => {
-            $('#idPaciente').val(paciente.idPaciente);
-            $('#nomepaciente').val(paciente.nome);
-            $('#idade').val(paciente.idade);
-            $('#modalPaciente').modal('hide');
-          }));
+          $('#modal-paciente-content').append(() =>
+            $(
+              `<li class="list-group-item paciente-item">${paciente.nome}</li>`
+            ).click(() => {
+              $('#idPaciente').val(paciente.idPaciente);
+              $('#nomepaciente').val(paciente.nome);
+              $('#idade').val(paciente.idade);
+              $('#modalPaciente').modal('hide');
+            })
+          );
         }
       });
     }
@@ -79,12 +96,18 @@ function fetchSolicitante(query = '') {
       const response = JSON.parse(xhr.responseText);
       response.forEach((solicitante) => {
         if (solicitante.nome.toLowerCase().includes(query.toLowerCase())) {
-          $('#modal-solicitante-content').append(() => $(`<li class="list-group-item solicitante-item">${solicitante.nome}</li>`).click(() => {
-            $('#idSolicitante').val(solicitante.idSolicitante);
-            $('#nomesolicitante').val(solicitante.nome);
-            $('#cidadeestado').val(`${solicitante.cidade}-${solicitante.estado}`);
-            $('#modalSolicitante').modal('hide');
-          }));
+          $('#modal-solicitante-content').append(() =>
+            $(
+              `<li class="list-group-item solicitante-item">${solicitante.nome}</li>`
+            ).click(() => {
+              $('#idSolicitante').val(solicitante.idSolicitante);
+              $('#nomesolicitante').val(solicitante.nome);
+              $('#cidadeestado').val(
+                `${solicitante.cidade}-${solicitante.estado}`
+              );
+              $('#modalSolicitante').modal('hide');
+            })
+          );
         }
       });
     }
@@ -116,7 +139,9 @@ function fetchExame() {
       /* Mapeia os valores atuais pra lista de objetos */
       response.forEach((exame) => {
         const tipo = exame.tipo_analise;
-        exames[listaExames.findIndex((elem) => elem === tipo)].valor.push(exame);
+        exames[listaExames.findIndex((elem) => elem === tipo)].valor.push(
+          exame
+        );
       });
 
       let query = '';
@@ -138,11 +163,15 @@ function fetchExame() {
 function adicionaMedicamento() {
   $('#lista-medicamentos').append(() => {
     if ($('#queryMedicamento').val() !== '') {
-      return $(`<li class="list-group-item" name="medicamento-selecionado"> ${$('#queryMedicamento').val()} </li>`).click(function changeQuery() {
+      return $(
+        `<li class="list-group-item" name="medicamento-selecionado"> ${$(
+          '#queryMedicamento'
+        ).val()} </li>`
+      ).click(function changeQuery() {
         this.remove();
       });
     }
-    return ('');
+    return '';
   });
   $('#queryMedicamento').val('');
 }
@@ -182,14 +211,20 @@ $(document).ready(() => {
   $('#buscar-paciente').bind('click', () => fetchPaciente(''));
   $('#queryPaciente').keyup(() => fetchPaciente($('#queryPaciente').val()));
   $('#buscar-solicitante').bind('click', () => fetchSolicitante(''));
-  $('#querySolicitante').keyup(() => fetchSolicitante($('#querySolicitante').val()));
+  $('#querySolicitante').keyup(() =>
+    fetchSolicitante($('#querySolicitante').val())
+  );
 
   // Dia da coleta começa como o dia atual
   $('#dt_coleta').val(dateUtils.inputDateFormat(new Date()));
 
   // Adiciona medicamento
   $('#adicionar-medicamento').bind('click', adicionaMedicamento);
-  $('#queryMedicamento').on('keyup', (e) => { if (e.keyCode === '13') { adicionaMedicamento(); } });
+  $('#queryMedicamento').on('keyup', (e) => {
+    if (e.keyCode === '13') {
+      adicionaMedicamento();
+    }
+  });
 
   // Adiciona os exames
   fetchExame();
@@ -199,6 +234,15 @@ $(document).ready(() => {
     postData();
   };
 
+  document.getElementById('submeter-resultado').onclick = (e) => {
+    e.preventDefault();
+    postData(true);
+  };
+
   // Impede a submissão do formulário com enter.
-  $(document).keypress((event) => { if (event.which === '13') { event.preventDefault(); } });
+  $(document).keypress((event) => {
+    if (event.which === '13') {
+      event.preventDefault();
+    }
+  });
 });

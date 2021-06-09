@@ -1,4 +1,3 @@
-// eslint-disable-next-line no-unused-vars
 function deleteData(id) {
   const xhr = new XMLHttpRequest();
   xhr.open('DELETE', `/paciente?id=${id}`, true);

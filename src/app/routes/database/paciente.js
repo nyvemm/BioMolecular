@@ -1,9 +1,8 @@
-/* eslint-disable import/extensions */
-import PacienteDAO from '../../dao/pacienteDAO.js';
-import PacienteController from '../../controller/pacienteController.js';
-import PacienteModel from '../../models/pacienteModel.js';
+const PacienteDAO = require('../../dao/pacienteDAO');
+const PacienteController = require('../../controller/pacienteController');
+const PacienteModel = require('../../models/pacienteModel');
 
-export default (app, database) => {
+module.exports =  (app, database) => {
   const DAOPaciente = new PacienteDAO(database);
   const controllerPaciente = new PacienteController(DAOPaciente);
   const routesPaciente = PacienteController.routes();

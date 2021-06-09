@@ -1,4 +1,4 @@
-import { validationResult } from 'express-validator';
+const { validationResult } = require('express-validator');
 
 class amostraController {
   constructor(DAOAmostra) {
@@ -70,4 +70,4 @@ class amostraController {
   }
 }
 
-export default amostraController;
+module.exports =  amostraController;

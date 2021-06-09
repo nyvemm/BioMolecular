@@ -1,4 +1,4 @@
-import { validationResult } from 'express-validator';
+const { validationResult } = require('express-validator');
 
 class usuarioController {
   constructor(DAOUsuario) {
@@ -81,4 +81,4 @@ class usuarioController {
   }
 }
 
-export default usuarioController;
+module.exports =  usuarioController;

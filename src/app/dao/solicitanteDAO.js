@@ -1,4 +1,4 @@
-import passGenerator from 'generate-password';
+const passGenerator = require('generate-password');
 
 class solicitanteDAO {
   // O construtor recebe a conexão com o banco de dados.
@@ -97,7 +97,6 @@ class solicitanteDAO {
   // Remove um solicitante do banco de dados.
   async removeSolicitante(id) {
     try {
-      // eslint-disable-next-line camelcase
       const { login_visitante } = await this.database('solicitante')
         .where('idSolicitante', id).select('login_visitante').first();
 
@@ -110,4 +109,4 @@ class solicitanteDAO {
   }
 }
 
-export default solicitanteDAO;
+module.exports =  solicitanteDAO;

@@ -1,8 +1,7 @@
-/* eslint-disable import/extensions */
-import UsuarioDAO from '../../dao/usuarioDAO.js';
-import { loggedIn } from '../../helpers/login.js';
+const UsuarioDAO = require('../../dao/usuarioDAO');
+const { loggedIn } = require('../../helpers/login');
 
-export default (app, database) => {
+module.exports = (app, database) => {
   const DAOUsuario = new UsuarioDAO(database);
   app.get('/meu-perfil', loggedIn, (req, res) => {
     try {
@@ -18,7 +17,9 @@ export default (app, database) => {
       DAOUsuario.getUsuarios().then((usuarios) => {
         const usuariosData = usuarios;
         for (let i = 0; i < usuariosData.length; i += 1) {
-          usuariosData[i].foto = usuariosData[i].foto ? usuariosData[i].foto : '/img/sem-foto.png';
+          usuariosData[i].foto = usuariosData[i].foto
+            ? usuariosData[i].foto
+            : '/img/sem-foto.png';
         }
         res.render('usuarios/administrador', { data: usuariosData });
       });

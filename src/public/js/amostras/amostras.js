@@ -1,6 +1,3 @@
-// eslint-disable-next-line import/extensions
-import updatePagination from '../utils/pagination.js';
-
 let currentOffset = 0;
 
 function ajaxAmostra() {
@@ -28,7 +25,6 @@ function updateTable(data, offset) {
     const limit = 10;
 
     let innerHTML = '';
-    // eslint-disable-next-line no-undef
     updatePagination(data, tableRowsLen, limit, offset, updateTable);
 
     if (data.length === 0) {
@@ -48,7 +44,8 @@ function updateTable(data, offset) {
     tableBody.innerHTML = innerHTML;
     $('.text-status').each((index, value) => {
       if ($(value).text() === 'Não avaliado') $(value).addClass('text-danger');
-      else if ($(value).text() === 'Parcialmente avaliado') $(value).addClass('text-warning');
+      else if ($(value).text() === 'Parcialmente avaliado')
+        $(value).addClass('text-warning');
       else $(value).addClass('text-success');
     });
 

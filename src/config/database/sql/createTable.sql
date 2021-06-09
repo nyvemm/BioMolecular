@@ -35,6 +35,8 @@ CREATE TABLE IF NOT EXISTS exame(
 	preco DECIMAL(10,2) NULL,
 	valor_ref VARCHAR(45) NOT NULL,
 	tipo_valor_ref VARCHAR(45) NOT NULL,
+	tipo_resultado VARCHAR(50) NOT NULL,
+	possiveis_resultados TEXT,
 	cadastrado_em DATE,
 	cadastrado_por VARCHAR(100),
 	observacao TEXT,

@@ -1,6 +1,3 @@
-// eslint-disable-next-line import/extensions
-import updatePagination from '../utils/pagination.js';
-
 let currentOffset = 0;
 
 function ajaxSolicitante() {

@@ -1,25 +1,24 @@
-/* eslint-disable import/extensions */
-import express from 'express';
-import path from 'path';
-import handlebars from 'express-handlebars';
+const express = require('express');
+const path = require('path');
+const handlebars = require('express-handlebars');
 
 // Bibliotecas internas
-import flash from 'connect-flash';
-import passport from 'passport';
+const flash = require('connect-flash');
+const passport = require('passport');
 
 // Sessão
-import session from 'express-session';
+const session = require('express-session');
 
 // Geração de Hash
-import crypto from 'crypto';
-import { v1 as uuidv1 } from 'uuid';
+const crypto = require('crypto');
+const uuid = require('uuid');
 
 //------------------------------------------------------------
-import routes from '../../app/routes/routes.js';
-import routesViews from '../../app/routes/routesViews.js';
+const routes = require('../../app/routes/routes');
+const routesViews = require('../../app/routes/routesViews');
 
 // Autenticação
-import auth from './auth.js';
+const auth = require('./auth');
 
 auth(passport);
 const app = express();
@@ -33,7 +32,7 @@ app.use(session({
     maxAge: 7200000, // 2 horas
   },
   genid() {
-    return crypto.createHash('sha256').update(uuidv1()).update(crypto.randomBytes(256)).digest('hex');
+    return crypto.createHash('sha256').update(uuid.v1()).update(crypto.randomBytes(256)).digest('hex');
   },
 }));
 
@@ -50,7 +49,6 @@ const hbs = handlebars.create({
   helpers: {
     select(selected, options) {
       return options.fn(this).replace(
-        // eslint-disable-next-line no-useless-escape
         new RegExp(`value=\"${selected}\"`),
         '$& selected="selected"',
       );
@@ -59,11 +57,11 @@ const hbs = handlebars.create({
 });
 
 app.engine('hbs', handlebars(hbs));
-app.set('views', path.join(process.cwd(), '/src/views'));
+app.set('views', path.join(__dirname, '../../views'));
 app.set('view engine', 'hbs');
 
 // Arquivos estáticos
-app.use(express.static(path.join(process.cwd(), '/src/public')));
+app.use(express.static(path.join(__dirname, '../../public')));
 
 // Privilégios de Acesso
 // const { loggedIn } = require('../../app/helpers/login');
@@ -108,4 +106,4 @@ app.use((error, req, res) => {
   res.status(500).render('layouts/fatal_error', { error });
 });
 
-export default app;
+module.exports = app;

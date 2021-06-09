@@ -1,9 +1,8 @@
-/* eslint-disable import/extensions */
-import SolicitanteDAO from '../../dao/solicitanteDAO.js';
-import SolicitanteController from '../../controller/solicitanteController.js';
-import solicitanteModel from '../../models/solicitanteModel.js';
+const SolicitanteDAO = require('../../dao/solicitanteDAO');
+const SolicitanteController = require('../../controller/solicitanteController');
+const solicitanteModel = require('../../models/solicitanteModel');
 
-export default (app, database) => {
+module.exports =  (app, database) => {
   const DAOSolicitante = new SolicitanteDAO(database);
   const controllerSolicitante = new SolicitanteController(DAOSolicitante);
   const routesSolicitante = SolicitanteController.routes();

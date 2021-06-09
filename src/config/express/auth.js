@@ -1,12 +1,11 @@
-import passport from 'passport';
-import { Strategy as LocalStrategy } from 'passport-local';
+const passport = require('passport');
+const { Strategy } = require('passport-local');
 
-// eslint-disable-next-line import/extensions
-import database from '../database/connection.js';
+const database = require('../database/connection.js');
 //------------------------------------------------------------
 
-export default (currentPassport) => {
-  currentPassport.use(new LocalStrategy({
+module.exports =  (currentPassport) => {
+  currentPassport.use(new Strategy({
     usernameField: 'login',
     passwordField: 'senha',
   }, (login, senha, done) => {
